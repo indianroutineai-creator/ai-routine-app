@@ -1,0 +1,1132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Indian Routine</title>
+<meta name="theme-color" content="#0d1117" />
+<style>
+:root{ /* New Dark Purple Color Scheme */ --bg:#0d1117; --card:#161b22; --border: #30363d; --muted:#8b949e; --accent:#a371f7; --accent-hover:#b38ff9; --success: #238636; --danger: #da3333; }
+*{box-sizing:border-box}
+body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; background-color:var(--bg); color:#c9d1d9; }
+.wrap{max-width:820px;margin:12px auto;padding:0 16px}
+header{ display:flex; justify-content:space-between; align-items:center; position:relative; padding: 8px 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.header-left { flex: 1; text-align: left; }
+.header-center { flex: 2; text-align: center; }
+.header-right { flex: 1; text-align: right; }
+.app-title { font-size: 24px; font-weight: 900; padding: 8px 16px; border-radius: 8px; cursor: pointer; user-select: none; background-image: linear-gradient(45deg, var(--accent), #f778ba); -webkit-background-clip: text; background-clip: text; color: transparent; border: 1px solid rgba(255, 255, 255, 0.1); }
+.user-greeting { font-size: 14px; color: var(--muted); font-weight: 500; }
+.card{ background-color:var(--card); border-radius:8px; margin-bottom:16px; border: 1px solid var(--border); }
+.card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; font-weight: 600; }
+.card-body { padding: 16px; border-top: 1px solid var(--border); display: none; }
+.card-body-no-padding { padding: 0 16px 16px; border-top: 1px solid var(--border); display: none; }
+.toggle-icon { transition: transform 0.2s; }
+.open .toggle-icon { transform: rotate(90deg); }
+label{display:block; color:var(--muted); font-size:14px; margin-bottom:8px; font-weight: 500;}
+.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom: 12px;}
+.flex-item { flex: 1; min-width: 120px; }
+input,select,textarea{ background-color:#010409; border:1px solid var(--border); padding:10px; border-radius:6px; color:#c9d1d9; width: 100%; font-family: inherit; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+.btn{ background-color:var(--accent); border:1px solid var(--accent); color:#fff; padding:10px 16px; border-radius:6px; font-weight:600; cursor:pointer; transition: background-color 0.2s; text-decoration: none; text-align: center; }
+.btn:hover{ background-color: var(--accent-hover); }
+.btn-secondary { background-color: #21262d; border-color: var(--border); color: #c9d1d9; }
+.btn-secondary:hover { border-color: var(--muted); background-color: #30363d;}
+.btn-danger { background-color: #da3333; border-color: #da3333; color: #fff; }
+.btn-danger:hover { background-color: #f85149; border-color: #f85149; }
+.slot{ display:grid; grid-template-columns: 70px 1fr auto; gap: 8px 16px; padding:12px; border-radius:8px; margin-bottom:8px; background-color:color-mix(in srgb, var(--accent) 5%, transparent); border-left:4px solid var(--slot-color, var(--accent)); align-items: center; }
+.slot .time{ grid-column: 1; grid-row: 1 / 3; font-weight:700; font-size:18px; color:#fff; text-align: center;}
+.slot .label{ grid-column: 2; font-weight:600; color:#c9d1d9;}
+.slot .tip{ grid-column: 2; font-size:12px; color:var(--muted); font-style:italic;}
+.slot-edit-btn { grid-column: 3; grid-row: 1 / 3; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; border-radius: 50%; line-height: 0; }
+.slot-edit-btn:hover { background-color: rgba(255,255,255,0.1); }
+@keyframes motivationGlow { 0%, 100% { box-shadow: 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent), 0 0 8px color-mix(in srgb, var(--accent) 10%, transparent); } 50% { box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent), 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); } }
+.motivation{ text-align:center; font-size:14px; color:var(--muted); font-style:italic; padding:20px; border-radius:8px; background-color:var(--card); margin-bottom:16px; border:1px solid var(--border); transition: all 0.5s ease; animation: motivationGlow 8s infinite ease-in-out; }
+.strategy{ font-size:14px; color:#c9d1d9; line-height:1.6; }
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.7);}
+.modal-content{background-color:var(--card);margin:10% auto;padding:24px;border-radius:8px;width:90%;max-width:500px;max-height:80vh;overflow-y:auto;border:1px solid var(--border);}
+#alarmModal .modal-content { text-align: center; animation: pulse 1.2s infinite; }
+#alarmModal h2 { color: var(--accent); font-size: 28px; }
+@keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent); } 70% { transform: scale(1.02); box-shadow: 0 0 10px 20px color-mix(in srgb, var(--accent) 0%, transparent); } 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); } }
+#adminModal .modal-content { max-width: 700px; animation: none; }
+.close{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
+.close:hover{color:var(--accent);}
+.menu-icon {cursor:pointer; padding:8px;}
+.menu-icon div {width:5px; height:5px; background-color:#c9d1d9; border-radius:50%; margin-bottom:4px;}
+.dropdown-menu {display:none; position:absolute; left:0; top:50px; background-color:var(--card); border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.4); z-index:1001; padding:8px 0; border:1px solid var(--border); min-width: 220px;}
+.dropdown-menu a {display:block; padding:10px 16px; color:#c9d1d9; text-decoration:none; font-size:14px;}
+.dropdown-menu a:hover {background-color:color-mix(in srgb, var(--accent) 10%, transparent); color:#fff;}
+.dropdown-menu .setting {padding:10px 16px;}
+footer { text-align: center; padding: 24px 0; margin-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+footer a { color: var(--muted); text-decoration: none; font-weight: 600; }
+footer a:hover { color: var(--accent); }
+#adminLoginBtn { font-size: 0; display: inline-block; width: 6px; height: 6px; background-color: var(--muted); border-radius: 50%; transition: background-color 0.2s ease; }
+#adminLoginBtn:hover { background-color: var(--accent); }
+.audio-display-area { display: flex; align-items: center; gap: 16px; }
+#audioTrackImage { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); background-color: #010409; }
+.audio-player-controls { display: flex; align-items: center; gap: 12px; flex-grow: 1; }
+#audioPlayPauseBtn { width: 40px; height: 40px; border-radius: 50%; line-height: 40px; text-align: center; padding: 0; flex-shrink: 0;}
+#audioTrackSelect { flex: 1; }
+/* Slot Colors */
+.slot[data-id=wake] {--slot-color:#238636;}
+.slot[data-id=morning_study], .slot[data-id=study1], .slot[data-id=study2], .slot[data-id=study3], .slot[data-id=study4] {--slot-color:#e3b341;}
+.slot[data-id=leave] {--slot-color:#58a6ff;}
+.slot[data-id=duty_start] {--slot-color:#da3633;}
+.slot[data-id=duty_end] {--slot-color:#da3633;}
+.slot[data-id=home] {--slot-color:#a371f7;}
+.slot[data-id=nap] {--slot-color:#d29922;}
+.slot[data-id=main_study] {--slot-color:#f778ba;}
+.slot[data-id=break], .slot[data-id=long_break] {--slot-color:#3fb950;}
+.slot[data-id=practice] {--slot-color:#f778ba;}
+.slot[data-id=current_affairs] {--slot-color:#1f6feb;}
+.slot[data-id=other_activity] { --slot-color: #a371f7; }
+.slot[data-id=relax] { --slot-color: #3fb950; }
+.slot[data-id=dinner] {--slot-color:#8957e5;}
+.slot[data-id=sleep] {--slot-color:#8b949e;}
+.admin-section { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.admin-add-form { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.admin-add-form input { flex: 1; min-width: 150px; }
+.admin-add-form button { flex-shrink: 0; }
+.app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 16px; margin-top: 16px; }
+.app-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--muted); font-size: 12px; transition: transform 0.2s ease, color 0.2s ease; }
+.app-item:hover { transform: translateY(-4px); color: #fff; }
+.app-item img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 8px; object-fit: cover; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+@keyframes rainbowGlow { 0%, 100% { border-color: #ff7b72; box-shadow: 0 0 15px rgba(255, 123, 114, 0.8), 0 0 25px rgba(255, 123, 114, 0.6); } 20% { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.8), 0 0 25px rgba(251, 191, 36, 0.6); } 40% { border-color: #3fb950; box-shadow: 0 0 15px rgba(63, 185, 80, 0.8), 0 0 25px rgba(63, 185, 80, 0.6); } 60% { border-color: #58a6ff; box-shadow: 0 0 15px rgba(88, 166, 255, 0.8), 0 0 25px rgba(88, 166, 255, 0.6); } 80% { border-color: #a371f7; box-shadow: 0 0 15px rgba(163, 113, 247, 0.8), 0 0 25px rgba(163, 113, 247, 0.6); } }
+#aiCard { animation: rainbowGlow 10s infinite linear; }
+#studyCard { background-color: #FF8C00 !important; border-color: #E07B00 !important; }
+#studyCard .card-header, #studyCard .card-body { color: #000 !important; }
+#studyCard label, #studyCard .flex-item div { color: #000 !important; }
+#studyCard input, #studyCard select { background-color: rgba(0, 0, 0, 0.8) !important; color: #c9d1d9 !important; border-color: #E07B00 !important; }
+#studyCard .app-item { color: #000 !important; }
+#studyCard .app-item:hover { color: #fff !important; }
+#studyCard .app-item img { background-color: #FF8C00 !important; }
+.occupation-selector { display: flex; gap: 10px; background-color: #010409; padding: 5px; border-radius: 8px; border: 1px solid var(--border); }
+.occupation-selector label { flex: 1; padding: 8px; text-align: center; border-radius: 6px; cursor: pointer; transition: background-color 0.2s, color 0.2s; margin: 0; font-size: 14px; color: var(--muted); }
+.occupation-selector input { display: none; }
+.occupation-selector input:checked + label { background-color: var(--accent); color: white; font-weight: 600; }
+.checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.checkbox-row label { margin-bottom: 0; }
+.checkbox-row input[type="checkbox"] { width: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="header-left">
+<div class="menu-icon" id="menuBtn">
+<div></div><div></div><div></div>
+</div>
+</div>
+<div class="header-center">
+<div class="app-title">Indian Routine</div>
+</div>
+<div class="header-right">
+<div class="user-greeting" id="userGreeting"></div>
+</div>
+<div id="dropdownMenu" class="dropdown-menu">
+<a href="#" id="menuProfileBtn" data-hi="प्रोफ़ाइल सेटअप" data-en="Profile Setup">Profile Setup</a>
+<div class="setting">
+<label class="small" data-hi="भाषा" data-en="Language">Language</label>
+<select id="langSel">
+<option value="en">English</option>
+<option value="hi">Hindi</option>
+<option value="both">Both</option>
+</select>
+</div>
+<div class="setting">
+<label class="small" data-hi="टाइम फॉर्मेट" data-en="Time Format">Time Format</label>
+<select id="timeFormatSel">
+<option value="12h">12-Hour (AM/PM)</option>
+<option value="24h">24-Hour</option>
+</select>
+</div>
+</div>
+</header>
+<div id="aiCard" class="card open">
+<div class="card-header">
+<span data-hi="AI से पूछें" data-en="Ask AI">Ask AI</span>
+<span class="toggle-icon">▶</span>
+</div>
+<div class="card-body" style="display: block;">
+<p data-hi="अपने डाउट्स सॉल्व करने के लिए नीचे दिए गए किसी भी AI को चुनें।" data-en="Choose any AI below to solve your doubts."></p>
+<div class="row">
+<a href="https://chat.deepseek.com/" target="_blank" class="btn flex-item" data-hi="Deepseek से पूछें" data-en="Ask Deepseek">Ask Deepseek</a>
+<a href="https://x.com/i/grok" target="_blank" class="btn flex-item" data-hi="Grok से पूछें" data-en="Ask Grok">Ask Grok</a>
+</div>
+<p style="font-size:12px; color:var(--muted); margin-top: 8px;" data-hi="नोट: Grok के लिए X (ट्विटर) प्रीमियम की आवश्यकता हो सकती है।" data-en="Note: Grok may require X (Twitter) Premium."></p>
+</div>
+</div>
+<div id="setupCard" class="card">
+<div class="card-header">
+<span data-hi="सेटअप और स्ट्रेटजी" data-en="Setup & Strategy">Setup & Strategy</span>
+<span class="toggle-icon">▶</span>
+</div>
+<div class="card-body">
+<div id="detailsInputs">
+<div class="row">
+<div class="flex-item">
+<label class="small" data-hi="आपकी भूमिका" data-en="Your Role">Your Role</label>
+<div class="occupation-selector">
+<input type="radio" id="roleDuty" name="occupation" value="duty" checked>
+<label for="roleDuty" data-hi="पेशेवर" data-en="Professional">Professional</label>
+<input type="radio" id="roleStudent" name="occupation" value="student">
+<label for="roleStudent" data-hi="छात्र" data-en="Student">Student</label>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="flex-item"><label class="small" data-hi="परीक्षा" data-en="Exam">Exam</label><input type="text" id="examName" placeholder="e.g., UPSC"></div>
+<div class="flex-item"><label class="small" data-hi="लक्ष्य तिथि" data-en="Target Date">Target Date</label><input type="date" id="targetDate"></div>
+</div>
+<div class="row">
+<div class="flex-item" style="grid-column: 1 / -1;">
+<label class="small" data-hi="विषय (प्रत्येक लाइन पर एक)" data-en="Subjects (one per line)">Subjects (one per line)</label>
+<textarea id="subjectsList" rows="3" placeholder="e.g., History&#10;Math&#10;Science"></textarea>
+</div>
+</div>
+<div class="row">
+<div class="flex-item"><label class="small" data-hi="फोकस सब्जेक्ट (कमजोर विषय)" data-en="Focus Subject (Weak Subject)">Focus Subject (Weak Subject)</label><input type="text" id="focusSubject" placeholder="e.g., Math"></div>
+</div>
+<div id="dutyFields">
+<div class="row">
+<div class="flex-item">
+<label class="small" data-hi="शिफ्ट का प्रकार" data-en="Shift Type">Shift Type</label>
+<div class="occupation-selector">
+<input type="radio" id="shiftDay" name="shiftType" value="day" checked>
+<label for="shiftDay" data-hi="दिन की शिफ्ट" data-en="Day Shift">Day Shift</label>
+<input type="radio" id="shiftNight" name="shiftType" value="night">
+<label for="shiftNight" data-hi="रात की शिफ्ट" data-en="Night Shift">Night Shift</label>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="flex-item"><label class="small" data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="activityName" placeholder="e.g., Duty, Office"></div>
+<div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="dutyStudyGoal" placeholder="e.g., 3" min="1" max="8" step="0.5" value="3"></div>
+</div>
+<div class="row">
+<div class="flex-item"><label class="small"><span class="dynamic-activity-label" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="शुरू" data-en="Start">Start</span></label><input type="time" id="dutyStart" value="09:00"></div>
+<div class="flex-item"><label class="small"><span class="dynamic-activity-label" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="खत्म" data-en="End">End</span></label><input type="time" id="dutyEnd" value="18:00"></div>
+</div>
+</div>
+<div id="studentFields" style="display:none;">
+<div class="row">
+<div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="studentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div>
+</div>
+<div class="checkbox-row">
+<input type="checkbox" id="studentSetWakeUpManual">
+<label for="studentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label>
+</div>
+<div id="studentManualWakeUpWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label>
+<input type="time" id="wakeUpTime" value="05:00">
+</div>
+</div>
+<div class="checkbox-row">
+<input type="checkbox" id="studentAddActivityCheckbox">
+<label for="studentAddActivityCheckbox" data-hi="कुछ और गतिविधि जोड़ें" data-en="Add other activity">Add other activity</label>
+</div>
+<div id="studentActivityWrapper" style="display:none;">
+<div class="row">
+<div class="flex-item"><label class="small" data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="studentActivityName" placeholder="e.g., Play Cricket, Gym"></div>
+<div class="flex-item"><label class="small" data-hi="अवधि (घंटे)" data-en="Duration (Hours)">Duration (Hours)</label><input type="number" id="studentActivityDuration" value="1" min="0.5" max="4" step="0.5"></div>
+</div>
+</div>
+</div>
+</div>
+<div id="profileSummary" style="display:none; color:var(--success); line-height:1.6;"></div>
+<div style="margin-top:16px; border-top: 1px solid var(--border); padding-top:16px;">
+<strong data-hi="आपकी स्ट्रेटजी" data-en="Your Strategy">Your Strategy</strong>
+<div id="strategy" class="strategy" style="margin-top:8px;"></div>
+</div>
+<div style="margin-top:16px;" class="row">
+<button id="autoBtn" class="btn btn-secondary" data-hi="रूटीन जेनरेट करें" data-en="Generate Routine">Generate Routine</button>
+</div>
+</div>
+</div>
+<div class="motivation" id="motivationQuote">Loading motivation...</div>
+<div id="studyCard" class="card">
+<div class="card-header">
+<span data-hi="स्टडी ऐप्स और टाइमर" data-en="Study Apps & Timer">Study Apps & Timer</span>
+<span class="toggle-icon">▶</span>
+</div>
+<div class="card-body">
+<div class="row">
+<div class="flex-item">
+<label data-hi="आज का स्टडी टाइम" data-en="Today's Study Time">Today's Study Time</label>
+<div id="todayStudyTime" style="font-size: 24px; font-weight: bold; color: var(--success);">0h 0m 0s</div>
+</div>
+<div class="flex-item">
+<label data-hi="कुल स्टडी टाइम" data-en="Total Study Time">Total Study Time</label>
+<div id="totalStudyTime" style="font-size: 24px; font-weight: bold; color: var(--accent);">0h 0m 0s</div>
+</div>
+</div>
+<div style="margin-top:16px; border-top: 1px solid var(--border); padding-top:16px;">
+<label data-hi="पढ़ाई शुरू करने के लिए एक ऐप चुनें" data-en="Choose an App to Start Studying">Choose an App to Start Studying</label>
+<div id="studyAppGrid" class="app-grid"></div>
+</div>
+</div>
+</div>
+<!-- NEW SIMPLIFIED NOTES CARD -->
+<div id="notesCard" class="card">
+<div class="card-header">
+<span data-hi="सामुदायिक नोट्स" data-en="Community Notes">Community Notes</span>
+<span class="toggle-icon">▶</span>
+</div>
+<div class="card-body">
+<p data-hi="दूसरों के नोट्स पढ़ने या अपना नोट साझा करने के लिए नीचे दिए गए बटन का उपयोग करें।" data-en="Use the buttons below to read notes from others or share your own." style="font-size:14px; color:var(--muted); margin-bottom:20px;"></p>
+<button id="readNotesBtn" class="btn" style="width: 100%; margin-bottom: 12px;" data-hi="नोट्स पढ़ें" data-en="Read Notes">Read Notes</button>
+<button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
+</div>
+</div>
+<div id="audioCard" class="card">
+<div class="card-header">
+<span data-hi="जल्द आ रहा है" data-en="Coming Soon">Coming Soon</span>
+<span class="toggle-icon">▶</span>
+</div>
+<div class="card-body">
+<audio id="audioPlayer" style="display:none;"></audio>
+<div class="audio-display-area">
+<img id="audioTrackImage" src="" alt="Track Image">
+<div class="audio-player-controls">
+<button id="audioPlayPauseBtn" class="btn btn-secondary">▶</button>
+<select id="audioTrackSelect"></select>
+</div>
+</div>
+</div>
+</div>
+<div id="routineCard" class="card open">
+<div class="card-header">
+<span data-hi="दैनिक रूटीन" data-en="Daily Routine">Daily Routine</span>
+<span class="toggle-icon">▶</span>
+</div>
+<div class="card-body-no-padding" style="display: block;">
+<div id="slots"></div>
+<div style="margin:16px;" class="row">
+<button id="applyBtn" class="btn" data-hi="रूटीन सेव करें" data-en="Save Routine">Save Routine</button>
+</div>
+</div>
+</div>
+<footer>
+<p>
+<span data-hi="© 2025 Indian Routine। सर्वाधिकार सुरक्षित।" data-en="© 2025 Indian Routine. All Rights Reserved."></span><br>
+<a href="#" id="adminLoginBtn" data-hi="एडमिन पैनल" data-en="Admin Panel"></a>
+</p>
+</footer>
+</div>
+<!-- ALARM MODAL -->
+<div id="alarmModal" class="modal">
+<div class="modal-content">
+<h2 id="alarmTitle" data-hi="रिमाइंडर!" data-en="Reminder!">Reminder!</h2>
+<p id="alarmMessage" style="font-size: 18px;"></p>
+<button id="stopAlarmBtn" class="btn btn-danger" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
+<audio id="alarmSound"></audio>
+</div>
+</div>
+<!-- Other Modals -->
+<div id="profileModal" class="modal">
+<div class="modal-content">
+<span class="close" id="closeProfileModal">&times;</span>
+<h2 data-hi="प्रोफ़ाइल सेटअप" data-en="Profile Setup" style="margin-top:0;">Profile Setup</h2>
+<div class="row"><div class="flex-item"><label data-hi="नाम" data-en="Name">Name</label><input type="text" id="profileName"></div><div class="flex-item"><label data-hi="उम्र" data-en="Age">Age</label><input type="number" id="profileAge" min="16" max="60"></div></div><div class="row"><div class="flex-item"><label class="small" data-hi="आपकी भूमिका" data-en="Your Role">Your Role</label><div class="occupation-selector"><input type="radio" id="profileRoleDuty" name="profileOccupation" value="duty" checked><label for="profileRoleDuty" data-hi="पेशेवर" data-en="Professional">Professional</label><input type="radio" id="profileRoleStudent" name="profileOccupation" value="student"><label for="profileRoleStudent" data-hi="छात्र" data-en="Student">Student</label></div></div></div>
+<div class="row"><div class="flex-item"><label data-hi="परीक्षा/विषय" data-en="Exam/Subject">Exam/Subject</label><input type="text" id="profileExam"></div></div>
+<div class="row"><div class="flex-item"><label data-hi="लक्ष्य तिथि" data-en="Target Date">Target Date</label><input type="date" id="profileTargetDate"></div></div>
+<div class="row"><div class="flex-item"><label data-hi="विषय (प्रत्येक लाइन पर एक)" data-en="Subjects (one per line)">Subjects (one per line)</label><textarea id="profileSubjects" rows="3" placeholder="e.g., History&#10;Math&#10;Science"></textarea></div></div>
+<div class="row"><div class="flex-item"><label data-hi="फोकस सब्जेक्ट (कमजोर विषय)" data-en="Focus Subject (Weak Subject)">Focus Subject (Weak Subject)</label><input type="text" id="profileFocusSubject" placeholder="e.g., Math"></div></div>
+<div id="profileDutyFields">
+<div class="row"><div class="flex-item"><label class="small" data-hi="शिफ्ट का प्रकार" data-en="Shift Type">Shift Type</label><div class="occupation-selector"><input type="radio" id="profileShiftDay" name="profileShiftType" value="day" checked><label for="profileShiftDay" data-hi="दिन की शिफ्ट" data-en="Day Shift">Day Shift</label><input type="radio" id="profileShiftNight" name="profileShiftType" value="night"><label for="profileShiftNight" data-hi="रात की शिफ्ट" data-en="Night Shift">Night Shift</label></div></div></div>
+<div class="row"><div class="flex-item"><label data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="profileActivityName" placeholder="e.g., Duty, Office"></div><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileDutyStudyGoal" placeholder="e.g., 3" min="1" max="8" step="0.5" value="3"></div></div>
+<div class="row">
+<div class="flex-item"><label><span class="dynamic-activity-label-modal" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="शुरू" data-en="Start">Start</span></label><input type="time" id="profileDutyStart" value="09:00"></div>
+<div class="flex-item"><label><span class="dynamic-activity-label-modal" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="खत्म" data-en="End">End</span></label><input type="time" id="profileDutyEnd" value="18:00"></div>
+</div>
+</div>
+<div id="profileStudentFields" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileStudentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div></div><div class="checkbox-row"><input type="checkbox" id="profileStudentSetWakeUpManual"><label for="profileStudentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label></div><div id="profileStudentManualWakeUpWrapper" class="row" style="display:none;"><div class="flex-item"><label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label><input type="time" id="profileWakeUpTime" value="05:00"></div></div><div class="checkbox-row"><input type="checkbox" id="profileStudentAddActivityCheckbox"><label for="profileStudentAddActivityCheckbox" data-hi="कुछ और गतिविधि जोड़ें" data-en="Add other activity">Add other activity</label></div><div id="profileStudentActivityWrapper" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="profileStudentActivityName" placeholder="e.g., Play Cricket, Gym"></div><div class="flex-item"><label class="small" data-hi="अवधि (घंटे)" data-en="Duration (Hours)">Duration (Hours)</label><input type="number" id="profileStudentActivityDuration" value="1" min="0.5" max="4" step="0.5"></div></div></div></div>
+<div class="row"><div class="flex-item"><label data-hi="अतिरिक्त लक्ष्य" data-en="Additional Goal">Additional Goal</label><textarea id="profileExtraGoal" rows="2"></textarea></div></div>
+<div class="row" style="margin-top:16px;"><button id="saveProfile" class="btn" data-hi="प्रोफ़ाइल सेव करें" data-en="Save Profile">Save Profile</button><button id="cancelProfile" class="btn btn-secondary" data-hi="रद्द करें" data-en="Cancel">Cancel</button></div>
+</div>
+</div>
+<div id="slotEditModal" class="modal">
+<div class="modal-content">
+<span class="close" id="closeSlotEdit">&times;</span>
+<h2 id="slotEditTitle" style="margin-top:0;">Edit Slot</h2>
+<input type="hidden" id="slotEditId">
+<div class="row"><div class="flex-item"><label data-hi="समय" data-en="Time">Time</label><input type="time" id="slotEditTime"></div></div>
+<div class="row"><div class="flex-item"><label data-hi="हिंदी संदेश" data-en="Hindi Message">Hindi Message</label><input type="text" id="slotEditMsgHi"></div></div>
+<div class="row"><div class="flex-item"><label data-hi="अंग्रेजी संदेश" data-en="English Message">English Message</label><input type="text" id="slotEditMsgEn"></div></div>
+<div class="row" style="margin-top:16px;"><button id="saveSlot" class="btn" data-hi="सेव करें" data-en="Save">Save</button></div>
+</div>
+</div>
+<!-- NOTE SHARING MODAL -->
+<div id="noteSubmissionModal" class="modal">
+<div class="modal-content">
+<span class="close" id="closeNoteSubmissionModal">&times;</span>
+<h2 data-hi="अपना नोट साझा करें" data-en="Share Your Note" style="margin-top:0;">Share Your Note</h2>
+<p data-hi="आपका नोट समीक्षा के लिए भेजा जाएगा।" data-en="Your note will be sent for review." style="font-size:14px; color:var(--muted); margin-top:-10px; margin-bottom:20px;"></p>
+<div class="row"><div class="flex-item"><label data-hi="आपका नाम" data-en="Your Name">Your Name</label><input type="text" id="noteAuthor" placeholder="e.g., Amit Kumar"></div></div>
+<div class="row"><div class="flex-item"><label data-hi="नोट का शीर्षक" data-en="Note Title">Note Title</label><input type="text" id="noteTitle" placeholder="e.g., History Imp Dates"></div></div>
+<div class="row"><div class="flex-item"><label data-hi="नोट की सामग्री / लिंक" data-en="Note Content / Link">Note Content / Link</label><textarea id="noteContent" rows="6" placeholder="Write your note here or paste a link..."></textarea></div></div>
+<div class="row" style="margin-top:16px;"><button id="submitNoteBtn" class="btn" data-hi="समीक्षा के लिए सबमिट करें" data-en="Submit for Review">Submit for Review</button></div>
+</div>
+</div>
+<div id="adminModal" class="modal">
+<div class="modal-content" style="max-height: 85vh;">
+<span class="close" id="closeAdminModal">&times;</span>
+<h2 data-hi="एडमिन पैनल" data-en="Admin Panel">Admin Panel</h2>
+<p style="font-size:12px; color:var(--muted);" data-hi="सावधानी से उपयोग करें: गलत JSON डेटा ऐप को तोड़ सकता है।" data-en="Use with caution: Invalid JSON can break the app."></p>
+<div class="admin-section">
+<label data-hi="एडमिन पासवर्ड बदलें" data-en="Change Admin Password">Change Admin Password</label>
+<input type="password" id="newPassword" placeholder="Enter new password">
+<button id="changePasswordBtn" class="btn btn-secondary" style="margin-top: 8px; width: 100%;">Change Password</button>
+</div>
+<div class="admin-section">
+<label data-hi="प्रोफ़ाइल डेटा (JSON)" data-en="Profile Data (JSON)">Profile Data (JSON)</label>
+<textarea id="adminProfileData" rows="4" style="font-family: monospace; font-size: 12px;"></textarea>
+</div>
+<div class="admin-section">
+<label style="margin-top:12px;" data-hi="स्लॉट्स डेटा (JSON)" data-en="Slots Data (JSON)">Slots Data (JSON)</label>
+<textarea id="adminSlotsData" rows="6" style="font-family: monospace; font-size: 12px;"></textarea>
+</div>
+<div class="admin-section">
+<label style="margin-top:12px;" data-hi="प्रेरणादायक कोट्स (JSON)" data-en="Motivational Quotes (JSON)">Motivational Quotes (JSON)</label>
+<textarea id="adminQuotesData" rows="4" style="font-family: monospace; font-size: 12px;"></textarea>
+</div>
+<div class="admin-section">
+<label style="margin-top:12px;" data-hi="ऑडियो डेटा (JSON)" data-en="Audio Data (JSON)">Audio Data (JSON)</label>
+<textarea id="adminAudioData" rows="4" style="font-family: monospace; font-size: 12px;"></textarea>
+<p style="font-size:11px; color:var(--muted); margin-top:4px;" data-hi="फॉर्मेट: [{&quot;name&&quot;:&quot;...&quot;, &quot;url&quot;:&quot;...&quot;, &quot;imageUrl&quot;:&quot;...&quot;}]" data-en="Format: [{&quot;name&quot;:&quot;...&quot;, &quot;url&quot;:&quot;...&quot;, &quot;imageUrl&quot;:&quot;...&quot;}]"></p>
+<div class="admin-add-form">
+<input type="text" id="newAudioName" placeholder="Track Name">
+<input type="url" id="newAudioUrl" placeholder="Audio URL">
+<input type="url" id="newAudioImageUrl" placeholder="Image URL">
+<button id="addAudioTrack" class="btn btn-secondary">Add Track</button>
+</div>
+</div>
+<div class="row" style="margin-top:16px;">
+<button id="adminSaveBtn" class="btn" data-hi="डेटा सेव करें" data-en="Save Data">Save Data</button>
+<button id="adminResetBtn" class="btn btn-danger" data-hi="सब कुछ रीसेट करें" data-en="Reset Everything">Reset Everything</button>
+</div>
+</div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+// --- GLOBAL STATE & UTILITIES ---
+let currentLang = localStorage.getItem('smart_lang') || 'en';
+let timeFormat = localStorage.getItem('smart_time_format') || '12h';
+let slotsData = [];
+const FOCUS_EXTRA_MINUTES = 45; // Extra time for focus subject
+
+const $ = (id) => document.getElementById(id);
+const $$ = (sel) => document.querySelectorAll(sel);
+const timeToMinutes = t => { if(!t) return 0; const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const minutesToTime = m => { m = ((m % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+const daysBetween = (d1, d2) => { if (!d1 || !d2) return 0; return Math.max(1, Math.round((new Date(d2) - new Date(d1)) / (1000 * 60 * 60 * 24)));};
+const getBilingualText = (en, hi) => { if (currentLang === 'hi') return hi; if (currentLang === 'en') return en; return `${en} — ${hi}`; };
+const formatTime = (time24) => { if (timeFormat === '24h' || !time24) return time24; const [h, m] = time24.split(':'); const hour = parseInt(h, 10); const suffix = hour >= 12 ? 'PM' : 'AM'; const hour12 = hour % 12 || 12; return `${String(hour12).padStart(2, '0')}:${m} ${suffix}`; };
+const defaultSlots = (exam = 'Study', activity = 'Duty') => [
+{ id: 'wake', label_en: 'Wake Up', label_hi: 'उठना', time: '04:30', msg_hi: `सुप्रभात!`, msg_en: `Good morning!`, tip_hi: 'एक गिलास पानी पिएं।', tip_en: 'Drink a glass of water.' },
+{ id: 'morning_study', label_en: 'Morning Study', label_hi: 'सुबह की पढ़ाई', time: '04:45', msg_hi: 'सुबह की पढ़ाई का समय है।', msg_en: 'Time for morning study.', tip_hi: 'सबसे ज़रूरी काम पहले करें।', tip_en: 'Do the most important task first.' },
+{ id: 'leave', label_en: `Leave for ${activity}`, label_hi: `${activity} के लिए निकलना`, time: '05:30', msg_hi: `अब ${activity} के लिए निकलो`, msg_en: `Leave for ${activity} now`, tip_hi: 'सब कुछ जांच लें।', tip_en: 'Check everything.' },
+{ id: 'duty_start', label_en: `${activity} Start`, label_hi: `${activity} शुरू`, time: '06:00', msg_hi: `${activity} शुरू हो गई है`, msg_en: `${activity} has started`, tip_hi: 'फोकस रहें।', tip_en: 'Stay focused.' },
+{ id: 'duty_end', label_en: `${activity} End`, label_hi: `${activity} खत्म`, time: '15:00', msg_hi: `${activity} खत्म हो गई है`, msg_en: `${activity} is finished`, tip_hi: 'थोड़ा आराम करें।', tip_en: 'Take some rest.' },
+{ id: 'home', label_en: 'Reach Home', label_hi: 'घर वापसी', time: '15:30', msg_hi: `घर पहुँच गए, आराम करो`, msg_en: `Reached home, take rest`, tip_hi: '10 मिनट रिलैक्स करो।', tip_en: 'Relax for 10 min.' },
+{ id: 'nap', label_en: 'Power Nap', label_hi: 'पावर नैप', time: '16:00', msg_hi: 'पावर नैप का समय है', msg_en: 'Time for a power nap', tip_hi: 'एक छोटी नैप ताजगी देगी।', tip_en: 'A short nap will refresh you.' },
+{ id: 'main_study', label_en: 'Main Study', label_hi: 'मुख्य पढ़ाई', time: '17:00', msg_hi: `अब ${exam} की पढ़ाई शुरू करो`, msg_en: `Start your ${exam} study`, tip_hi: 'सबसे कठिन विषय पहले पढ़ें।', tip_en: 'Study the hardest subject first.' },
+{ id: 'break', label_en: 'Break', label_hi: 'ब्रेक', time: '19:00', msg_hi: 'थोड़ा ब्रेक लो', msg_en: 'Take a short break', tip_hi: 'टहलें या संगीत सुनें।', tip_en: 'Walk or listen to music.' },
+{ id: 'practice', label_en: 'Practice', label_hi: 'प्रैक्टिस', time: '19:30', msg_hi: `अब प्रैक्टिस करो`, msg_en: `Time for practice`, tip_hi: 'प्रश्नों को हल करें।', tip_en: 'Solve problems.' },
+{ id: 'current_affairs', label_en: 'Current Affairs', label_hi: 'करंट अफेयर्स', time: '20:30', msg_hi: `अब करंट अफेयर्स पढ़ो`, msg_en: `Read Current Affairs`, tip_hi: 'मुख्य बिंदुओं के नोट्स बनाएं।', tip_en: 'Make notes of the main points.' },
+{ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: '21:00', msg_hi: 'डिनर करो', msg_en: 'Have dinner', tip_hi: 'हल्का भोजन करें।', tip_en: 'Have a light meal.' },
+{ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: '22:00', msg_hi: 'सोने की तैयारी करो', msg_en: 'Time to sleep', tip_hi: 'अच्छी नींद लें।', tip_en: 'Get a good sleep.' }
+];
+
+const getProfile = () => JSON.parse(localStorage.getItem('smart_profile') || '{"occupation":"duty"}');
+const loadSlotsData = () => {
+try {
+const s = JSON.parse(localStorage.getItem('smart_slots') || '[]');
+const p = getProfile();
+if (Array.isArray(s) && s.length > 0) slotsData = s;
+else slotsData = defaultSlots(p.exam, p.activityLabel);
+} catch (e) {
+slotsData = defaultSlots();
+}
+};
+const saveSlotsData = () => localStorage.setItem('smart_slots', JSON.stringify(slotsData));
+
+const initializeData = () => {
+if (!localStorage.getItem('smart_audio')) {
+const defaultAudio = [
+{ name: "Select Audio", url: "", imageUrl: "" },
+{ name: "Chanakya Motivation", url: "https://www.soundjay.com/buttons/sounds/button-7.mp3", imageUrl: "https://i.pravatar.cc/150?u=chanakya" }
+];
+localStorage.setItem('smart_audio', JSON.stringify(defaultAudio));
+}
+if (!localStorage.getItem('admin_password')) {
+localStorage.setItem('admin_password', 'admin123');
+}
+// --- QUOTES LOGIC ---
+const QUOTES_VERSION = 'v1.0';
+const currentVersion = localStorage.getItem('quotes_version');
+if (currentVersion !== QUOTES_VERSION) {
+const allQuotes = [
+{ hi: 'सफलता अंतिम नहीं है, असफलता घातक नहीं है: यह जारी रखने का साहस है जो मायने रखता है।', en: 'Success is not final, failure is not fatal: it is the courage to continue that counts.' },
+{ hi: 'आपका समय सीमित है, इसे किसी और की जिंदगी जीकर बर्बाद न करें।', en: 'Your time is limited, so don’t waste it living someone else’s life.' },
+{ hi: 'महान कार्य करने का एकमात्र तरीका यह है कि आप जो करते हैं उससे प्यार करें।', en: 'The only way to do great work is to love what you do.' },
+{ hi: 'कड़ी मेहनत प्रतिभा को हरा देती है जब प्रतिभा कड़ी मेहनत नहीं करती।', en: 'Hard work beats talent when talent doesn’t work hard.' },
+{ hi: 'सपने तब तक काम नहीं करते जब तक आप नहीं करते।', en: 'Dreams don’t work unless you do.' },
+{ hi: 'यह हमेशा असंभव लगता है जब तक कि यह पूरा न हो जाए।', en: 'It always seems impossible until it’s done.' },
+{ hi: 'अनुशासन लक्ष्यों और प्राप्ति के बीच का पुल है।', en: 'Discipline is the bridge between goals and accomplishment.' },
+{ hi: 'शक सपनों को हकीकत से ज्यादा मारता है।', en: 'Doubt kills more dreams than failure ever will.' },
+{ hi: 'हर विशेषज्ञ कभी एक शुरुआत करने वाला था।', en: 'Every expert was once a beginner.' },
+{ hi: 'हार मत मानो। शुरुआत हमेशा सबसे कठिन होती है।', en: 'Don’t give up. The beginning is always the hardest.' },
+{ hi: 'पढ़ ले भाई, वरना तेरी वाली को कोई और सरकारी नौकरी वाला ले जाएगा।', en: 'Study brother, or some guy with a government job will take your girl.' },
+{ hi: 'क्या कर रहा है बे? स्क्रॉल करते-करते जिंदगी स्क्रॉल हो जाएगी।', en: 'What are you doing? Your life will scroll away while you are scrolling.' },
+{ hi: 'उठ जा BSDK, अफसर बनना है कि नहीं?', en: 'Wake up BSDK, do you want to become an officer or not?' },
+{ hi: 'सपनों में IAS बनकर क्या फायदा, जब हकीकत में रजाई से नहीं निकल पा रहा।', en: 'What\'s the use of becoming an IAS in dreams, when in reality you can\'t even get out of the blanket.' },
+{ hi: 'देख भाई, बंदी तो आती-जाती रहेगी, पर एक बार उम्र निकल गई ना, तो फॉर्म भी नहीं भर पाएगा।', en: 'Look bro, girlfriends will come and go, but once you\'re past the age limit, you can\'t even fill the form.' },
+{ hi: 'फोन को रख साइड में, वरना जिंदगी तुझे रख देगी।', en: 'Keep the phone aside, or life will put you aside.' },
+{ hi: 'तेरी उम्र के लड़के दुनिया हिला रहे हैं, और तू अभी तक रील हिला रहा है।', en: 'Guys your age are shaking the world, and you are still just scrolling reels.' },
+{ hi: 'पढ़ाई कर, वरना शादी में तेरे दोस्त नागिन डांस करेंगे और तू बर्तन धोएगा।', en: 'Study, or at your wedding your friends will be doing the snake dance and you\'ll be washing dishes.' },
+{ hi: '4G की स्पीड से सपने देखता है, और 2G की स्पीड से मेहनत करता है। वाह!', en: 'You dream at 4G speed, and work hard at 2G speed. Wow!' },
+{ hi: 'मोटिवेशन खत्म? एक बार अपने बाप की शक्ल देख, अपने आप आ जाएगा।', en: 'Motivation finished? Just look at your father\'s face once, it will come back on its own.' },
+];
+localStorage.setItem('smart_quotes', JSON.stringify(allQuotes));
+localStorage.setItem('quotes_version', QUOTES_VERSION);
+}
+};
+const renderUserGreeting = () => {
+const profile = getProfile();
+if (profile.name) {
+$('userGreeting').textContent = getBilingualText(`Hello, ${profile.name}`, `नमस्ते, ${profile.name}`);
+} else {
+$('userGreeting').textContent = '';
+}
+};
+const renderAudioPlayer = () => {
+const select = $('audioTrackSelect'), player = $('audioPlayer'), image = $('audioTrackImage');
+select.innerHTML = '';
+try {
+const audioTracks = JSON.parse(localStorage.getItem('smart_audio') || '[]');
+if (audioTracks.length > 0) {
+audioTracks.forEach(track => {
+const option = document.createElement('option');
+option.value = track.url;
+option.dataset.imageUrl = track.imageUrl || '';
+option.textContent = track.name;
+select.appendChild(option);
+});
+const selectedOption = select.options[select.selectedIndex];
+player.src = selectedOption.value;
+image.src = selectedOption.dataset.imageUrl;
+image.style.display = selectedOption.dataset.imageUrl ? 'block' : 'none';
+}
+} catch(e) { console.error("Could not load audio tracks", e); }
+};
+const renderSlots = () => {
+const container = $('slots');
+container.innerHTML = '';
+slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+slotsData.forEach(item => {
+const slotDiv = document.createElement('div');
+slotDiv.className = 'slot';
+slotDiv.dataset.id = item.id;
+slotDiv.innerHTML = `<div class="time">${formatTime(item.time)}</div><div class="label" data-hi="${item.label_hi}" data-en="${item.label_en}"></div><div class="tip" data-hi="${item.tip_hi}" data-en="${item.tip_en}"></div><button class="slot-edit-btn" data-id="${item.id}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>`;
+container.appendChild(slotDiv);
+});
+updateTextContent();
+};
+const updateDynamicActivityLabels = () => {
+const activity = $('activityName').value.trim() || getProfile().activityLabel || 'Duty';
+$$('.dynamic-activity-label, .dynamic-activity-label-modal').forEach(el => { el.textContent = activity; });
+};
+const updateTextContent = () => {
+$$('[data-hi][data-en]').forEach(elem => {
+if (!elem.matches('.dynamic-activity-label, .dynamic-activity-label-modal')) {
+elem.textContent = getBilingualText(elem.dataset.en, elem.dataset.hi);
+}
+});
+updateDynamicActivityLabels();
+};
+const updateQuote = () => {
+let quotes = [];
+try {
+quotes = JSON.parse(localStorage.getItem('smart_quotes'));
+if (!quotes || !Array.isArray(quotes) || quotes.length === 0) throw new Error("No quotes");
+} catch (e) {
+quotes = [{ en: 'Welcome! Set up your routine.', hi: 'आपका स्वागत है! अपना रूटीन सेट करें।' }];
+}
+const quote = quotes[Math.floor(Math.random() * quotes.length)];
+$('motivationQuote').innerHTML = `<strong style="color:var(--accent);">${getBilingualText(quote.en, quote.hi)}</strong>`;
+};
+const displayStrategy = () => {
+const p = getProfile();
+const exam = $('examName').value || p.exam;
+const targetDate = $('targetDate').value || p.targetDate;
+const subjectsInput = $('subjectsList').value.trim();
+const numSubjects = subjectsInput ? subjectsInput.split('\n').filter(s => s.trim()).length : (p.subjects ? p.subjects.length : 0);
+const focusSubject = $('focusSubject').value.trim() || p.focusSubject || '';
+let studyHours;
+const occupation = document.querySelector('input[name="occupation"]:checked').value || p.occupation;
+if(occupation === 'student') {
+studyHours = p.studentStudyGoal || $('studentStudyGoal').value || 8;
+} else {
+studyHours = p.dutyStudyGoal || $('dutyStudyGoal').value || 3;
+}
+const strategyDiv = $('strategy');
+if (!exam || !targetDate) {
+strategyDiv.innerHTML = `<span style="color:var(--muted)" data-hi="रणनीति के लिए सेटअप पूरा करें" data-en="Complete setup for strategy"></span>`;
+} else {
+const days = daysBetween(new Date(), targetDate);
+strategyDiv.innerHTML = `<div><span data-hi="लक्ष्य" data-en="Goal"></span>: <strong>${exam}</strong></div><div><span data-hi="समय" data-en="Time Left"></span>: <strong>${days} <span data-hi="दिन" data-en="days"></span></strong></div><div><span data-hi="दैनिक लक्ष्य" data-en="Daily Goal"></span>: <strong>${studyHours} <span data-hi="घंटे" data-en="hours"></span></strong></div><div><span data-hi="विषय" data-en="Subjects"></span>: <strong>${numSubjects}</strong></div>${focusSubject ? `<div><span data-hi="फोकस सब्जेक्ट" data-en="Focus Subject"></span>: <strong>${focusSubject} (+${FOCUS_EXTRA_MINUTES} मिनट)</strong></div>` : ''}`;
+}
+updateTextContent();
+};
+const loadProfileToForm = () => {
+const p = getProfile();
+$('examName').value = p.exam || '';
+$('targetDate').value = p.targetDate || '';
+$('subjectsList').value = p.subjects ? p.subjects.join('\n') : '';
+$('focusSubject').value = p.focusSubject || '';
+if (p.occupation === 'student') {
+$('roleStudent').checked = true;
+$('studentStudyGoal').value = p.studentStudyGoal || 8;
+$('studentSetWakeUpManual').checked = p.useStudentManualWakeUp || false;
+$('studentManualWakeUpWrapper').style.display = p.useStudentManualWakeUp ? 'flex' : 'none';
+$('wakeUpTime').value = p.wakeUpTime || '05:00';
+$('studentAddActivityCheckbox').checked = p.useStudentActivity || false;
+$('studentActivityWrapper').style.display = p.useStudentActivity ? 'block' : 'none';
+$('studentActivityName').value = p.studentActivityName || '';
+$('studentActivityDuration').value = p.studentActivityDuration || 1;
+} else {
+$('roleDuty').checked = true;
+$('activityName').value = p.activityLabel || 'Duty';
+$('dutyStart').value = p.dutyStart || '09:00';
+$('dutyEnd').value = p.dutyEnd || '18:00';
+$('dutyStudyGoal').value = p.dutyStudyGoal || 3;
+if (p.shiftType === 'night') {
+$('shiftNight').checked = true;
+} else {
+$('shiftDay').checked = true;
+}
+}
+toggleOccupationView(p.occupation || 'duty', 'main');
+if (p.name) {
+$('detailsInputs').style.display = 'none';
+$('profileSummary').style.display = 'block';
+$('profileSummary').innerHTML = `<span data-hi="प्रोफ़ाइल सेट है। इसे बदलने के लिए मेनू का उपयोग करें।" data-en="Profile is set. Use the menu to edit."></span>`;
+} else {
+$('detailsInputs').style.display = 'block';
+$('profileSummary').style.display = 'none';
+}
+updateTextContent();
+};
+const refreshUI = () => {
+loadProfileToForm();
+displayStrategy();
+loadSlotsData();
+renderSlots();
+updateQuote();
+renderUserGreeting();
+renderAudioPlayer();
+updateTextContent();
+};
+const handleLanguageChange = () => {
+currentLang = $('langSel').value;
+localStorage.setItem('smart_lang', currentLang);
+refreshUI();
+};
+const handleTimeFormatChange = () => {
+timeFormat = $('timeFormatSel').value;
+localStorage.setItem('smart_time_format', timeFormat);
+renderSlots();
+};
+const openProfileModal = () => {
+const p = getProfile();
+$('profileName').value = p.name || '';
+$('profileAge').value = p.age || '';
+$('profileExam').value = p.exam || '';
+$('profileTargetDate').value = p.targetDate || '';
+$('profileSubjects').value = p.subjects ? p.subjects.join('\n') : '';
+$('profileFocusSubject').value = p.focusSubject || '';
+$('profileExtraGoal').value = p.extraGoal || '';
+if (p.occupation === 'student') {
+$('profileRoleStudent').checked = true;
+$('profileStudentStudyGoal').value = p.studentStudyGoal || 8;
+$('profileStudentSetWakeUpManual').checked = p.useStudentManualWakeUp || false;
+$('profileStudentManualWakeUpWrapper').style.display = p.useStudentManualWakeUp ? 'flex' : 'none';
+$('profileWakeUpTime').value = p.wakeUpTime || '05:00';
+$('profileStudentAddActivityCheckbox').checked = p.useStudentActivity || false;
+$('profileStudentActivityWrapper').style.display = p.useStudentActivity ? 'block' : 'none';
+$('profileStudentActivityName').value = p.studentActivityName || '';
+$('profileStudentActivityDuration').value = p.studentActivityDuration || 1;
+} else {
+$('profileRoleDuty').checked = true;
+$('profileActivityName').value = p.activityLabel || 'Duty';
+$('profileDutyStart').value = p.dutyStart || '09:00';
+$('profileDutyEnd').value = p.dutyEnd || '18:00';
+$('profileDutyStudyGoal').value = p.dutyStudyGoal || 3;
+if (p.shiftType === 'night') {
+$('profileShiftNight').checked = true;
+} else {
+$('profileShiftDay').checked = true;
+}
+}
+toggleOccupationView(p.occupation || 'duty', 'profile');
+updateDynamicActivityLabels();
+$('profileModal').style.display = 'block';
+};
+const saveProfile = () => {
+const occupation = document.querySelector('input[name="profileOccupation"]:checked').value;
+const profile = {
+name: $('profileName').value.trim(),
+age: parseInt($('profileAge').value) || null,
+exam: $('profileExam').value.trim(),
+occupation: occupation,
+targetDate: $('profileTargetDate').value,
+subjects: $('profileSubjects').value.split('\n').map(s => s.trim()).filter(s => s),
+focusSubject: $('profileFocusSubject').value.trim(),
+extraGoal: $('profileExtraGoal').value.trim(),
+};
+if (occupation === 'duty') {
+profile.activityLabel = $('profileActivityName').value.trim() || 'Duty';
+profile.dutyStart = $('profileDutyStart').value;
+profile.dutyEnd = $('profileDutyEnd').value;
+profile.dutyStudyGoal = parseFloat($('profileDutyStudyGoal').value) || 3;
+profile.shiftType = document.querySelector('input[name="profileShiftType"]:checked').value;
+} else {
+profile.studentStudyGoal = parseFloat($('profileStudentStudyGoal').value) || 8;
+profile.useStudentManualWakeUp = $('profileStudentSetWakeUpManual').checked;
+profile.wakeUpTime = $('profileWakeUpTime').value;
+profile.useStudentActivity = $('profileStudentAddActivityCheckbox').checked;
+profile.studentActivityName = $('profileStudentActivityName').value.trim();
+profile.studentActivityDuration = parseFloat($('profileStudentActivityDuration').value) || 1;
+}
+localStorage.setItem('smart_profile', JSON.stringify(profile));
+localStorage.setItem('profileSetup', 'true');
+$('profileModal').style.display = 'none';
+refreshUI();
+};
+const generateStudentRoutine = (params, subjects, focusSubject) => {
+const { wakeUpStr, studyHours, addActivity, activityName, activityDuration } = params;
+const exam = getProfile().exam || "Study";
+let currentTime = timeToMinutes(wakeUpStr);
+const newSlots = [];
+newSlots.push({ id: 'wake', label_en: 'Wake Up & Fresh Up', label_hi: 'उठो और फ्रेश हो जाओ', time: minutesToTime(currentTime), msg_en: `Good morning! Time to start the day.`, msg_hi: `सुप्रभात! दिन शुरू करने का समय।`, tip_en: 'Drink water, stretch a bit.', tip_hi: 'पानी पियो, थोड़ी स्ट्रेचिंग करो।' });
+currentTime += 30;
+const totalStudyMins = studyHours * 60;
+const sessions = studyHours <= 4 ? 2 : (studyHours <= 8 ? 4 : 5);
+let studyPerSession = Math.floor(totalStudyMins / sessions);
+const breakAfterSession = studyHours <= 6 ? 20 : 30;
+const longBreakAfter = Math.floor(sessions / 2);
+const longBreakDuration = 60;
+for (let i = 1; i <= sessions; i++) {
+const subjectIndex = (i - 1) % subjects.length;
+const subject = subjects[subjectIndex] || `General Study ${i}`;
+const isFocus = subject.toLowerCase() === focusSubject.toLowerCase();
+const sessionDuration = studyPerSession + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
+const label_en = `${subject} Session`;
+const label_hi = `${subject} सत्र`;
+const msg_en = `Focus on your ${subject} goals.`;
+const msg_hi = `${subject} के लक्ष्यों पर ध्यान केंद्रित करें।`;
+newSlots.push({ id: `study${i}`, label_en, label_hi, time: minutesToTime(currentTime), msg_en, msg_hi, tip_en: 'Avoid distractions. Use Pomodoro.', tip_hi: 'ध्यान भटकाने से बचें। पोमोडोरो का प्रयोग करें।' });
+currentTime += sessionDuration;
+if (i === longBreakAfter) {
+newSlots.push({ id: `long_break`, label_en: `Lunch / Long Break`, label_hi: `लंच / लंबा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Time for a long break. Eat well.`, msg_hi: `लंबे ब्रेक का समय। अच्छा खाओ।`, tip_en: 'Rest your mind and body.', tip_hi: 'अपने मन और शरीर को आराम दें।' });
+currentTime += longBreakDuration;
+} else if (i < sessions) {
+newSlots.push({ id: `break`, label_en: `Short Break`, label_hi: `छोटा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a short break.`, msg_hi: `एक छोटा ब्रेक लें।`, tip_en: 'Stretch, walk, listen to music.', tip_hi: 'स्ट्रेच करें, घूमें, संगीत सुनें।' });
+currentTime += breakAfterSession;
+}
+}
+if(addActivity && activityName && activityDuration > 0) {
+newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।`, tip_en: 'Enjoy your hobby!', tip_hi: 'अपने शौक का आनंद लें!' });
+currentTime += activityDuration * 60;
+}
+const FIXED_DINNER_TIME_MINS = 21 * 60; // 9 PM
+const FIXED_SLEEP_TIME_MINS = 22 * 60; // 10 PM
+if (currentTime < FIXED_DINNER_TIME_MINS) {
+newSlots.push({ id: 'relax', label_en: 'Evening Relaxation', label_hi: 'शाम का आराम', time: minutesToTime(currentTime), msg_en: `Time to relax.`, msg_hi: `आराम करने का समय।`, tip_en: 'Walk, listen to music, talk with family.', tip_hi: 'घूमें, संगीत सुनें, परिवार से बात करें।' });
+newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(FIXED_DINNER_TIME_MINS), msg_en: `Have a light dinner.`, msg_hi: `हल्का डिनर करें।`, tip_en: 'Relax while you eat.', tip_hi: 'खाते समय आराम करें।' });
+newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(FIXED_SLEEP_TIME_MINS), msg_en: `Time to sleep. Good night.`, msg_hi: `सोने का समय। शुभ रात्रि।`, tip_en: 'Good sleep is crucial for learning.', tip_hi: 'सीखने के लिए अच्छी नींद महत्वपूर्ण है।' });
+} else {
+newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(currentTime), msg_en: `Have a light dinner.`, msg_hi: `हल्का डिनर करें।`, tip_en: 'Relax while you eat.', tip_hi: 'खाते समय आराम करें।' });
+newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(currentTime + 60), msg_en: `Time to sleep. Good night.`, msg_hi: `सोने का समय। शुभ रात्रि।`, tip_en: 'Good sleep is crucial for learning.', tip_hi: 'सीखने के लिए अच्छी नींद महत्वपूर्ण है।' });
+}
+slotsData = newSlots;
+};
+const autoGenerate = () => {
+const occupation = document.querySelector('input[name="occupation"]:checked').value;
+const p = getProfile();
+const subjects = p.subjects || [];
+const subjectsInput = $('subjectsList').value.split('\n').map(s => s.trim()).filter(s => s);
+const allSubjects = subjects.length > 0 ? subjects : subjectsInput;
+const focusSubject = $('focusSubject').value.trim() || p.focusSubject || '';
+if (occupation === 'duty') {
+const shiftType = document.querySelector('input[name="shiftType"]:checked').value;
+const ds = $('dutyStart').value, de = $('dutyEnd').value;
+if (!ds || !de) { alert(getBilingualText('Please set duty times.', 'कृपया ड्यूटी का समय निर्धारित करें।')); return; }
+const sM = timeToMinutes(ds), eM = timeToMinutes(de);
+slotsData = defaultSlots(p.exam, p.activityLabel);
+const findSlot = (id) => slotsData.find(s => s.id === id);
+let subjectIndex = 0;
+if (shiftType === 'night') {
+const sleepStartMins = eM + 60;
+const wakeTimeMins = sleepStartMins + 480;
+findSlot('duty_end').time = de;
+findSlot('home').time = minutesToTime(eM + 30);
+findSlot('sleep').time = minutesToTime(sleepStartMins);
+findSlot('wake').time = minutesToTime(wakeTimeMins);
+findSlot('leave').time = minutesToTime(sM - 30);
+findSlot('duty_start').time = ds;
+const dinnerTimeMins = sM - 90;
+findSlot('dinner').time = minutesToTime(dinnerTimeMins);
+const studyBlockStart = wakeTimeMins + 30;
+const availableMins = dinnerTimeMins - studyBlockStart;
+let studyGoalMins = (parseFloat($('dutyStudyGoal').value) || 3) * 60;
+if (studyGoalMins > availableMins) { studyGoalMins = availableMins; }
+let currentTime = studyBlockStart;
+if (studyGoalMins > 30) {
+const caMins = Math.min(30, studyGoalMins);
+let remainingStudy = studyGoalMins - caMins;
+const mainStudyMins = Math.ceil(remainingStudy * 0.65);
+const practiceMins = remainingStudy - mainStudyMins;
+const breakMins = (mainStudyMins > 0 && practiceMins > 0) ? 30 : 0;
+if (mainStudyMins > 0 && allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedMainMins = mainStudyMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('main_study').label_en = `${subject} Study`; findSlot('main_study').label_hi = `${subject} की पढ़ाई`; findSlot('main_study').msg_en = `Start ${subject} study.`; findSlot('main_study').msg_hi = `${subject} की पढ़ाई शुरू करें।`; findSlot('main_study').time = minutesToTime(currentTime); currentTime += adjustedMainMins; }
+if (breakMins > 0) { findSlot('break').time = minutesToTime(currentTime); currentTime += breakMins; }
+if (practiceMins > 0 && allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedPracticeMins = practiceMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('practice').label_en = `${subject} Practice`; findSlot('practice').label_hi = `${subject} प्रैक्टिस`; findSlot('practice').msg_en = `Time for ${subject} practice.`; findSlot('practice').msg_hi = `${subject} प्रैक्टिस का समय।`; findSlot('practice').time = minutesToTime(currentTime); currentTime += adjustedPracticeMins; }
+if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedCaMins = caMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('current_affairs').label_en = `${subject} Affairs`; findSlot('current_affairs').label_hi = `${subject} अफेयर्स`; findSlot('current_affairs').msg_en = `Read ${subject}.`; findSlot('current_affairs').msg_hi = `${subject} पढ़ें।`; findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += adjustedCaMins; } else { findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += caMins; }
+if (mainStudyMins <= 0) slotsData = slotsData.filter(slot => slot.id !== 'main_study');
+if (breakMins <= 0) slotsData = slotsData.filter(slot => slot.id !== 'break');
+if (practiceMins <= 0) slotsData = slotsData.filter(slot => slot.id !== 'practice');
+} else { slotsData = slotsData.filter(slot => !['main_study', 'break', 'practice', 'current_affairs'].includes(slot.id)); }
+slotsData = slotsData.filter(slot => slot.id !== 'nap' && slot.id !== 'morning_study');
+} else { // Day Shift Logic
+const totalStudyGoalMins = (parseFloat($('dutyStudyGoal').value) || 3) * 60;
+findSlot('wake').time = minutesToTime(sM - 90);
+findSlot('leave').time = minutesToTime(sM - 30);
+findSlot('duty_start').time = ds;
+findSlot('duty_end').time = de;
+findSlot('home').time = minutesToTime(eM + 30);
+findSlot('nap').time = minutesToTime(eM + 60);
+const morningStudyDuration = 45;
+let eveningStudyMins = Math.max(0, totalStudyGoalMins - morningStudyDuration);
+const eveningStartTime = eM + 90;
+const sleepTime = 22 * 60;
+const eveningAvailableMins = sleepTime - eveningStartTime - 60;
+if (eveningStudyMins > eveningAvailableMins) { eveningStudyMins = eveningAvailableMins; }
+if (allSubjects.length > subjectIndex) {
+const subject = allSubjects[subjectIndex++];
+const isFocus = subject.toLowerCase() === focusSubject.toLowerCase();
+const adjustedMorningDuration = morningStudyDuration + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
+findSlot('morning_study').label_en = `${subject} Study`;
+findSlot('morning_study').label_hi = `${subject} की पढ़ाई`;
+findSlot('morning_study').msg_en = `Start ${subject} study.`;
+findSlot('morning_study').msg_hi = `${subject} की पढ़ाई शुरू करें।`;
+findSlot('morning_study').time = minutesToTime(sM - adjustedMorningDuration);
+}
+let currentTime = eveningStartTime;
+if (eveningStudyMins > 0) {
+const caMins = Math.min(30, eveningStudyMins);
+let remainingEveningStudy = eveningStudyMins - caMins;
+const mainStudyMins = Math.ceil(remainingEveningStudy * 0.65);
+const practiceMins = remainingEveningStudy - mainStudyMins;
+if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedMainMins = mainStudyMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('main_study').label_en = `${subject} Study`; findSlot('main_study').label_hi = `${subject} की पढ़ाई`; findSlot('main_study').msg_en = `Start ${subject} study.`; findSlot('main_study').msg_hi = `${subject} की पढ़ाई शुरू करें।`; findSlot('main_study').time = minutesToTime(currentTime); currentTime += adjustedMainMins; } else { findSlot('main_study').time = minutesToTime(currentTime); currentTime += mainStudyMins; }
+findSlot('break').time = minutesToTime(currentTime);
+currentTime += 30;
+if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedPracticeMins = practiceMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('practice').label_en = `${subject} Practice`; findSlot('practice').label_hi = `${subject} प्रैक्टिस`; findSlot('practice').msg_en = `Time for ${subject} practice.`; findSlot('practice').msg_hi = `${subject} प्रैक्टिस का समय।`; findSlot('practice').time = minutesToTime(currentTime); currentTime += adjustedPracticeMins; } else { findSlot('practice').time = minutesToTime(currentTime); currentTime += practiceMins; }
+if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedCaMins = caMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('current_affairs').label_en = `${subject} Affairs`; findSlot('current_affairs').label_hi = `${subject} अफेयर्स`; findSlot('current_affairs').msg_en = `Read ${subject}.`; findSlot('current_affairs').msg_hi = `${subject} पढ़ें।`; findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += adjustedCaMins; } else { findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += caMins; }
+} else { slotsData = slotsData.filter(slot => !['main_study', 'break', 'practice', 'current_affairs'].includes(slot.id)); }
+findSlot('dinner').time = minutesToTime(currentTime);
+findSlot('sleep').time = minutesToTime(sleepTime);
+}
+} else { // Student logic
+const useManualTime = $('studentSetWakeUpManual').checked;
+let wakeUpTime;
+if (useManualTime) {
+wakeUpTime = $('wakeUpTime').value;
+if (!wakeUpTime) { alert(getBilingualText('Please enter a wake-up time.', 'कृपया जागने का समय डालें।')); return; }
+} else { wakeUpTime = '05:00'; }
+const studentParams = { wakeUpStr: wakeUpTime, studyHours: parseFloat($('studentStudyGoal').value) || 8, addActivity: $('studentAddActivityCheckbox').checked, activityName: $('studentActivityName').value.trim(), activityDuration: parseFloat($('studentActivityDuration').value) || 1 };
+if (!studentParams.studyHours) { alert(getBilingualText('Please set your daily study goal.', 'कृपया अपना दैनिक अध्ययन लक्ष्य निर्धारित करें।')); return; }
+generateStudentRoutine(studentParams, allSubjects, focusSubject);
+}
+saveSlotsData();
+renderSlots();
+alert(getBilingualText('Routine Generated!', 'रूटीन जेनरेट हो गया!'));
+};
+const toggleOccupationView = (occupation, context) => {
+const dutyFields = (context === 'profile') ? $('profileDutyFields') : $('dutyFields');
+const studentFields = (context === 'profile') ? $('profileStudentFields') : $('studentFields');
+if (occupation === 'student') { dutyFields.style.display = 'none'; studentFields.style.display = 'block'; }
+else { dutyFields.style.display = 'block'; studentFields.style.display = 'none'; }
+};
+const init = () => {
+initializeData();
+$('langSel').value = currentLang;
+$('timeFormatSel').value = timeFormat;
+const todayStr = new Date().toISOString().split('T')[0];
+[$('targetDate'), $('profileTargetDate')].forEach(el => el.min = todayStr);
+if (localStorage.getItem('profileSetup') !== 'true') {
+$('setupCard').classList.add('open');
+$('setupCard').querySelector('.card-body').style.display = 'block';
+}
+const alarmSound = $('alarmSound');
+const alarmTones = [
+'https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3',
+'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.wav',
+'https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.wav',
+'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.wav'
+];
+const alarmLeadTimes = { 'wake': 10, 'morning_study': 5, 'leave': 5, 'main_study': 10, 'study1': 5, 'study2': 5, 'study3': 5, 'study4': 5, 'study5': 5, 'break': 2, 'practice': 10, 'current_affairs': 5, 'dinner': 10, 'sleep': 0, 'other_activity': 5, 'relax': 0 };
+const dismissCurrentAlarm = () => { alarmSound.pause(); alarmSound.currentTime = 0; $('alarmModal').style.display = 'none'; };
+const triggerAlarm = (slot, leadTime) => {
+let currentToneIndex = parseInt(localStorage.getItem('currentAlarmToneIndex') || '0');
+alarmSound.src = alarmTones[currentToneIndex];
+let nextToneIndex = (currentToneIndex + 1) % alarmTones.length;
+localStorage.setItem('currentAlarmToneIndex', nextToneIndex.toString());
+const messageEn = leadTime > 0 ? `Get ready for ${slot.label_en}!` : `It's time for ${slot.label_en}!`;
+const messageHi = leadTime > 0 ? `${slot.label_hi} के लिए तैयार हो जाओ!` : `${slot.label_hi} का समय हो गया है!`;
+$('alarmMessage').innerHTML = getBilingualText(messageEn, messageHi);
+$('alarmModal').style.display = 'block';
+alarmSound.play().catch(e => console.error("Alarm sound failed:", e));
+};
+const checkAlarms = () => {
+const now = new Date();
+const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+slotsData.forEach(slot => {
+if (Object.keys(alarmLeadTimes).includes(slot.id)) {
+const leadTime = alarmLeadTimes[slot.id];
+const slotTimeInMinutes = timeToMinutes(slot.time);
+const alarmTimeInMinutes = (slotTimeInMinutes - leadTime + 1440) % 1440;
+if (currentTimeInMinutes === alarmTimeInMinutes) {
+const alarmTriggeredKey = `alarm_triggered_${slot.id}_${new Date().toISOString().split('T')[0]}`;
+if (!sessionStorage.getItem(alarmTriggeredKey)) {
+triggerAlarm(slot, leadTime);
+sessionStorage.setItem(alarmTriggeredKey, 'true');
+}
+}
+}
+});
+};
+$('stopAlarmBtn').addEventListener('click', dismissCurrentAlarm);
+setInterval(checkAlarms, 30000);
+checkAlarms();
+// --- EVENT LISTENERS ---
+$('langSel').addEventListener('change', handleLanguageChange);
+$('timeFormatSel').addEventListener('change', handleTimeFormatChange);
+$('autoBtn').addEventListener('click', autoGenerate);
+$('applyBtn').addEventListener('click', () => { saveSlotsData(); alert(getBilingualText('Routine Saved!', 'रूटीन सेव हो गया!')); });
+$$('#examName, #targetDate, #dutyStart, #dutyEnd, #wakeUpTime, #studentStudyGoal, #dutyStudyGoal, #subjectsList, #focusSubject').forEach(el => el.addEventListener('input', displayStrategy));
+$('activityName').addEventListener('input', updateDynamicActivityLabels);
+$$('input[name="occupation"]').forEach(radio => { radio.addEventListener('change', (e) => toggleOccupationView(e.target.value, 'main')); });
+$$('input[name="profileOccupation"]').forEach(radio => { radio.addEventListener('change', (e) => toggleOccupationView(e.target.value, 'profile')); });
+$('studentSetWakeUpManual').addEventListener('change', (e) => { $('studentManualWakeUpWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('profileStudentSetWakeUpManual').addEventListener('change', (e) => { $('profileStudentManualWakeUpWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('studentAddActivityCheckbox').addEventListener('change', (e) => { $('studentActivityWrapper').style.display = e.target.checked ? 'block' : 'none'; });
+$('profileStudentAddActivityCheckbox').addEventListener('change', (e) => { $('profileStudentActivityWrapper').style.display = e.target.checked ? 'block' : 'none'; });
+const handleShiftChange = (isProfile = false) => {
+const radioName = isProfile ? 'profileShiftType' : 'shiftType';
+$$(`input[name="${radioName}"]`).forEach(radio => {
+radio.addEventListener('change', (e) => {
+const startId = isProfile ? 'profileDutyStart' : 'dutyStart';
+const endId = isProfile ? 'profileDutyEnd' : 'dutyEnd';
+const startInput = $(startId);
+const endInput = $(endId);
+if (e.target.value === 'day') { startInput.value = '09:00'; endInput.value = '18:00'; }
+else if (e.target.value === 'night') { startInput.value = '22:00'; endInput.value = '06:00'; }
+if (!isProfile) updateDynamicActivityLabels();
+});
+});
+};
+handleShiftChange(false);
+handleShiftChange(true);
+const handleTimeFocus = (isProfile = false) => {
+const startId = isProfile ? 'profileDutyStart' : 'dutyStart';
+const endId = isProfile ? 'profileDutyEnd' : 'dutyEnd';
+const startInput = $(startId);
+const endInput = $(endId);
+const radioName = isProfile ? 'profileShiftType' : 'shiftType';
+[startInput, endInput].forEach(input => {
+input.addEventListener('focus', () => {
+if (!input.value) {
+const shift = document.querySelector(`input[name="${radioName}"]:checked`).value;
+if (shift === 'day') { input.value = input.id === startId ? '09:00' : '18:00'; }
+else { input.value = input.id === startId ? '22:00' : '06:00'; }
+}
+});
+});
+};
+handleTimeFocus(false);
+handleTimeFocus(true);
+const titleElement = document.querySelector('.app-title');
+if (titleElement) { titleElement.addEventListener('click', () => { const color1 = `hsl(${Math.random() * 360}, 100%, 70%)`; const color2 = `hsl(${Math.random() * 360}, 100%, 70%)`; titleElement.style.backgroundImage = `linear-gradient(45deg, ${color1}, ${color2})`; }); }
+setInterval(updateQuote, 60000);
+$('menuBtn').addEventListener('click', e => { e.stopPropagation(); const menu = $('dropdownMenu'); menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; });
+$('dropdownMenu').addEventListener('click', e => e.stopPropagation());
+document.addEventListener('click', () => { if($('dropdownMenu')) $('dropdownMenu').style.display = 'none'; });
+$('menuProfileBtn').addEventListener('click', e => { e.preventDefault(); openProfileModal(); });
+$$('.card-header').forEach(header => { header.addEventListener('click', () => { const card = header.parentElement; const body = card.querySelector('.card-body, .card-body-no-padding'); card.classList.toggle('open'); body.style.display = body.style.display === 'block' ? 'none' : 'block'; }); });
+[$('closeProfileModal'), $('cancelProfile')].forEach(el => el.addEventListener('click', () => $('profileModal').style.display = 'none'));
+$('saveProfile').addEventListener('click', saveProfile);
+$('slots').addEventListener('click', e => {
+const btn = e.target.closest('.slot-edit-btn');
+if (!btn) return;
+const id = btn.dataset.id;
+const slot = slotsData.find(s => s.id === id);
+if (slot) {
+$('slotEditId').value = id;
+$('slotEditTitle').textContent = getBilingualText(`Edit "${slot.label_en}"`, `"${slot.label_hi}" संपादित करें`);
+$('slotEditTime').value = slot.time;
+$('slotEditMsgHi').value = slot.msg_hi;
+$('slotEditMsgEn').value = slot.msg_en;
+$('slotEditModal').style.display = 'block';
+}
+});
+$('saveSlot').addEventListener('click', () => {
+const id = $('slotEditId').value;
+const idx = slotsData.findIndex(s => s.id === id);
+if (idx > -1) {
+slotsData[idx].time = $('slotEditTime').value;
+slotsData[idx].msg_hi = $('slotEditMsgHi').value.trim();
+slotsData[idx].msg_en = $('slotEditMsgEn').value.trim();
+saveSlotsData();
+renderSlots();
+}
+$('slotEditModal').style.display = 'none';
+});
+$('closeSlotEdit').addEventListener('click', () => $('slotEditModal').style.display = 'none');
+const adminModal = $('adminModal');
+$('adminLoginBtn').addEventListener('click', (e) => {
+e.preventDefault();
+const storedPassword = localStorage.getItem('admin_password') || 'admin123';
+const enteredPassword = prompt(getBilingualText('Enter Admin Password:', 'एडमिन पासवर्ड डालें:'));
+if (enteredPassword === storedPassword) {
+try {
+$('adminProfileData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_profile') || '{}'), null, 2);
+$('adminSlotsData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_slots') || '[]'), null, 2);
+$('adminQuotesData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_quotes') || '[]'), null, 2);
+$('adminAudioData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_audio') || '[]'), null, 2);
+adminModal.style.display = 'block';
+} catch (err) { alert('Error loading data.'); }
+} else if (enteredPassword !== null) {
+alert(getBilingualText('Access Denied.', 'एक्सेस नहीं मिला।'));
+}
+});
+$('changePasswordBtn').addEventListener('click', () => {
+const newPass = $('newPassword').value.trim();
+if (!newPass) { alert(getBilingualText('Please enter a new password.', 'कृपया नया पासवर्ड डालें।')); return; }
+localStorage.setItem('admin_password', newPass);
+$('newPassword').value = '';
+alert(getBilingualText('Password changed successfully!', 'पासवर्ड सफलतापूर्वक बदल दिया गया!'));
+});
+$('addAudioTrack').addEventListener('click', () => {
+const name = $('newAudioName').value.trim(), url = $('newAudioUrl').value.trim(), imageUrl = $('newAudioImageUrl').value.trim();
+if (!name || !url) { alert(getBilingualText('Please fill name and URL.', 'कृपया नाम और URL भरें।')); return; }
+try {
+let audioData = JSON.parse($('adminAudioData').value || '[]');
+if (!Array.isArray(audioData)) audioData = [];
+audioData.push({ name, url, imageUrl: imageUrl || '' });
+$('adminAudioData').value = JSON.stringify(audioData, null, 2);
+$('newAudioName').value = '';
+$('newAudioUrl').value = '';
+$('newAudioImageUrl').value = '';
+alert(getBilingualText('Audio track added!', 'ऑडियो ट्रैक जोड़ दिया गया!'));
+} catch (e) { alert(getBilingualText('Error adding track. Check JSON format.', 'ट्रैक जोड़ने में त्रुटि। JSON फॉर्मेट जांचें।')); }
+});
+$('closeAdminModal').addEventListener('click', () => adminModal.style.display = 'none');
+$('adminSaveBtn').addEventListener('click', () => {
+try {
+localStorage.setItem('smart_profile', JSON.stringify(JSON.parse($('adminProfileData').value)));
+localStorage.setItem('smart_slots', JSON.stringify(JSON.parse($('adminSlotsData').value)));
+localStorage.setItem('smart_quotes', JSON.stringify(JSON.parse($('adminQuotesData').value)));
+localStorage.setItem('smart_audio', JSON.stringify(JSON.parse($('adminAudioData').value)));
+alert(getBilingualText('Admin data saved!', 'एडमिन डेटा सेव हो गया!'));
+adminModal.style.display = 'none';
+refreshUI();
+} catch (e) {
+alert(getBilingualText('Error: Invalid JSON data.', 'त्रुटि: अमान्य JSON डेटा।'));
+}
+});
+$('adminResetBtn').addEventListener('click', () => { if (confirm(getBilingualText('Are you sure you want to reset EVERYTHING?', 'क्या आप वाकई सब कुछ रीसेट करना चाहते हैं?'))) { localStorage.clear(); alert(getBilingualText('All data has been reset.', 'सारा डेटा रीसेट कर दिया गया है।')); location.reload(); } });
+// --- NOTES SHARING EVENT LISTENERS ---
+$('shareNoteBtn').addEventListener('click', () => { $('noteSubmissionModal').style.display = 'block'; });
+$('closeNoteSubmissionModal').addEventListener('click', () => { $('noteSubmissionModal').style.display = 'none'; });
+$('submitNoteBtn').addEventListener('click', () => {
+const author = $('noteAuthor').value.trim();
+const title = $('noteTitle').value.trim();
+const content = $('noteContent').value.trim();
+if (!author || !title || !content) { alert(getBilingualText('Please fill all fields.', 'कृपया सभी फ़ील्ड भरें।')); return; }
+const adminEmail = "Indianroutingai@gmail.com";
+const subject = encodeURIComponent("New Note Submission for Indian Routine");
+const body = encodeURIComponent( `Hi Admin,\n\nA new note has been submitted for review.\n\nAuthor: ${author}\nTitle: ${title}\nContent/URL: ${content}\n\nPlease review and post it on Blogspot if approved.` );
+window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+$('noteSubmissionModal').style.display = 'none';
+$('noteAuthor').value = '';
+$('noteTitle').value = '';
+$('noteContent').value = '';
+alert(getBilingualText('Thank you! Your email client has been opened to send the note for review.', 'धन्यवाद! समीक्षा के लिए नोट भेजने हेतु आपका ईमेल क्लाइंट खोल दिया गया है।'));
+});
+// --- NEW: Event listener for the "Read Notes" button ---
+$('readNotesBtn').addEventListener('click', () => {
+window.open('https://indianroutineai.blogspot.com', '_blank');
+});
+const audioPlayer = $('audioPlayer'), playPauseBtn = $('audioPlayPauseBtn'), trackSelect = $('audioTrackSelect'), trackImage = $('audioTrackImage');
+playPauseBtn.addEventListener('click', () => { if (!trackSelect.value) return; if (audioPlayer.paused) audioPlayer.play(); else audioPlayer.pause(); });
+audioPlayer.addEventListener('play', () => { playPauseBtn.textContent = '❚❚'; });
+audioPlayer.addEventListener('pause', () => { playPauseBtn.textContent = '▶'; });
+trackSelect.addEventListener('change', () => {
+const selectedOption = trackSelect.options[trackSelect.selectedIndex];
+audioPlayer.src = selectedOption.value;
+trackImage.src = selectedOption.dataset.imageUrl;
+trackImage.style.display = selectedOption.dataset.imageUrl ? 'block' : 'none';
+if (selectedOption.value) audioPlayer.play();
+else audioPlayer.pause();
+});
+window.addEventListener('click', e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; });
+const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
+const funnyInsults = [ { en: "Wow, champ! At this pace, you'll finish the syllabus by the next election.", hi: "वाह राजा! इस रफ़्तार से तो अगला चुनाव आते-आते सिलेबस पूरा होगा।" }, { en: "Studied for 5 minutes? The country is proud of your sacrifice.", hi: "5 मिनट पढ़ाई कर ली? देश को तुम पर गर्व है।" }, { en: "Is this a study session or a commercial break?", hi: "यह पढ़ाई का सेशन था या कमर्शियल ब्रेक?" } ];
+const goodJobMessages = [ { en: "Great job! Keep up the momentum.", hi: "बहुत बढ़िया! इसी लगन से लगे रहो।" }, { en: "Excellent work! Every minute counts.", hi: "शानदार काम! हर मिनट मायने रखता है।" }, { en: "That's a solid session. You're on the right track!", hi: "यह एक ठोस सेशन था। तुम सही रास्ते पर हो!" } ];
+const studyApps = [
+{ name: 'RWA', imageUrl: 'https://i.postimg.cc/VNRFGLwr/Picsart-25-10-22-01-32-21-033.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.appx.rojgar_with_ankit' },
+{ name: 'Khan Sir', imageUrl: 'https://i.postimg.cc/pVg1nrLK/Picsart-25-10-22-01-31-29-127.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=xyz.penpencil.khansirofficial' },
+{ name: 'TWA', imageUrl: 'https://i.postimg.cc/tgMzQvsw/Picsart-25-10-22-01-28-09-342.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.targetwith.ankit' },
+{ name: 'StudyIQ', imageUrl: 'https://i.postimg.cc/3wRZqQxz/Picsart-25-10-22-01-28-45-011.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.studyiq.android' },
+{ name: 'Adda247', imageUrl: 'https://i.postimg.cc/vmBvKwZJ/Picsart-25-10-22-01-29-16-840.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.adda247.app' },
+{ name: 'Unacademy', imageUrl: 'https://i.postimg.cc/3wRZqQxV/Picsart-25-10-22-01-29-57-537.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.unacademyapp' },
+{ name: 'Utkarsh', imageUrl: 'https://i.postimg.cc/W437yc1W/Picsart-25-10-22-01-30-15-296.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.utkarshnew.android' },
+{ name: 'PW', imageUrl: 'https://i.postimg.cc/pdTBSMLf/Picsart-25-10-22-01-30-31-797.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=xyz.penpencil.physicswala' },
+{ name: 'YouTube', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png', linkUrl: 'https://www.youtube.com/' }
+];
+const formatStudyTime = (ms) => { if (isNaN(ms) || ms < 0) ms = 0; const totalSeconds = Math.floor(ms / 1000); const h = Math.floor(totalSeconds / 3600); const m = Math.floor((totalSeconds % 3600) / 60); const s = totalSeconds % 60; return `${h}h ${m}m ${s}s`; };
+const updateStudyDisplay = () => { const todayMs = parseInt(localStorage.getItem('today_study_time') || '0'); const totalMs = parseInt(localStorage.getItem('total_study_time') || '0'); $('todayStudyTime').textContent = formatStudyTime(todayMs); $('totalStudyTime').textContent = formatStudyTime(totalMs); };
+const renderStudyApps = () => { const grid = $('studyAppGrid'); grid.innerHTML = ''; studyApps.forEach(app => { const appLink = document.createElement('a'); appLink.className = 'app-item'; appLink.href = app.linkUrl; appLink.target = '_blank'; appLink.innerHTML = `<img src="${app.imageUrl}" alt="${app.name} Logo"><span>${app.name}</span>`; grid.appendChild(appLink); }); };
+const startStudyTimer = () => { if (localStorage.getItem('study_session_start_time')) return; localStorage.setItem('study_session_start_time', Date.now().toString()); };
+const stopStudyTimer = () => {
+const startTime = parseInt(localStorage.getItem('study_session_start_time') || '0');
+if (startTime === 0) return;
+const sessionDuration = Date.now() - startTime;
+localStorage.removeItem('study_session_start_time');
+if (sessionDuration < 1000) return;
+const lastReset = parseInt(localStorage.getItem('study_time_last_reset') || '0');
+let todayMs = parseInt(localStorage.getItem('today_study_time') || '0');
+if (Date.now() - lastReset > twentyFourHoursInMillis) { todayMs = 0; localStorage.setItem('study_time_last_reset', Date.now().toString()); }
+const newTodayMs = todayMs + sessionDuration;
+const totalMs = parseInt(localStorage.getItem('total_study_time') || '0') + sessionDuration;
+localStorage.setItem('today_study_time', newTodayMs.toString());
+localStorage.setItem('total_study_time', totalMs.toString());
+updateStudyDisplay();
+let message;
+if (sessionDuration < 30 * 60 * 1000) { message = funnyInsults[Math.floor(Math.random() * funnyInsults.length)]; } else { message = goodJobMessages[Math.floor(Math.random() * goodJobMessages.length)]; }
+alert(`${getBilingualText(message.en, message.hi)} (Studied for: ${formatStudyTime(sessionDuration)})`);
+};
+$('studyAppGrid').addEventListener('click', (e) => { if (e.target.closest('.app-item')) { startStudyTimer(); } });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { stopStudyTimer(); } });
+stopStudyTimer();
+renderStudyApps();
+updateStudyDisplay();
+refreshUI();
+};
+init();
+});
+</script>
+</body>
+</html>
