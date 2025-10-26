@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -741,16 +740,8 @@ if(addActivity && activityName && activityDuration > 0) {
 newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।`, tip_en: 'Enjoy your hobby!', tip_hi: 'अपने शौक का आनंद लें!' });
 currentTime += activityDuration * 60;
 }
-const FIXED_DINNER_TIME_MINS = 21 * 60; // 9 PM
-const FIXED_SLEEP_TIME_MINS = 22 * 60; // 10 PM
-if (currentTime < FIXED_DINNER_TIME_MINS) {
-newSlots.push({ id: 'relax', label_en: 'Evening Relaxation', label_hi: 'शाम का आराम', time: minutesToTime(currentTime), msg_en: `Time to relax.`, msg_hi: `आराम करने का समय।`, tip_en: 'Walk, listen to music, talk with family.', tip_hi: 'घूमें, संगीत सुनें, परिवार से बात करें।' });
-newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(FIXED_DINNER_TIME_MINS), msg_en: `Have a light dinner.`, msg_hi: `हल्का डिनर करें।`, tip_en: 'Relax while you eat.', tip_hi: 'खाते समय आराम करें।' });
-newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(FIXED_SLEEP_TIME_MINS), msg_en: `Time to sleep. Good night.`, msg_hi: `सोने का समय। शुभ रात्रि।`, tip_en: 'Good sleep is crucial for learning.', tip_hi: 'सीखने के लिए अच्छी नींद महत्वपूर्ण है।' });
-} else {
 newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(currentTime), msg_en: `Have a light dinner.`, msg_hi: `हल्का डिनर करें।`, tip_en: 'Relax while you eat.', tip_hi: 'खाते समय आराम करें।' });
 newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(currentTime + 60), msg_en: `Time to sleep. Good night.`, msg_hi: `सोने का समय। शुभ रात्रि।`, tip_en: 'Good sleep is crucial for learning.', tip_hi: 'सीखने के लिए अच्छी नींद महत्वपूर्ण है।' });
-}
 slotsData = newSlots;
 };
 const autoGenerate = () => {
@@ -810,8 +801,7 @@ findSlot('nap').time = minutesToTime(eM + 60);
 const morningStudyDuration = 45;
 let eveningStudyMins = Math.max(0, totalStudyGoalMins - morningStudyDuration);
 const eveningStartTime = eM + 90;
-const sleepTime = 22 * 60;
-const eveningAvailableMins = sleepTime - eveningStartTime - 60;
+const eveningAvailableMins = (24 * 60) - eveningStartTime - 60; // Available until midnight, minus dinner
 if (eveningStudyMins > eveningAvailableMins) { eveningStudyMins = eveningAvailableMins; }
 if (allSubjects.length > subjectIndex) {
 const subject = allSubjects[subjectIndex++];
@@ -836,7 +826,7 @@ if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectInde
 if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedCaMins = caMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('current_affairs').label_en = `${subject} Affairs`; findSlot('current_affairs').label_hi = `${subject} अफेयर्स`; findSlot('current_affairs').msg_en = `Read ${subject}.`; findSlot('current_affairs').msg_hi = `${subject} पढ़ें।`; findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += adjustedCaMins; } else { findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += caMins; }
 } else { slotsData = slotsData.filter(slot => !['main_study', 'break', 'practice', 'current_affairs'].includes(slot.id)); }
 findSlot('dinner').time = minutesToTime(currentTime);
-findSlot('sleep').time = minutesToTime(sleepTime);
+findSlot('sleep').time = minutesToTime(currentTime + 60);
 }
 } else { // Student logic
 const useManualTime = $('studentSetWakeUpManual').checked;
