@@ -43,7 +43,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .motivation{ text-align:center; font-size:14px; color:var(--muted); font-style:italic; padding:20px; border-radius:8px; background-color:var(--card); margin-bottom:16px; border:1px solid var(--border); transition: all 0.5s ease; animation: motivationGlow 8s infinite ease-in-out; }
 .strategy{ font-size:14px; color:#c9d1d9; line-height:1.6; }
 .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.7);}
-.modal-content{background-color:var(--card);margin:10% auto;padding:24px;border-radius:8px;width:90%;max-width:500px;max-height:80vh;overflow-y:auto;border:1px solid var(--border);}
+.modal-content{background-color:var(--card);margin:10% auto;padding:24px;border-radius:8px;width:90%;max-width:600px;max-height:80vh;overflow-y:auto;border:1px solid var(--border);}
 #alarmModal .modal-content { text-align: center; animation: pulse 1.2s infinite; }
 #alarmModal h2 { color: var(--accent); font-size: 28px; }
 @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent); } 70% { transform: scale(1.02); box-shadow: 0 0 10px 20px color-mix(in srgb, var(--accent) 0%, transparent); } 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); } }
@@ -57,9 +57,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .dropdown-menu a:hover {background-color:color-mix(in srgb, var(--accent) 10%, transparent); color:#fff;}
 .dropdown-menu .setting {padding:10px 16px;}
 footer { text-align: center; padding: 24px 0; margin-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
-footer a { color: var(--muted); text-decoration: none; font-weight: 600; }
+footer a { color: var(--muted); text-decoration: none; font-weight: 600; margin: 0 8px; }
 footer a:hover { color: var(--accent); }
-#adminLoginBtn { font-size: 0; display: inline-block; width: 6px; height: 6px; background-color: var(--muted); border-radius: 50%; transition: background-color 0.2s ease; }
+#adminLoginBtn { font-size: 0; display: inline-block; width: 6px; height: 6px; background-color: var(--muted); border-radius: 50%; transition: background-color 0.2s ease; margin-top: 10px;}
 #adminLoginBtn:hover { background-color: var(--accent); }
 .audio-display-area { display: flex; align-items: center; gap: 16px; }
 #audioTrackImage { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); background-color: #010409; }
@@ -110,15 +110,11 @@ footer a:hover { color: var(--accent); }
 .subject-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; }
 .subject-item:last-child { border-bottom: none; }
 .subject-item:hover { background-color: color-mix(in srgb, var(--accent) 10%, transparent); }
-/* NEW: Announcement Bar Styles */
-.announcement-bar { padding: 12px; background-color: var(--accent); color: white; text-align: center; font-weight: 500; border-radius: 8px; margin-bottom: 16px; }
+/* Ad Placeholder Styles */
+.ad-placeholder { min-height: 50px; width: 100%; background-color: #333; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; margin-bottom: 16px; border-radius: 8px; }
 </style>
 </head>
 <body>
-<!-- NEW: Announcement Bar -->
-<div class="wrap">
-    <div class="announcement-bar" data-hi="यह ऐप बहुत ही जल्द और भी नए फीचर के साथ प्ले स्टोर पर उपलब्ध होगा।" data-en="This app will soon be available on the Play Store with more new features."></div>
-</div>
 
 <div class="wrap">
 <header>
@@ -291,11 +287,7 @@ footer a:hover { color: var(--accent); }
 <div class="card-body">
 <p data-hi="दूसरों के नोट्स पढ़ने या अपना नोट साझा करने के लिए नीचे दिए गए बटन का उपयोग करें।" data-en="Use the buttons below to read notes from others or share your own." style="font-size:14px; color:var(--muted); margin-bottom:20px;"></p>
 <button id="readNotesBtn" class="btn" style="width: 100%; margin-bottom: 12px;" data-hi="नोट्स पढ़ें" data-en="Read Notes">Read Notes</button>
-<div class="row">
-    <button id="shareNoteBtn" class="btn btn-secondary flex-item" data-hi="लिखकर शेयर करें" data-en="Write & Share">Write & Share</button>
-    <button id="sharePhotoBtn" class="btn btn-secondary flex-item" data-hi="फोटो शेयर करें" data-en="Share Photo">Share Photo</button>
-    <button id="sharePdfBtn" class="btn btn-secondary flex-item" data-hi="PDF शेयर करें" data-en="Share PDF">Share PDF</button>
-</div>
+<button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
 </div>
 </div>
 <div id="audioCard" class="card">
@@ -327,11 +319,23 @@ footer a:hover { color: var(--accent); }
 </div>
 </div>
 <footer>
-<p>
-<span data-hi="© 2025 Indian Routine। सर्वाधिकार सुरक्षित।" data-en="© 2025 Indian Routine. All Rights Reserved."></span><br>
-<a href="#" id="adminLoginBtn" data-hi="एडमिन पैनल" data-en="Admin Panel"></a>
-</p>
+    <p>
+        <span data-hi="© 2025 Indian Routine। सर्वाधिकार सुरक्षित।" data-en="© 2025 Indian Routine. All Rights Reserved."></span>
+    </p>
+    <div>
+        <a href="#" id="aboutBtn" data-hi="हमारे बारे में" data-en="About Us">About Us</a> |
+        <a href="#" id="privacyBtn" data-hi="गोपनीयता नीति" data-en="Privacy Policy">Privacy Policy</a> |
+        <a href="#" id="disclaimerBtn" data-hi="अस्वीकरण" data-en="Disclaimer">Disclaimer</a>
+    </div>
+    <a href="#" id="adminLoginBtn" title="Admin Panel"></a>
 </footer>
+</div>
+
+<!-- Bottom Banner -->
+<div class="wrap">
+    <div id="updateBanner" class="ad-placeholder" style="background-color: var(--accent); color: white; cursor: pointer; font-weight: bold; text-align: center; padding: 10px 0; font-size: 14px;">
+        नया अपडेट जल्द आ रहा है! जानने के लिए क्लिक करें
+    </div>
 </div>
 
 <!-- ALARM MODAL -->
@@ -439,6 +443,76 @@ footer a:hover { color: var(--accent); }
 </div>
 </div>
 </div>
+
+<!-- UPCOMING FEATURES MODAL -->
+<div id="updateDetailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeUpdateModal">&times;</span>
+        <h2 style="margin-top:0;">नया अपडेट: स्पीच-टू-टेक्स्ट नोट्स</h2>
+        <p>
+            हम एक बेहतरीन नए फीचर पर काम कर रहे हैं जो आपकी पढ़ाई को और भी आसान बना देगा! बहुत जल्द ऐप में <strong>'स्पीच-टू-टेक्स्ट'</strong> का ऑप्शन आने वाला है।
+        </p>
+        <p>
+            <strong>यह कैसे काम करेगा?</strong>
+            <br>
+            जब आप कोई भी स्टडी ऐप (जैसे YouTube, Khan Sir, आदि) खोलकर पढ़ाई कर रहे होंगे, तो आप हमारे इस फीचर को ऑन कर सकते हैं। इसके बाद, वीडियो में जो भी पढ़ाया जा रहा है, हमारा सिस्टम उसे सुनकर अपने आप टेक्स्ट में बदल देगा और आपके लिए एक व्यवस्थित नोट तैयार कर देगा।
+        </p>
+        <p style="font-weight: bold; color: var(--accent);">
+            अब आपको पढ़ाई के दौरान नोट्स लिखने की चिंता करने की ज़रूरत नहीं पड़ेगी। बस ध्यान से सुनें, नोट्स बनाने का काम हम पर छोड़ दें!
+        </p>
+    </div>
+</div>
+
+<!-- NEW: ABOUT US MODAL -->
+<div id="aboutModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeAboutModal">&times;</span>
+        <h2 data-hi="हमारे बारे में" data-en="About Us" style="margin-top:0;">About Us</h2>
+        <p data-hi="Indian Routine ऐप को भारत के छात्रों और पेशेवरों की मदद करने के एकमात्र उद्देश्य से बनाया गया है ताकि वे अपने सबसे कीमती संसाधन - समय - का प्रबंधन कर सकें।" data-en="Indian Routine is built with the sole purpose of helping students and professionals in India manage their most precious resource - time.">
+        </p>
+        <p data-hi="हमारा मानना है कि एक अच्छी तरह से संरचित दिनचर्या उत्पादकता और सफलता की कुंजी है। हमारा AI-पावर्ड रूटीन जेनरेटर आपकी ज़रूरतों के हिसाब से एक व्यक्तिगत शेड्यूल बनाने के लिए डिज़ाइन किया गया है, चाहे आप एक कठिन परीक्षा की तैयारी कर रहे हों या काम और पढ़ाई के बीच संतुलन बना रहे हों।" data-en="We believe that a well-structured routine is the key to productivity and success. Our AI-powered routine generator is designed to create a personalized schedule tailored to your needs, whether you're preparing for a tough exam or balancing between a job and studies.">
+        </p>
+        <p data-hi="आपकी सफलता की यात्रा में आपका भागीदार बनने के लिए हम यहां हैं।" data-en="We are here to be your partner in your journey to success.">
+        </p>
+    </div>
+</div>
+
+<!-- NEW: PRIVACY POLICY MODAL -->
+<div id="privacyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closePrivacyModal">&times;</span>
+        <h2 data-hi="गोपनीयता नीति" data-en="Privacy Policy" style="margin-top:0;">Privacy Policy</h2>
+        <p data-hi="आपकी गोपनीयता हमारे लिए महत्वपूर्ण है।" data-en="Your privacy is important to us.">
+        </p>
+        <strong data-hi="डेटा संग्रह और उपयोग" data-en="Data Collection and Usage"></strong>
+        <p data-hi="Indian Routine आपके द्वारा प्रदान की गई जानकारी जैसे नाम, परीक्षा का नाम, विषय और शेड्यूल वरीयताओं को एकत्र करता है। इस डेटा का उपयोग केवल आपके लिए एक व्यक्तिगत दिनचर्या और उपयोगकर्ता अनुभव बनाने के लिए किया जाता है।" data-en="Indian Routine collects information you provide, such as name, exam name, subjects, and schedule preferences. This data is used solely to create a personalized routine and user experience for you.">
+        </p>
+        <strong data-hi="डेटा संग्रहण" data-en="Data Storage"></strong>
+        <p data-hi="सभी व्यक्तिगत डेटा आपके डिवाइस पर स्थानीय रूप से (Local Storage का उपयोग करके) संग्रहीत किया जाता है। यह हमारे सर्वर पर प्रेषित या संग्रहीत नहीं होता है। इसका मतलब है कि आपका डेटा पूरी तरह से आपके नियंत्रण में है।" data-en="All personal data is stored locally on your device (using Local Storage). It is not transmitted or stored on our servers. This means your data is completely under your control.">
+        </p>
+        <strong data-hi="डेटा साझाकरण" data-en="Data Sharing"></strong>
+        <p data-hi="हम आपकी व्यक्तिगत जानकारी किसी तीसरे पक्ष के साथ साझा या बेचते नहीं हैं।" data-en="We do not share or sell your personal information with any third parties.">
+        </p>
+        <strong data-hi="तृतीय-पक्ष सेवाएँ" data-en="Third-Party Services"></strong>
+        <p data-hi="ऐप में बाहरी सेवाओं (जैसे स्टडी ऐप्स, AI चैट) के लिंक हो सकते हैं। इन सेवाओं की अपनी गोपनीयता नीतियां हैं, और हम उनके प्रथाओं के लिए जिम्मेदार नहीं हैं।" data-en="The app may contain links to external services (like study apps, AI chats). These services have their own privacy policies, and we are not responsible for their practices.">
+        </p>
+    </div>
+</div>
+
+<!-- NEW: DISCLAIMER MODAL -->
+<div id="disclaimerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeDisclaimerModal">&times;</span>
+        <h2 data-hi="अस्वीकरण" data-en="Disclaimer" style="margin-top:0;">Disclaimer</h2>
+        <p data-hi="Indian Routine ऐप केवल सूचनात्मक और शैक्षिक उद्देश्यों के लिए एक उपकरण के रूप में प्रदान किया गया है।" data-en="The Indian Routine app is provided as a tool for informational and educational purposes only.">
+        </p>
+        <p data-hi="AI द्वारा उत्पन्न दिनचर्या और रणनीतियाँ सुझाव हैं और सफलता की गारंटी नहीं देती हैं। उपयोगकर्ताओं को अपने विवेक का उपयोग करना चाहिए और अपनी विशिष्ट आवश्यकताओं के अनुसार प्रदान की गई दिनचर्या को अपनाना चाहिए।" data-en="The routines and strategies generated by the AI are suggestions and do not guarantee success. Users should use their own discretion and adapt the provided routine to their specific needs.">
+        </p>
+        <p data-hi="ऐप के डेवलपर्स प्रदान की गई जानकारी के उपयोग से उत्पन्न होने वाले किसी भी परिणाम के लिए उत्तरदायी नहीं हैं। अपनी पढ़ाई और करियर के लिए आप स्वयं जिम्मेदार हैं।" data-en="The developers of the app are not liable for any outcomes resulting from the use of the information provided. You are solely responsible for your own studies and career.">
+        </p>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 // --- GLOBAL STATE & UTILITIES ---
@@ -470,7 +544,7 @@ const defaultSlots = (exam = 'Study', activity = 'Duty') => [
 { id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: '22:00', msg_hi: 'सोने की तैयारी करो', msg_en: 'Time to sleep', tip_hi: 'अच्छी नींद लें।', tip_en: 'Get a good sleep.' }
 ];
 
-const getProfile = () => JSON.parse(localStorage.getItem('smart_profile') || '{}');
+const getProfile = () => JSON.parse(localStorage.getItem('smart_profile') || '{"occupation":"duty"}');
 const loadSlotsData = () => {
 try {
 const s = JSON.parse(localStorage.getItem('smart_slots') || '[]');
@@ -1072,8 +1146,6 @@ alert(getBilingualText('Error: Invalid JSON data.', 'त्रुटि: अम�
 $('adminResetBtn').addEventListener('click', () => { if (confirm(getBilingualText('Are you sure you want to reset EVERYTHING?', 'क्या आप वाकई सब कुछ रीसेट करना चाहते हैं?'))) { localStorage.clear(); alert(getBilingualText('All data has been reset.', 'सारा डेटा रीसेट कर दिया गया है।')); location.reload(); } });
 // --- NOTES SHARING EVENT LISTENERS ---
 $('shareNoteBtn').addEventListener('click', () => { $('noteSubmissionModal').style.display = 'block'; });
-$('sharePhotoBtn').addEventListener('click', () => { alert(getBilingualText('This feature is coming soon!', 'यह फीचर जल्द ही आ रहा है!')); });
-$('sharePdfBtn').addEventListener('click', () => { alert(getBilingualText('This feature is coming soon!', 'यह फीचर जल्द ही आ रहा है!')); });
 $('closeNoteSubmissionModal').addEventListener('click', () => { $('noteSubmissionModal').style.display = 'none'; });
 $('submitNoteBtn').addEventListener('click', () => {
 const author = $('noteAuthor').value.trim();
@@ -1090,7 +1162,6 @@ $('noteTitle').value = '';
 $('noteContent').value = '';
 alert(getBilingualText('Thank you! Your email client has been opened to send the note for review.', 'धन्यवाद! समीक्षा के लिए नोट भेजने हेतु आपका ईमेल क्लाइंट खोल दिया गया है।'));
 });
-// --- NEW: Event listener for the "Read Notes" button ---
 $('readNotesBtn').addEventListener('click', () => {
 window.open('https://indianroutineai.blogspot.com', '_blank');
 });
@@ -1136,7 +1207,6 @@ const updateStudyDisplay = () => {
     $('todayStudyTime').textContent = formatStudyTime(todayMs);
     $('totalStudyTime').textContent = formatStudyTime(totalMs);
 
-    // NEW: Display subject-wise stats
     const subjectTimes = JSON.parse(localStorage.getItem('subject_study_time') || '{}');
     const statsContainer = $('subjectStatsDisplay');
     statsContainer.innerHTML = '';
@@ -1223,15 +1293,14 @@ $('studyAppGrid').addEventListener('click', (e) => {
     if (!appItem) return;
 
     const linkUrl = appItem.dataset.linkUrl;
-    const subjectsText = $('subjectsList').value.trim();
-    
-    if (subjectsText === '') {
+    const profile = getProfile();
+    const subjects = profile.subjects || [];
+
+    if (subjects.length === 0) {
         alert(getBilingualText('Please set your subjects in the "Setup & Strategy" section first.', 'कृपया पहले "सेटअप और स्ट्रेटजी" सेक्शन में अपने विषय सेट करें।'));
         return;
     }
     
-    const subjects = subjectsText.split('\n').map(s => s.trim()).filter(s => s);
-
     const subjectListContainer = $('subjectListContainer');
     subjectListContainer.innerHTML = '';
     subjects.forEach(subject => {
@@ -1260,6 +1329,41 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+// --- MODAL LOGIC ---
+const updateBanner = $('updateBanner');
+const updateDetailsModal = $('updateDetailsModal');
+const closeUpdateModal = $('closeUpdateModal');
+
+if (updateBanner && updateDetailsModal && closeUpdateModal) {
+    updateBanner.addEventListener('click', () => {
+        updateDetailsModal.style.display = 'block';
+    });
+    closeUpdateModal.addEventListener('click', () => {
+        updateDetailsModal.style.display = 'none';
+    });
+}
+
+// NEW: Footer Pages Modal Logic
+const setupModal = (btnId, modalId, closeBtnId) => {
+    const btn = $(btnId);
+    const modal = $(modalId);
+    const closeBtn = $(closeBtnId);
+    if(btn && modal && closeBtn) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'block';
+        });
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+};
+
+setupModal('aboutBtn', 'aboutModal', 'closeAboutModal');
+setupModal('privacyBtn', 'privacyModal', 'closePrivacyModal');
+setupModal('disclaimerBtn', 'disclaimerModal', 'closeDisclaimerModal');
+
+
 stopStudyTimer();
 renderStudyApps();
 updateStudyDisplay();
@@ -1269,4 +1373,4 @@ init();
 });
 </script>
 </body>
-</html>
+</html>```
