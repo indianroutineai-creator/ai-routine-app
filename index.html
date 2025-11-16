@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +69,7 @@ footer a:hover { color: var(--accent); }
 #audioTrackSelect { flex: 1; }
 /* Slot Colors */
 .slot[data-id=wake] {--slot-color:#238636;}
-.slot[data-id=morning_study], .slot[data-id=study1], .slot[data-id=study2], .slot[data-id=study3], .slot[data-id=study4] {--slot-color:#e3b341;}
+.slot[data-id=morning_study], .slot[data-id=study1], .slot[data-id=study2], .slot[data-id=study3], .slot[data-id=study4], .slot[data-id=study5] {--slot-color:#e3b341;}
 .slot[data-id=leave] {--slot-color:#58a6ff;}
 .slot[data-id=duty_start] {--slot-color:#da3633;}
 .slot[data-id=duty_end] {--slot-color:#da3633;}
@@ -112,6 +113,50 @@ footer a:hover { color: var(--accent); }
 .subject-item:hover { background-color: color-mix(in srgb, var(--accent) 10%, transparent); }
 /* Ad Placeholder Styles */
 .ad-placeholder { min-height: 50px; width: 100%; background-color: #333; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; margin-bottom: 16px; border-radius: 8px; }
+
+/* NEW STYLE FOR MANUAL ALARM MODAL */
+#manualAlarmList {
+    list-style: none;
+    padding: 0;
+    margin-top: 16px;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+#manualAlarmList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.4;
+}
+#manualAlarmList li:last-child {
+    border-bottom: none;
+}
+#manualAlarmList .time {
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+/* NEW: Blinking Menu Animation */
+@keyframes blinkAnimation {
+  0%, 100% {
+    background-color: transparent;
+    box-shadow: 0 0 4px var(--accent), 0 0 8px var(--accent);
+  }
+  50% {
+    background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+    box-shadow: 0 0 12px var(--accent), 0 0 20px var(--accent);
+  }
+}
+.blinking-menu {
+  animation: blinkAnimation 1.5s infinite ease-in-out;
+  border-radius: 8px;
+}
 </style>
 </head>
 <body>
@@ -213,6 +258,26 @@ footer a:hover { color: var(--accent); }
 <div class="flex-item"><label class="small"><span class="dynamic-activity-label" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="शुरू" data-en="Start">Start</span></label><input type="time" id="dutyStart" value="09:00"></div>
 <div class="flex-item"><label class="small"><span class="dynamic-activity-label" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="खत्म" data-en="End">End</span></label><input type="time" id="dutyEnd" value="18:00"></div>
 </div>
+<div class="checkbox-row">
+<input type="checkbox" id="dutySetWakeUpManual">
+<label for="dutySetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label>
+</div>
+<div id="dutyManualWakeUpWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label>
+<input type="time" id="dutyWakeUpTime" value="05:00">
+</div>
+</div>
+<div class="checkbox-row">
+<input type="checkbox" id="dutySetSleepManual">
+<label for="dutySetSleepManual" data-hi="सोने का समय खुद सेट करें" data-en="Set sleep time manually">Set sleep time manually</label>
+</div>
+<div id="dutyManualSleepWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="सोने का समय" data-en="Sleep Time">Sleep Time</label>
+<input type="time" id="dutySleepTime" value="22:00">
+</div>
+</div>
 </div>
 <div id="studentFields" style="display:none;">
 <div class="row">
@@ -226,6 +291,16 @@ footer a:hover { color: var(--accent); }
 <div class="flex-item">
 <label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label>
 <input type="time" id="wakeUpTime" value="05:00">
+</div>
+</div>
+<div class="checkbox-row">
+<input type="checkbox" id="studentSetSleepManual">
+<label for="studentSetSleepManual" data-hi="सोने का समय खुद सेट करें" data-en="Set sleep time manually">Set sleep time manually</label>
+</div>
+<div id="studentManualSleepWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="सोने का समय" data-en="Sleep Time">Sleep Time</label>
+<input type="time" id="sleepTime" value="22:00">
 </div>
 </div>
 <div class="checkbox-row">
@@ -275,6 +350,8 @@ footer a:hover { color: var(--accent); }
 <div style="margin-top:16px; border-top: 1px solid var(--border); padding-top:16px;">
 <label data-hi="पढ़ाई शुरू करने के लिए एक ऐप चुनें" data-en="Choose an App to Start Studying">Choose an App to Start Studying</label>
 <div id="studyAppGrid" class="app-grid"></div>
+<!-- NEW: Add Your New App Button -->
+<a href="https://indianroutineai.blogspot.com/p/add-new-app.html" target="_blank" class="btn btn-secondary" style="width: 100%; margin-top: 16px;" data-hi="+ अपना नया ऐप जोड़ें" data-en="+ Add Your New App"></a>
 </div>
 </div>
 </div>
@@ -338,7 +415,7 @@ footer a:hover { color: var(--accent); }
     </div>
 </div>
 
-<!-- ALARM MODAL -->
+<!-- ALARM MODAL (This is for the app's internal, less reliable alarm) -->
 <div id="alarmModal" class="modal">
 <div class="modal-content">
 <h2 id="alarmTitle" data-hi="रिमाइंडर!" data-en="Reminder!">Reminder!</h2>
@@ -347,6 +424,26 @@ footer a:hover { color: var(--accent); }
 <audio id="alarmSound"></audio>
 </div>
 </div>
+
+<!-- =============================================================== -->
+<!-- ============= NEW MANUAL ALARM SUGGESTION MODAL =============== -->
+<!-- =============================================================== -->
+<div id="manualAlarmModal" class="modal">
+    <div class="modal-content">
+        <h2 data-hi="रूटीन तैयार है!" data-en="Routine Ready!" style="margin-top:0; color: var(--success);">Routine Ready!</h2>
+        <p data-hi="100% भरोसेमंद अलार्म के लिए जो ऐप बंद होने पर भी बजें, कृपया इन ज़रूरी समय को अपने फ़ोन के मुख्य घड़ी (Clock) ऐप में सेट करें।" data-en="For 100% reliable alarms that work even when the app is closed, please set these important times in your phone's main Clock App.">For 100% reliable alarms that work even when the app is closed, please set these important times in your phone's main Clock App.</p>
+        
+        <ul id="manualAlarmList">
+            <!-- Routine will be dynamically inserted here by JavaScript -->
+        </ul>
+
+        <button id="closeManualAlarmModalBtn" class="btn" style="width: 100%; margin-top: 20px;" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
+    </div>
+</div>
+<!-- =============================================================== -->
+<!-- =============================================================== -->
+
+
 <!-- Other Modals -->
 <div id="profileModal" class="modal">
 <div class="modal-content">
@@ -364,8 +461,39 @@ footer a:hover { color: var(--accent); }
 <div class="flex-item"><label><span class="dynamic-activity-label-modal" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="शुरू" data-en="Start">Start</span></label><input type="time" id="profileDutyStart" value="09:00"></div>
 <div class="flex-item"><label><span class="dynamic-activity-label-modal" data-hi="ड्यूटी" data-en="Duty">Duty</span> <span data-hi="खत्म" data-en="End">End</span></label><input type="time" id="profileDutyEnd" value="18:00"></div>
 </div>
+<div class="checkbox-row">
+<input type="checkbox" id="profileDutySetWakeUpManual">
+<label for="profileDutySetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label>
 </div>
-<div id="profileStudentFields" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileStudentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div></div><div class="checkbox-row"><input type="checkbox" id="profileStudentSetWakeUpManual"><label for="profileStudentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label></div><div id="profileStudentManualWakeUpWrapper" class="row" style="display:none;"><div class="flex-item"><label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label><input type="time" id="profileWakeUpTime" value="05:00"></div></div><div class="checkbox-row"><input type="checkbox" id="profileStudentAddActivityCheckbox"><label for="profileStudentAddActivityCheckbox" data-hi="कुछ और गतिविधि जोड़ें" data-en="Add other activity">Add other activity</label></div><div id="profileStudentActivityWrapper" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="profileStudentActivityName" placeholder="e.g., Play Cricket, Gym"></div><div class="flex-item"><label class="small" data-hi="अवधि (घंटे)" data-en="Duration (Hours)">Duration (Hours)</label><input type="number" id="profileStudentActivityDuration" value="1" min="0.5" max="4" step="0.5"></div></div></div></div>
+<div id="profileDutyManualWakeUpWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label>
+<input type="time" id="profileDutyWakeUpTime" value="05:00">
+</div>
+</div>
+<div class="checkbox-row">
+<input type="checkbox" id="profileDutySetSleepManual">
+<label for="profileDutySetSleepManual" data-hi="सोने का समय खुद सेट करें" data-en="Set sleep time manually">Set sleep time manually</label>
+</div>
+<div id="profileDutyManualSleepWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="सोने का समय" data-en="Sleep Time">Sleep Time</label>
+<input type="time" id="profileDutySleepTime" value="22:00">
+</div>
+</div>
+</div>
+<div id="profileStudentFields" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileStudentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div></div><div class="checkbox-row"><input type="checkbox" id="profileStudentSetWakeUpManual"><label for="profileStudentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label></div><div id="profileStudentManualWakeUpWrapper" class="row" style="display:none;"><div class="flex-item"><label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label><input type="time" id="profileWakeUpTime" value="05:00"></div></div>
+<div class="checkbox-row">
+<input type="checkbox" id="profileStudentSetSleepManual">
+<label for="profileStudentSetSleepManual" data-hi="सोने का समय खुद सेट करें" data-en="Set sleep time manually">Set sleep time manually</label>
+</div>
+<div id="profileStudentManualSleepWrapper" class="row" style="display:none;">
+<div class="flex-item">
+<label class="small" data-hi="सोने का समय" data-en="Sleep Time">Sleep Time</label>
+<input type="time" id="profileSleepTime" value="22:00">
+</div>
+</div>
+<div class="checkbox-row"><input type="checkbox" id="profileStudentAddActivityCheckbox"><label for="profileStudentAddActivityCheckbox" data-hi="कुछ और गतिविधि जोड़ें" data-en="Add other activity">Add other activity</label></div><div id="profileStudentActivityWrapper" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="profileStudentActivityName" placeholder="e.g., Play Cricket, Gym"></div><div class="flex-item"><label class="small" data-hi="अवधि (घंटे)" data-en="Duration (Hours)">Duration (Hours)</label><input type="number" id="profileStudentActivityDuration" value="1" min="0.5" max="4" step="0.5"></div></div></div></div>
 <div class="row"><div class="flex-item"><label data-hi="अतिरिक्त लक्ष्य" data-en="Additional Goal">Additional Goal</label><textarea id="profileExtraGoal" rows="2"></textarea></div></div>
 <div class="row" style="margin-top:16px;"><button id="saveProfile" class="btn" data-hi="प्रोफ़ाइल सेव करें" data-en="Save Profile">Save Profile</button><button id="cancelProfile" class="btn btn-secondary" data-hi="रद्द करें" data-en="Cancel">Cancel</button></div>
 </div>
@@ -405,7 +533,7 @@ footer a:hover { color: var(--accent); }
     </div>
 </div>
 <div id="adminModal" class="modal">
-<div class="modal-content" style="max-height: 85vh;">
+<div class="modal-content" style="max-height: 85vh; overflow-y: auto;">
 <span class="close" id="closeAdminModal">&times;</span>
 <h2 data-hi="एडमिन पैनल" data-en="Admin Panel">Admin Panel</h2>
 <p style="font-size:12px; color:var(--muted);" data-hi="सावधानी से उपयोग करें: गलत JSON डेटा ऐप को तोड़ सकता है।" data-en="Use with caution: Invalid JSON can break the app."></p>
@@ -436,6 +564,18 @@ footer a:hover { color: var(--accent); }
 <input type="url" id="newAudioImageUrl" placeholder="Image URL">
 <button id="addAudioTrack" class="btn btn-secondary">Add Track</button>
 </div>
+</div>
+<!-- NEW STUDY APP SECTION -->
+<div class="admin-section">
+    <label style="margin-top:12px;" data-hi="स्टडी ऐप्स डेटा (JSON)" data-en="Study Apps Data (JSON)">Study Apps Data (JSON)</label>
+    <textarea id="adminAppsData" rows="4" style="font-family: monospace; font-size: 12px;"></textarea>
+    <p style="font-size:11px; color:var(--muted); margin-top:4px;" data-hi="फॉर्मेट: [{&quot;name&quot;:&quot;...&quot;, &quot;linkUrl&quot;:&quot;...&quot;, &quot;imageUrl&quot;:&quot;...&quot;}]" data-en="Format: [{&quot;name&quot;:&quot;...&quot;, &quot;linkUrl&quot;:&quot;...&quot;, &quot;imageUrl&quot;:&quot;...&quot;}]"></p>
+    <div class="admin-add-form">
+        <input type="text" id="newAppName" placeholder="App Name">
+        <input type="url" id="newAppUrl" placeholder="App Link URL">
+        <input type="url" id="newAppImageUrl" placeholder="Image URL">
+        <button id="addStudyApp" class="btn btn-secondary">Add App</button>
+    </div>
 </div>
 <div class="row" style="margin-top:16px;">
 <button id="adminSaveBtn" class="btn" data-hi="डेटा सेव करें" data-en="Save Data">Save Data</button>
@@ -557,47 +697,77 @@ slotsData = defaultSlots();
 };
 const saveSlotsData = () => localStorage.setItem('smart_slots', JSON.stringify(slotsData));
 
+// ====================================================================================
+// ==================== INITIALIZE ALL APP DATA (INCLUDES STUDY APPS) =================
+// ====================================================================================
 const initializeData = () => {
-if (!localStorage.getItem('smart_audio')) {
-const defaultAudio = [
-{ name: "Select Audio", url: "", imageUrl: "" },
-{ name: "Chanakya Motivation", url: "https://www.soundjay.com/buttons/sounds/button-7.mp3", imageUrl: "https://i.pravatar.cc/150?u=chanakya" }
-];
-localStorage.setItem('smart_audio', JSON.stringify(defaultAudio));
-}
-if (!localStorage.getItem('admin_password')) {
-localStorage.setItem('admin_password', 'admin123');
-}
-// --- QUOTES LOGIC ---
-const QUOTES_VERSION = 'v1.0';
-const currentVersion = localStorage.getItem('quotes_version');
-if (currentVersion !== QUOTES_VERSION) {
-const allQuotes = [
-{ hi: 'सफलता अंतिम नहीं है, असफलता घातक नहीं है: यह जारी रखने का साहस है जो मायने रखता है।', en: 'Success is not final, failure is not fatal: it is the courage to continue that counts.' },
-{ hi: 'आपका समय सीमित है, इसे किसी और की जिंदगी जीकर बर्बाद न करें।', en: 'Your time is limited, so don’t waste it living someone else’s life.' },
-{ hi: 'महान कार्य करने का एकमात्र तरीका यह है कि आप जो करते हैं उससे प्यार करें।', en: 'The only way to do great work is to love what you do.' },
-{ hi: 'कड़ी मेहनत प्रतिभा को हरा देती है जब प्रतिभा कड़ी मेहनत नहीं करती।', en: 'Hard work beats talent when talent doesn’t work hard.' },
-{ hi: 'सपने तब तक काम नहीं करते जब तक आप नहीं करते।', en: 'Dreams don’t work unless you do.' },
-{ hi: 'यह हमेशा असंभव लगता है जब तक कि यह पूरा न हो जाए।', en: 'It always seems impossible until it’s done.' },
-{ hi: 'अनुशासन लक्ष्यों और प्राप्ति के बीच का पुल है।', en: 'Discipline is the bridge between goals and accomplishment.' },
-{ hi: 'शक सपनों को हकीकत से ज्यादा मारता है।', en: 'Doubt kills more dreams than failure ever will.' },
-{ hi: 'हर विशेषज्ञ कभी एक शुरुआत करने वाला था।', en: 'Every expert was once a beginner.' },
-{ hi: 'हार मत मानो। शुरुआत हमेशा सबसे कठिन होती है।', en: 'Don’t give up. The beginning is always the hardest.' },
-{ hi: 'पढ़ ले भाई, वरना तेरी वाली को कोई और सरकारी नौकरी वाला ले जाएगा।', en: 'Study brother, or some guy with a government job will take your girl.' },
-{ hi: 'क्या कर रहा है बे? स्क्रॉल करते-करते जिंदगी स्क्रॉल हो जाएगी।', en: 'What are you doing? Your life will scroll away while you are scrolling.' },
-{ hi: 'उठ जा BSDK, अफसर बनना है कि नहीं?', en: 'Wake up BSDK, do you want to become an officer or not?' },
-{ hi: 'सपनों में IAS बनकर क्या फायदा, जब हकीकत में रजाई से नहीं निकल पा रहा।', en: 'What\'s the use of becoming an IAS in dreams, when in reality you can\'t even get out of the blanket.' },
-{ hi: 'देख भाई, बंदी तो आती-जाती रहेगी, पर एक बार उम्र निकल गई ना, तो फॉर्म भी नहीं भर पाएगा।', en: 'Look bro, girlfriends will come and go, but once you\'re past the age limit, you can\'t even fill the form.' },
-{ hi: 'फोन को रख साइड में, वरना जिंदगी तुझे रख देगी।', en: 'Keep the phone aside, or life will put you aside.' },
-{ hi: 'तेरी उम्र के लड़के दुनिया हिला रहे हैं, और तू अभी तक रील हिला रहा है।', en: 'Guys your age are shaking the world, and you are still just scrolling reels.' },
-{ hi: 'पढ़ाई कर, वरना शादी में तेरे दोस्त नागिन डांस करेंगे और तू बर्तन धोएगा।', en: 'Study, or at your wedding your friends will be doing the snake dance and you\'ll be washing dishes.' },
-{ hi: '4G की स्पीड से सपने देखता है, और 2G की स्पीड से मेहनत करता है। वाह!', en: 'You dream at 4G speed, and work hard at 2G speed. Wow!' },
-{ hi: 'मोटिवेशन खत्म? एक बार अपने बाप की शक्ल देख, अपने आप आ जाएगा।', en: 'Motivation finished? Just look at your father\'s face once, it will come back on its own.' },
-];
-localStorage.setItem('smart_quotes', JSON.stringify(allQuotes));
-localStorage.setItem('quotes_version', QUOTES_VERSION);
-}
+    if (!localStorage.getItem('smart_audio')) {
+        const defaultAudio = [{ name: "Select Audio", url: "", imageUrl: "" }, { name: "Chanakya Motivation", url: "https://www.soundjay.com/buttons/sounds/button-7.mp3", imageUrl: "https://i.pravatar.cc/150?u=chanakya" }];
+        localStorage.setItem('smart_audio', JSON.stringify(defaultAudio));
+    }
+    if (!localStorage.getItem('admin_password')) {
+        localStorage.setItem('admin_password', 'admin123');
+    }
+
+    // --- NEW: STUDY APPS VERSIONING TO FORCE UPDATE ---
+    const STUDY_APPS_VERSION = 'v1.5'; // Increment this to force an update
+    const currentAppsVersion = localStorage.getItem('study_apps_version');
+
+    if (currentAppsVersion !== STUDY_APPS_VERSION) {
+        const defaultStudyApps = [
+            { name: 'RWA', imageUrl: 'https://i.postimg.cc/VNRFGLwr/Picsart-25-10-22-01-32-21-033.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.appx.rojgar_with_ankit' },
+            { name: 'Khan Sir', imageUrl: 'https://i.postimg.cc/pVg1nrLK/Picsart-25-10-22-01-31-29-127.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=xyz.penpencil.khansirofficial' },
+            { name: 'YouTube', imageUrl: 'https://files.catbox.moe/jigd74.jpg', linkUrl: 'https://www.youtube.com/' },
+            { name: 'Physics Wallah', imageUrl: 'https://files.catbox.moe/06xp1d.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.physicswallah' },
+            { name: 'Unacademy', imageUrl: 'https://files.catbox.moe/ojffup.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.unacademyapp' },
+            { name: "BYJU'S", imageUrl: 'https://files.catbox.moe/bs29n1.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.byjus.thelearningapp' },
+            { name: 'Adda247', imageUrl: 'https://files.catbox.moe/0y2ncj.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.adda247.app' },
+            { name: 'Testbook', imageUrl: 'https://files.catbox.moe/zgrt4n.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.testbook.tbapp' },
+            { name: 'Vedantu', imageUrl: 'https://files.catbox.moe/5o5cr2.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.vedantu.app' },
+            { name: 'Drishti IAS', imageUrl: 'https://files.catbox.moe/lcpkq0.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.drishti.academy.app' },
+            { name: 'Exampur', imageUrl: 'https://files.catbox.moe/w626y1.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.edudrive.exampur' },
+            { name: 'Telegram', imageUrl: 'https://files.catbox.moe/tw54tx.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=org.telegram.messenger' },
+            { name: 'Utkarsh', imageUrl: 'https://files.catbox.moe/nqsugs.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.utkarsh.app' },
+            { name: 'Study IQ', imageUrl: 'https://files.catbox.moe/b02dfi.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.studyiq.android' }
+        ];
+        localStorage.setItem('smart_study_apps', JSON.stringify(defaultStudyApps));
+        localStorage.setItem('study_apps_version', STUDY_APPS_VERSION);
+    }
+
+    // --- QUOTES LOGIC ---
+    const QUOTES_VERSION = 'v2.0';
+    const currentVersion = localStorage.getItem('quotes_version');
+    if (currentVersion !== QUOTES_VERSION) {
+        const hindiQuotes = [ { hi: 'सफलता अंतिम नहीं है, असफलता घातक नहीं है: यह जारी रखने का साहस है जो मायने रखता है।', en: 'Success is not final, failure is not fatal: it is the courage to continue that counts.' }, { hi: 'आपका समय सीमित है, इसे किसी और की जिंदगी जीकर बर्बाद न करें।', en: 'Your time is limited, so don’t waste it living someone else’s life.' }, { hi: 'महान कार्य करने का एकमात्र तरीका यह है कि आप जो करते हैं उससे प्यार करें।', en: 'The only way to do great work is to love what you do.' }, { hi: 'कड़ी मेहनत प्रतिभा को हरा देती है जब प्रतिभा कड़ी मेहनत नहीं करती।', en: 'Hard work beats talent when talent doesn’t work hard.' }, { hi: 'सपने तब तक काम नहीं करते जब तक आप नहीं करते।', en: 'Dreams don’t work unless you do.' }, { hi: 'यह हमेशा असंभव लगता है जब तक कि यह पूरा न हो जाए।', en: 'It always seems impossible until it’s done.' }, { hi: 'अनुशासन लक्ष्यों और प्राप्ति के बीच का पुल है।', en: 'Discipline is the bridge between goals and accomplishment.' }, { hi: 'शक सपनों को हकीकत से ज्यादा मारता है।', en: 'Doubt kills more dreams than failure ever will.' }, { hi: 'हर विशेषज्ञ कभी एक शुरुआत करने वाला था।', en: 'Every expert was once a beginner.' }, { hi: 'हार मत मानो। शुरुआत हमेशा सबसे कठिन होती है।', en: 'Don’t give up. The beginning is always the hardest.' }, ];
+        const shayaris = [ { hi: 'मंज़िलें उन्हीं को मिलती हैं, जिनके सपनों में जान होती है, पंखों से कुछ नहीं होता, हौसलों से उड़ान होती है।', en: 'Destinations are achieved by those whose dreams have life, wings are not enough, flights are made with courage.' }, { hi: 'लहरों से डर कर नौका पार नहीं होती, कोशिश करने वालों की कभी हार नहीं होती।', en: 'A boat does not cross the sea by fearing the waves, those who try never lose.' }, { hi: 'क्यों डरें कि ज़िंदगी में क्या होगा, हर वक़्त क्यों सोचें कि बुरा होगा, बढ़ते रहें मंज़िलों की ओर हम, कुछ न भी मिला तो क्या? तजुर्बा तो नया होगा।', en: 'Why fear what will happen in life, why always think that something bad will happen, let\'s keep moving towards our goals, even if we get nothing, what then? The experience will be new.' }, { hi: 'हाथों की लकीरों पर मत जा ऐ ग़ालिब, नसीब उनके भी होते हैं जिनके हाथ नहीं होते।', en: 'Don\'t go by the lines on your hands, Ghalib, destiny is also for those who do not have hands.' }, { hi: 'ख़ुदी को कर बुलंद इतना कि हर तक़दीर से पहले, ख़ुदा बंदे से ख़ुद पूछे बता तेरी रज़ा क्या है।', en: 'Elevate yourself so high that before every decree of fate, God himself asks his servant, tell me, what is your will?' }, { hi: 'सफ़र में मुश्किलें आएं तो हिम्मत और बढ़ती है, कोई अगर रास्ता रोके तो जुर्रत और बढ़ती है।', en: 'When difficulties arise in the journey, courage increases, if someone blocks the way, audacity increases.' }, { hi: 'काम करो ऐसा कि एक पहचान बन जाए, हर कदम ऐसा चलो कि निशान बन जाए।', en: 'Work in such a way that it becomes an identity, walk every step in such a way that it leaves a mark.' }, { hi: 'ज़िंदगी जीना आसान नहीं होता, बिना संघर्ष के कोई महान नहीं होता।', en: 'Living life is not easy, without struggle, no one becomes great.' }, { hi: 'जो मुस्कुरा रहा है, उसे दर्द ने पाला होगा, जो चल रहा है, उसके पाँव में छाला होगा, बिना संघर्ष के चमक नहीं मिलती, जो जल रहा है तिल-तिल, उसी दीए में उजाला होगा।', en: 'The one who is smiling must have been raised by pain, the one who is walking must have a blister on his foot, without struggle, there is no shine, the one who is burning bit by bit, only that lamp will have light.' }, { hi: 'ना पूछो कि मेरी मंज़िल कहाँ है, अभी तो सफ़र का इरादा किया है, ना हारूँगा हौसला उम्र भर, ये मैंने किसी से नहीं ख़ुद से वादा किया है।', en: 'Don\'t ask where my destination is, I have just intended to travel, I will not lose courage my whole life, I have made this promise not to anyone but to myself.' }, { hi: 'ऊँचे ख्वाबों के लिए, दिल की गहराई से काम करना पड़ता है, यूँ ही नहीं मिलती सफलता किसी को, मेहनत की आग में दिन-रात जलना पड़ता है।', en: 'For high dreams, one has to work from the depth of the heart, success is not achieved just like that, one has to burn day and night in the fire of hard work.' }, { hi: 'रख हौसला वो मंज़र भी आएगा, प्यासे के पास चल के समंदर भी आएगा, थक कर न बैठ ऐ मंज़िल के मुसाफ़िर, मंज़िल भी मिलेगी और मिलने का मज़ा भी आएगा।', en: 'Have courage, that scene will also come, the ocean will also come to the thirsty, don\'t sit tired, O traveler of the destination, you will get the destination and you will also enjoy meeting it.' }, { hi: 'जब टूटने लगे हौसले तो बस ये याद रखना, बिना मेहनत के हासिल तख़्त-ओ-ताज नहीं होते, ढूँढ़ लेना अँधेरों में ही मंज़िल अपनी, क्योंकि जुगनू कभी रौशनी के मोहताज़ नहीं होते।', en: 'When you start losing courage, just remember this, thrones and crowns are not achieved without hard work, find your destination in the darkness, because fireflies are never dependent on light.' }, { hi: 'अगर आप उस इंसान की तलाश कर रहे हैं जो आपकी ज़िन्दगी बदलेगा, तो आईने में देख लें।', en: 'If you are looking for the person who will change your life, then look in the mirror.' }, { hi: 'सफलता का मुख्य आधार, सकारात्मक सोच और निरंतर प्रयास है।', en: 'The main basis of success is positive thinking and continuous effort.' }, { hi: 'परिंदों को मंज़िल मिलेगी यक़ीनन, ये फैले हुए उनके पर बोलते हैं, अक्सर वो लोग ख़ामोश रहते हैं, ज़माने में जिनके हुनर बोलते हैं।', en: 'Birds will surely find their destination, their spread wings speak, often those people remain silent, whose skills speak in the world.' }, { hi: 'लगातार हो रही असफलताओं से निराश नहीं होना चाहिए, क्योंकि कभी-कभी गुच्छे की आखिरी चाबी भी ताला खोल देती है।', en: 'One should not be discouraged by continuous failures, because sometimes the last key of the bunch also opens the lock.' }, { hi: 'जीत की ख़ातिर बस जुनून चाहिए, जिसमें उबाल हो ऐसा ख़ून चाहिए, ये आसमाँ भी आएगा ज़मीं पर, बस इरादों में जीत की गूँज चाहिए।', en: 'For the sake of victory, you just need passion, you need blood that boils, this sky will also come down to the earth, you just need the echo of victory in your intentions.' }, { hi: 'जिनमें अकेले चलने का हौसला होता है, उनके पीछे एक दिन काफ़िला होता है।', en: 'Those who have the courage to walk alone, one day have a convoy behind them.' }, { hi: 'अगर मेहनत आदत बन जाए, तो कामयाबी मुक़द्दर बन जाती है।', en: 'If hard work becomes a habit, then success becomes destiny.' }, ];
+        const shlokas = [ { hi: 'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br><br><strong>अर्थ:</strong> कर्म पर ही तुम्हारा अधिकार है, उसके फलों पर कभी नहीं।', en: 'You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions.' }, { hi: 'उद्यमेन हि सिध्यन्ति कार्याणि न मनोरथैः।<br><br><strong>अर्थ:</strong> कोई भी काम कड़ी मेहनत से ही सफल होता है, सिर्फ सोचने से नहीं।', en: 'Tasks are accomplished by effort, not by wishful thinking.' }, { hi: 'विद्या ददाति विनयम्।<br><br><strong>अर्थ:</strong> ज्ञान विनम्रता प्रदान करता है।', en: 'Knowledge gives humility.' }, { hi: 'श्रद्धावान् लभते ज्ञानम्।<br><br><strong>अर्थ:</strong> श्रद्धा रखने वाला व्यक्ति ही ज्ञान प्राप्त करता है।', en: 'The one who has faith attains knowledge.' }, { hi: 'योगः कर्मसु कौशलम्।<br><br><strong>अर्थ:</strong> कर्मों में कुशलता लाना ही योग है।', en: 'Yoga is skill in action.' }, { hi: 'मन एव मनुष्याणां कारणं बन्धमोक्षयोः।<br><br><strong>अर्थ:</strong> मन ही मनुष्य के बंधन और मोक्ष का कारण है।', en: 'The mind alone is the cause of human bondage and liberation.' }, { hi: 'आलस्यं हि मनुष्याणां शरीरस्थो महान् रिपुः।<br><br><strong>अर्थ:</strong> आलस्य ही मनुष्य के शरीर में रहने वाला सबसे बड़ा शत्रु है।', en: 'Lethargy is the greatest enemy residing in the human body.' }, { hi: 'क्षणशः कणशश्चैव विद्यामर्थं च साधयेत्।<br><br><strong>अर्थ:</strong> प्रत्येक क्षण का उपयोग सीखने के लिए और प्रत्येक कण का उपयोग धन बचाने के लिए करना चाहिए।', en: 'One should acquire knowledge and wealth moment by moment and bit by bit.' }, { hi: 'अयं निजः परो वेति गणना लघुचेतसाम्। उदारचरितानां तु वसुधैव कुटुम्बकम्।<br><br><strong>अर्थ:</strong> यह मेरा है, यह उसका है, ऐसी सोच छोटे मन वाले लोगों की होती है। विशाल हृदय वालों के लिए तो पूरी पृथ्वी ही एक परिवार है।', en: 'This is mine, that is his, is the calculation of the narrow-minded. For the magnanimous, the entire world is a family.' }, { hi: 'सत्यमेव जयते।<br><br><strong>अर्थ:</strong> सत्य की ही हमेशा विजय होती है।', en: 'Truth alone triumphs.' }, { hi: 'बलवानप्यशक्तोऽसौ धनवानपि निर्धनः। श्रुतवानपि मूर्खोऽसौ यो धर्मविमुखो जनः।<br><br><strong>अर्थ:</strong> जो व्यक्ति धर्म (कर्तव्य) से विमुख होता है, वह बलवान होकर भी असमर्थ, धनवान होकर भी निर्धन और ज्ञानी होकर भी मूर्ख होता है।', en: 'A person who turns away from righteousness is powerless even if strong, poor even if wealthy, and a fool even if learned.' }, { hi: 'पुस्तकस्था तु या विद्या परहस्तगतं धनम्। कार्यकाले समुत्पन्ने न सा विद्या न तद्धनम्।<br><br><strong>अर्थ:</strong> किताबों में रखा ज्ञान और दूसरों के हाथ में गया धन, ज़रूरत पड़ने पर न तो वह ज्ञान काम आता है और न ही वह धन।', en: 'Knowledge that is confined to books and wealth that is in the hands of others are of no use when the time for action comes.' }, { hi: 'काक चेष्टा, बको ध्यानं, श्वान निद्रा तथैव च। अल्पाहारी, गृहत्यागी, विद्यार्थी पंच लक्षणं।<br><br><strong>अर्थ:</strong> कौवे जैसी चेष्टा, बगुले जैसा ध्यान, कुत्ते जैसी नींद, कम भोजन करने वाला और घर का मोह त्यागने वाला - ये विद्यार्थी के पाँच लक्षण हैं।', en: 'The effort of a crow, the concentration of a crane, the sleep of a dog, a light eater, and one who renounces home—these are the five characteristics of a student.' }, { hi: 'अज्ञः सुखमाराध्यः सुखतरमाराध्यते विशेषज्ञः। ज्ञानलवदुर्विदग्धं ब्रह्मापि नरं न रञजयति।<br><br><strong>अर्थ:</strong> अज्ञानी को समझाना आसान है, ज्ञानी को समझाना और भी आसान है, लेकिन अधूरे ज्ञान वाले अहंकारी व्यक्ति को स्वयं ब्रह्मा भी नहीं समझा सकते।', en: 'An ignorant person is easy to please, an expert is even easier. But even Brahma cannot convince a person who is arrogant with a little knowledge.' }, { hi: 'यथा ह्येकेन चक्रेण न रथस्य गतिर्भवेत्। एवं पुरुषकारेण विना दैवं न सिद्ध्यति।<br><br><strong>अर्थ:</strong> जैसे एक पहिये से रथ नहीं चल सकता, उसी प्रकार बिना पुरुषार्थ (कड़ी मेहनत) के भाग्य सिद्ध नहीं होता।', en: 'Just as a chariot cannot move with a single wheel, so fate is not accomplished without human effort.' }, { hi: 'निश्चितं हित्वा योऽनिश्चितं परिधावति। निश्चितं तस्य नश्यति अनिश्चितं नष्टमेव हि।<br><br><strong>अर्थ:</strong> जो व्यक्ति निश्चित को छोड़कर अनिश्चित के पीछे भागता है, उसका निश्चित भी नष्ट हो जाता है और अनिश्चित तो पहले से ही नष्ट होता है।', en: 'He who abandons the certain and runs after the uncertain, loses the certain, and the uncertain is already lost.' }, { hi: 'अश्वस्य भूषणं वेगो मत्तं स्याद् गजभूषणम्। चातुर्यं भूषणं नार्या उद्योगो नरभूषणम्।<br><br><strong>अर्थ:</strong> घोड़े का आभूषण उसकी गति है, हाथी का आभूषण उसका मदमस्त होना है, स्त्री का आभूषण उसकी चतुराई है और पुरुष का आभूषण उसका उद्यमी होना है।', en: 'Speed is the ornament of a horse, intoxication is the ornament of an elephant. Cleverness is the ornament of a woman, and industry is the ornament of a man.' }, { hi: 'दुर्लभं त्रयमेवैतत् देवानुग्रहहेतुकम्। मनुष्यत्वं मुमुक्षुत्वं महापुरुषसंश्रयः।<br><br><strong>अर्थ:</strong> मनुष्य जन्म, मोक्ष की इच्छा और महापुरुषों का साथ - ये तीन चीजें ईश्वर की कृपा से ही दुर्लभ रूप से मिलती हैं।', en: 'These three are indeed rare and are due to the grace of the gods: humanity, the desire for liberation, and the company of great souls.' }, { hi: 'गुणिगणगणनारम्भे न पतति कठिनी सुसंभ्रमाद्यस्य। तेनाम्बा यदि सुतिनी वद वन्ध्या कीदृशी भवति।<br><br><strong>अर्थ:</strong> गुणी लोगों की गिनती करते समय जो व्यक्ति उत्साह से शामिल नहीं होता, अगर उसकी माँ को पुत्रवती कहें, तो फिर बांझ किसे कहेंगे?', en: 'At the beginning of counting virtuous people, he who does not participate with enthusiasm; if his mother is called a mother of a son, then tell me, what would a barren woman be like?' }, { hi: 'सर्पः क्रूरः खलः क्रूरः सर्पात् क्रूरतरः खलः। मन्त्रौषधवशः सर्पः खलः केन निवार्यते।<br><br><strong>अर्थ:</strong> साँप क्रूर होता है और दुष्ट भी क्रूर होता है, लेकिन दुष्ट साँप से भी ज़्यादा क्रूर होता है। साँप को तो मंत्र और औषधि से वश में किया जा सकता है, पर दुष्ट को किससे रोका जा सकता है?', en: 'A snake is cruel, and a wicked person is cruel, but a wicked person is crueler than a snake. A snake can be controlled by mantras and medicine, but by what can a wicked person be stopped?' }, ];
+        localStorage.setItem('smart_hindi_quotes', JSON.stringify(hindiQuotes));
+        localStorage.setItem('smart_shayaris', JSON.stringify(shayaris));
+        localStorage.setItem('smart_shlokas', JSON.stringify(shlokas));
+        localStorage.setItem('quotes_version', QUOTES_VERSION);
+    }
 };
+
+const updateQuote = () => {
+    let quote;
+    let categoryIndex = parseInt(localStorage.getItem('quote_category_index') || '0');
+    try {
+        if (categoryIndex === 0) { const quotes = JSON.parse(localStorage.getItem('smart_hindi_quotes')); quote = quotes[Math.floor(Math.random() * quotes.length)]; } 
+        else if (categoryIndex === 1) { const quotes = JSON.parse(localStorage.getItem('smart_shayaris')); quote = quotes[Math.floor(Math.random() * quotes.length)]; } 
+        else { const quotes = JSON.parse(localStorage.getItem('smart_shlokas')); quote = quotes[Math.floor(Math.random() * quotes.length)]; }
+        if (!quote) throw new Error("No quote found");
+    } catch (e) {
+        quote = { en: 'Welcome! Set up your routine.', hi: 'आपका स्वागत है! अपना रूटीन सेट करें।' };
+    }
+    $('motivationQuote').innerHTML = `<strong style="color:var(--accent); line-height: 1.6;">${getBilingualText(quote.en, quote.hi)}</strong>`;
+    categoryIndex = (categoryIndex + 1) % 3;
+    localStorage.setItem('quote_category_index', categoryIndex.toString());
+};
+
+// ====================================================================================
+// ================================= END OF INITIALIZATION ============================
+// ====================================================================================
+
 const renderUserGreeting = () => {
 const profile = getProfile();
 if (profile.name) {
@@ -651,17 +821,7 @@ elem.textContent = getBilingualText(elem.dataset.en, elem.dataset.hi);
 });
 updateDynamicActivityLabels();
 };
-const updateQuote = () => {
-let quotes = [];
-try {
-quotes = JSON.parse(localStorage.getItem('smart_quotes'));
-if (!quotes || !Array.isArray(quotes) || quotes.length === 0) throw new Error("No quotes");
-} catch (e) {
-quotes = [{ en: 'Welcome! Set up your routine.', hi: 'आपका स्वागत है! अपना रूटीन सेट करें।' }];
-}
-const quote = quotes[Math.floor(Math.random() * quotes.length)];
-$('motivationQuote').innerHTML = `<strong style="color:var(--accent);">${getBilingualText(quote.en, quote.hi)}</strong>`;
-};
+
 const displayStrategy = () => {
 const p = getProfile();
 const exam = $('examName').value || p.exam;
@@ -697,6 +857,9 @@ $('studentStudyGoal').value = p.studentStudyGoal || 8;
 $('studentSetWakeUpManual').checked = p.useStudentManualWakeUp || false;
 $('studentManualWakeUpWrapper').style.display = p.useStudentManualWakeUp ? 'flex' : 'none';
 $('wakeUpTime').value = p.wakeUpTime || '05:00';
+$('studentSetSleepManual').checked = p.useStudentManualSleep || false;
+$('studentManualSleepWrapper').style.display = p.useStudentManualSleep ? 'flex' : 'none';
+$('sleepTime').value = p.sleepTime || '22:00';
 $('studentAddActivityCheckbox').checked = p.useStudentActivity || false;
 $('studentActivityWrapper').style.display = p.useStudentActivity ? 'block' : 'none';
 $('studentActivityName').value = p.studentActivityName || '';
@@ -712,6 +875,12 @@ $('shiftNight').checked = true;
 } else {
 $('shiftDay').checked = true;
 }
+$('dutySetWakeUpManual').checked = p.useDutyManualWakeUp || false;
+$('dutyManualWakeUpWrapper').style.display = p.useDutyManualWakeUp ? 'flex' : 'none';
+$('dutyWakeUpTime').value = p.dutyWakeUpTime || '05:00';
+$('dutySetSleepManual').checked = p.useDutyManualSleep || false;
+$('dutyManualSleepWrapper').style.display = p.useDutyManualSleep ? 'flex' : 'none';
+$('dutySleepTime').value = p.dutySleepTime || '22:00';
 }
 toggleOccupationView(p.occupation || 'duty', 'main');
 if (p.name) {
@@ -732,7 +901,8 @@ renderSlots();
 updateQuote();
 renderUserGreeting();
 renderAudioPlayer();
-updateStudyDisplay(); // NEW: Call this function on refresh
+renderStudyApps();
+updateStudyDisplay();
 updateTextContent();
 };
 const handleLanguageChange = () => {
@@ -760,6 +930,9 @@ $('profileStudentStudyGoal').value = p.studentStudyGoal || 8;
 $('profileStudentSetWakeUpManual').checked = p.useStudentManualWakeUp || false;
 $('profileStudentManualWakeUpWrapper').style.display = p.useStudentManualWakeUp ? 'flex' : 'none';
 $('profileWakeUpTime').value = p.wakeUpTime || '05:00';
+$('profileStudentSetSleepManual').checked = p.useStudentManualSleep || false;
+$('profileStudentManualSleepWrapper').style.display = p.useStudentManualSleep ? 'flex' : 'none';
+$('profileSleepTime').value = p.sleepTime || '22:00';
 $('profileStudentAddActivityCheckbox').checked = p.useStudentActivity || false;
 $('profileStudentActivityWrapper').style.display = p.useStudentActivity ? 'block' : 'none';
 $('profileStudentActivityName').value = p.studentActivityName || '';
@@ -775,6 +948,12 @@ $('profileShiftNight').checked = true;
 } else {
 $('profileShiftDay').checked = true;
 }
+$('profileDutySetWakeUpManual').checked = p.useDutyManualWakeUp || false;
+$('profileDutyManualWakeUpWrapper').style.display = p.useDutyManualWakeUp ? 'flex' : 'none';
+$('profileDutyWakeUpTime').value = p.dutyWakeUpTime || '05:00';
+$('profileDutySetSleepManual').checked = p.useDutyManualSleep || false;
+$('profileDutyManualSleepWrapper').style.display = p.useDutyManualSleep ? 'flex' : 'none';
+$('profileDutySleepTime').value = p.dutySleepTime || '22:00';
 }
 toggleOccupationView(p.occupation || 'duty', 'profile');
 updateDynamicActivityLabels();
@@ -798,59 +977,115 @@ profile.dutyStart = $('profileDutyStart').value;
 profile.dutyEnd = $('profileDutyEnd').value;
 profile.dutyStudyGoal = parseFloat($('profileDutyStudyGoal').value) || 3;
 profile.shiftType = document.querySelector('input[name="profileShiftType"]:checked').value;
+profile.useDutyManualWakeUp = $('profileDutySetWakeUpManual').checked;
+profile.dutyWakeUpTime = $('profileDutyWakeUpTime').value;
+profile.useDutyManualSleep = $('profileDutySetSleepManual').checked;
+profile.dutySleepTime = $('profileDutySleepTime').value;
 } else {
 profile.studentStudyGoal = parseFloat($('profileStudentStudyGoal').value) || 8;
 profile.useStudentManualWakeUp = $('profileStudentSetWakeUpManual').checked;
 profile.wakeUpTime = $('profileWakeUpTime').value;
+profile.useStudentManualSleep = $('profileStudentSetSleepManual').checked;
+profile.sleepTime = $('profileSleepTime').value;
 profile.useStudentActivity = $('profileStudentAddActivityCheckbox').checked;
 profile.studentActivityName = $('profileStudentActivityName').value.trim();
 profile.studentActivityDuration = parseFloat($('profileStudentActivityDuration').value) || 1;
 }
 localStorage.setItem('smart_profile', JSON.stringify(profile));
 localStorage.setItem('profileSetup', 'true');
+$('menuBtn').classList.remove('blinking-menu');
 $('profileModal').style.display = 'none';
 refreshUI();
 };
 const generateStudentRoutine = (params, subjects, focusSubject) => {
-const { wakeUpStr, studyHours, addActivity, activityName, activityDuration } = params;
-const exam = getProfile().exam || "Study";
-let currentTime = timeToMinutes(wakeUpStr);
-const newSlots = [];
-newSlots.push({ id: 'wake', label_en: 'Wake Up & Fresh Up', label_hi: 'उठो और फ्रेश हो जाओ', time: minutesToTime(currentTime), msg_en: `Good morning! Time to start the day.`, msg_hi: `सुप्रभात! दिन शुरू करने का समय।`, tip_en: 'Drink water, stretch a bit.', tip_hi: 'पानी पियो, थोड़ी स्ट्रेचिंग करो।' });
-currentTime += 30;
-const totalStudyMins = studyHours * 60;
-const sessions = studyHours <= 4 ? 2 : (studyHours <= 8 ? 4 : 5);
-let studyPerSession = Math.floor(totalStudyMins / sessions);
-const breakAfterSession = studyHours <= 6 ? 20 : 30;
-const longBreakAfter = Math.floor(sessions / 2);
-const longBreakDuration = 60;
-for (let i = 1; i <= sessions; i++) {
-const subjectIndex = (i - 1) % subjects.length;
-const subject = subjects[subjectIndex] || `General Study ${i}`;
-const isFocus = subject.toLowerCase() === focusSubject.toLowerCase();
-const sessionDuration = studyPerSession + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
-const label_en = `${subject} Session`;
-const label_hi = `${subject} सत्र`;
-const msg_en = `Focus on your ${subject} goals.`;
-const msg_hi = `${subject} के लक्ष्यों पर ध्यान केंद्रित करें।`;
-newSlots.push({ id: `study${i}`, label_en, label_hi, time: minutesToTime(currentTime), msg_en, msg_hi, tip_en: 'Avoid distractions. Use Pomodoro.', tip_hi: 'ध्यान भटकाने से बचें। पोमोडोरो का प्रयोग करें।' });
-currentTime += sessionDuration;
-if (i === longBreakAfter) {
-newSlots.push({ id: `long_break`, label_en: `Lunch / Long Break`, label_hi: `लंच / लंबा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Time for a long break. Eat well.`, msg_hi: `लंबे ब्रेक का समय। अच्छा खाओ।`, tip_en: 'Rest your mind and body.', tip_hi: 'अपने मन और शरीर को आराम दें।' });
-currentTime += longBreakDuration;
-} else if (i < sessions) {
-newSlots.push({ id: `break`, label_en: `Short Break`, label_hi: `छोटा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a short break.`, msg_hi: `एक छोटा ब्रेक लें।`, tip_en: 'Stretch, walk, listen to music.', tip_hi: 'स्ट्रेच करें, घूमें, संगीत सुनें।' });
-currentTime += breakAfterSession;
-}
-}
-if(addActivity && activityName && activityDuration > 0) {
-newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।`, tip_en: 'Enjoy your hobby!', tip_hi: 'अपने शौक का आनंद लें!' });
-currentTime += activityDuration * 60;
-}
-newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(currentTime), msg_en: `Have a light dinner.`, msg_hi: `हल्का डिनर करें।`, tip_en: 'Relax while you eat.', tip_hi: 'खाते समय आराम करें।' });
-newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(currentTime + 60), msg_en: `Time to sleep. Good night.`, msg_hi: `सोने का समय। शुभ रात्रि।`, tip_en: 'Good sleep is crucial for learning.', tip_hi: 'सीखने के लिए अच्छी नींद महत्वपूर्ण है।' });
-slotsData = newSlots;
+    const { studyHours, addActivity, activityName, activityDuration, useWake, wakeStr, useSleep, sleepStr } = params;
+    
+    const newSlots = [];
+    const totalStudyMins = studyHours * 60;
+    const activityMins = addActivity ? activityDuration * 60 : 0;
+    
+    const sessions = Math.max(1, Math.ceil(studyHours / 1.5));
+    const shortBreaks = sessions > 1 ? sessions - 1 : 0;
+    const longBreaks = sessions > 2 ? 1 : 0;
+    const dinnerBreak = 1;
+    const totalBreakMins = (shortBreaks * 15) + (longBreaks * 60) + (dinnerBreak * 45);
+    
+    const PERSONAL_TIME_MINS = 5 * 60; 
+    const totalRequiredMins = totalStudyMins + activityMins + totalBreakMins + PERSONAL_TIME_MINS;
+
+    let wakeTimeMins, sleepTimeMins;
+
+    if (useWake && useSleep) {
+        wakeTimeMins = timeToMinutes(wakeStr);
+        sleepTimeMins = timeToMinutes(sleepStr);
+         if (wakeTimeMins >= sleepTimeMins) {
+            alert(getBilingualText('Invalid Time: Wake-up time must be before sleep time for a single day cycle.', 'अमान्य समय: जागने का समय सोने के समय से पहले होना चाहिए।'));
+            return false;
+        }
+    } else if (useWake) {
+        wakeTimeMins = timeToMinutes(wakeStr);
+        sleepTimeMins = wakeTimeMins + totalRequiredMins; 
+    } else if (useSleep) {
+        sleepTimeMins = timeToMinutes(sleepStr);
+        wakeTimeMins = sleepTimeMins - totalRequiredMins;
+    } else {
+        wakeTimeMins = timeToMinutes("05:00");
+        sleepTimeMins = wakeTimeMins + totalRequiredMins;
+    }
+
+    let availableMins = (sleepTimeMins - wakeTimeMins);
+    if (availableMins < 0) { availableMins += 1440; }
+    
+    const sleepDuration = 1440 - availableMins;
+
+    if (availableMins < totalRequiredMins - PERSONAL_TIME_MINS || sleepDuration < 360) { 
+        alert(getBilingualText(
+            `Your schedule is not realistic. You have approx. ${Math.round(availableMins/60)} hours available, but your goals require at least ${Math.round((totalRequiredMins - PERSONAL_TIME_MINS)/60)} hours for activities alone. Please adjust your study goal, activity duration, or allow for at least 6 hours of sleep.`,
+            `आपकी दिनचर्या व्यावहारिक नहीं है। आपके पास लगभग ${Math.round(availableMins/60)} घंटे उपलब्ध हैं, लेकिन आपके लक्ष्यों के लिए गतिविधियों हेतु ही कम से कम ${Math.round((totalRequiredMins - PERSONAL_TIME_MINS)/60)} घंटे चाहिए। कृपया अपने अध्ययन लक्ष्य, गतिविधि की अवधि को समायोजित करें, या कम से कम 6 घंटे की नींद सुनिश्चित करें।`
+        ));
+        return false;
+    }
+    
+    let currentTime = wakeTimeMins;
+    newSlots.push({ id: 'wake', label_en: 'Wake Up & Fresh Up', label_hi: 'उठो और फ्रेश हो जाओ', time: minutesToTime(currentTime), msg_en: `Good morning!`, msg_hi: `सुप्रभात!` });
+    currentTime += 30;
+
+    const studyPerSession = Math.floor(totalStudyMins / sessions);
+    let subjectIndex = 0;
+
+    for (let i = 1; i <= sessions; i++) {
+        const subject = subjects[subjectIndex % subjects.length] || `Study Session ${i}`;
+        const isFocus = subject.toLowerCase() === focusSubject.toLowerCase();
+        const sessionDuration = studyPerSession + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
+        
+        newSlots.push({ id: `study${i}`, label_en: `${subject}`, label_hi: `${subject}`, time: minutesToTime(currentTime), msg_en: `Time for ${subject}.`, msg_hi: `${subject} का समय।` });
+        currentTime += sessionDuration;
+        subjectIndex++;
+
+        if (i === Math.floor(sessions / 2) && longBreaks > 0) {
+            newSlots.push({ id: `long_break`, label_en: `Lunch Break`, label_hi: `लंच ब्रेक`, time: minutesToTime(currentTime), msg_en: `Time for lunch.`, msg_hi: `लंच का समय।` });
+            currentTime += 60;
+        } else if (i < sessions) {
+            newSlots.push({ id: `break`, label_en: `Short Break`, label_hi: `छोटा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a short break.`, msg_hi: `एक छोटा ब्रेक लें।` });
+            currentTime += 15;
+        }
+    }
+
+    if (addActivity && activityName) {
+        newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।` });
+        currentTime += activityMins;
+    }
+
+    newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(currentTime), msg_en: `Have your dinner.`, msg_hi: `अपना डिनर करें।` });
+    currentTime += 45;
+
+    newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(sleepTimeMins), msg_en: `Time to sleep.`, msg_hi: `सोने का समय।` });
+
+    slotsData = newSlots;
+    return true;
 };
+
+
 const autoGenerate = () => {
 const occupation = document.querySelector('input[name="occupation"]:checked').value;
 const p = getProfile();
@@ -858,97 +1093,182 @@ const subjects = p.subjects || [];
 const subjectsInput = $('subjectsList').value.split('\n').map(s => s.trim()).filter(s => s);
 const allSubjects = subjects.length > 0 ? subjects : subjectsInput;
 const focusSubject = $('focusSubject').value.trim() || p.focusSubject || '';
+
 if (occupation === 'duty') {
-const shiftType = document.querySelector('input[name="shiftType"]:checked').value;
-const ds = $('dutyStart').value, de = $('dutyEnd').value;
-if (!ds || !de) { alert(getBilingualText('Please set duty times.', 'कृपया ड्यूटी का समय निर्धारित करें।')); return; }
-const sM = timeToMinutes(ds), eM = timeToMinutes(de);
-slotsData = defaultSlots(p.exam, p.activityLabel);
-const findSlot = (id) => slotsData.find(s => s.id === id);
-let subjectIndex = 0;
-if (shiftType === 'night') {
-const sleepStartMins = eM + 60;
-const wakeTimeMins = sleepStartMins + 480;
-findSlot('duty_end').time = de;
-findSlot('home').time = minutesToTime(eM + 30);
-findSlot('sleep').time = minutesToTime(sleepStartMins);
-findSlot('wake').time = minutesToTime(wakeTimeMins);
-findSlot('leave').time = minutesToTime(sM - 30);
-findSlot('duty_start').time = ds;
-const dinnerTimeMins = sM - 90;
-findSlot('dinner').time = minutesToTime(dinnerTimeMins);
-const studyBlockStart = wakeTimeMins + 30;
-const availableMins = dinnerTimeMins - studyBlockStart;
-let studyGoalMins = (parseFloat($('dutyStudyGoal').value) || 3) * 60;
-if (studyGoalMins > availableMins) { studyGoalMins = availableMins; }
-let currentTime = studyBlockStart;
-if (studyGoalMins > 30) {
-const caMins = Math.min(30, studyGoalMins);
-let remainingStudy = studyGoalMins - caMins;
-const mainStudyMins = Math.ceil(remainingStudy * 0.65);
-const practiceMins = remainingStudy - mainStudyMins;
-const breakMins = (mainStudyMins > 0 && practiceMins > 0) ? 30 : 0;
-if (mainStudyMins > 0 && allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedMainMins = mainStudyMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('main_study').label_en = `${subject} Study`; findSlot('main_study').label_hi = `${subject} की पढ़ाई`; findSlot('main_study').msg_en = `Start ${subject} study.`; findSlot('main_study').msg_hi = `${subject} की पढ़ाई शुरू करें।`; findSlot('main_study').time = minutesToTime(currentTime); currentTime += adjustedMainMins; }
-if (breakMins > 0) { findSlot('break').time = minutesToTime(currentTime); currentTime += breakMins; }
-if (practiceMins > 0 && allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedPracticeMins = practiceMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('practice').label_en = `${subject} Practice`; findSlot('practice').label_hi = `${subject} प्रैक्टिस`; findSlot('practice').msg_en = `Time for ${subject} practice.`; findSlot('practice').msg_hi = `${subject} प्रैक्टिस का समय।`; findSlot('practice').time = minutesToTime(currentTime); currentTime += adjustedPracticeMins; }
-if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedCaMins = caMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('current_affairs').label_en = `${subject} Affairs`; findSlot('current_affairs').label_hi = `${subject} अफेयर्स`; findSlot('current_affairs').msg_en = `Read ${subject}.`; findSlot('current_affairs').msg_hi = `${subject} पढ़ें।`; findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += adjustedCaMins; } else { findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += caMins; }
-if (mainStudyMins <= 0) slotsData = slotsData.filter(slot => slot.id !== 'main_study');
-if (breakMins <= 0) slotsData = slotsData.filter(slot => slot.id !== 'break');
-if (practiceMins <= 0) slotsData = slotsData.filter(slot => slot.id !== 'practice');
-} else { slotsData = slotsData.filter(slot => !['main_study', 'break', 'practice', 'current_affairs'].includes(slot.id)); }
-slotsData = slotsData.filter(slot => slot.id !== 'nap' && slot.id !== 'morning_study');
-} else { // Day Shift Logic
-const totalStudyGoalMins = (parseFloat($('dutyStudyGoal').value) || 3) * 60;
-findSlot('wake').time = minutesToTime(sM - 90);
-findSlot('leave').time = minutesToTime(sM - 30);
-findSlot('duty_start').time = ds;
-findSlot('duty_end').time = de;
-findSlot('home').time = minutesToTime(eM + 30);
-findSlot('nap').time = minutesToTime(eM + 60);
-const morningStudyDuration = 45;
-let eveningStudyMins = Math.max(0, totalStudyGoalMins - morningStudyDuration);
-const eveningStartTime = eM + 90;
-const eveningAvailableMins = (24 * 60) - eveningStartTime - 60; // Available until midnight, minus dinner
-if (eveningStudyMins > eveningAvailableMins) { eveningStudyMins = eveningAvailableMins; }
-if (allSubjects.length > subjectIndex) {
-const subject = allSubjects[subjectIndex++];
-const isFocus = subject.toLowerCase() === focusSubject.toLowerCase();
-const adjustedMorningDuration = morningStudyDuration + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
-findSlot('morning_study').label_en = `${subject} Study`;
-findSlot('morning_study').label_hi = `${subject} की पढ़ाई`;
-findSlot('morning_study').msg_en = `Start ${subject} study.`;
-findSlot('morning_study').msg_hi = `${subject} की पढ़ाई शुरू करें।`;
-findSlot('morning_study').time = minutesToTime(sM - adjustedMorningDuration);
+    const useManualWake = $('dutySetWakeUpManual').checked;
+    const manualWakeStr = $('dutyWakeUpTime').value;
+    const useManualSleep = $('dutySetSleepManual').checked;
+    const manualSleepStr = $('dutySleepTime').value;
+    const ds = $('dutyStart').value, de = $('dutyEnd').value;
+    const studyGoalHours = parseFloat($('dutyStudyGoal').value) || 0;
+
+    if (!ds || !de || !studyGoalHours) {
+        alert(getBilingualText('Please set duty start, end, and your study goal.', 'कृपया ड्यूटी शुरू, खत्म और अपना अध्ययन लक्ष्य निर्धारित करें।'));
+        return;
+    }
+
+    const sM = timeToMinutes(ds), eM = timeToMinutes(de);
+
+    if (useManualWake && timeToMinutes(manualWakeStr) >= sM) {
+        alert(getBilingualText('Invalid Time: Wake-up time must be before duty starts.', 'अमान्य समय: जागने का समय ड्यूटी शुरू होने से पहले होना चाहिए।'));
+        return;
+    }
+    
+    if (useManualSleep) {
+        const sleepM = timeToMinutes(manualSleepStr);
+        let isError = false;
+        if (sM < eM) { // Day shift
+            if (sleepM > sM && sleepM < eM) isError = true;
+        } else { // Night shift
+            if (sleepM > sM || sleepM < eM) isError = true;
+        }
+        if (isError) {
+             alert(getBilingualText('Invalid Time: Your sleep time cannot be during your duty hours.', 'अमान्य समय: आपके सोने का समय आपके ड्यूटी के घंटों के दौरान नहीं हो सकता।'));
+             return;
+        }
+    }
+
+    let dutyDurationMins = eM - sM;
+    if (dutyDurationMins < 0) { dutyDurationMins += 1440; }
+
+    const studyGoalMins = studyGoalHours * 60;
+    const PERSONAL_TIME_MINS = 4 * 60; 
+    const requiredSleepMins = 6 * 60;
+    const totalRequiredMins = dutyDurationMins + studyGoalMins + PERSONAL_TIME_MINS + requiredSleepMins;
+
+    if (totalRequiredMins > 1440) {
+        const availableForStudy = (1440 - dutyDurationMins - PERSONAL_TIME_MINS - requiredSleepMins) / 60;
+        alert(getBilingualText(
+            `Your schedule is too packed. With your duty of ${Math.round(dutyDurationMins/60)} hours and minimum personal/sleep time, you only have about ${Math.max(0, availableForStudy).toFixed(1)} hours available for study. Please reduce your study goal.`,
+            `आपकी दिनचर्या बहुत व्यस्त है। आपकी ${Math.round(dutyDurationMins/60)} घंटे की ड्यूटी और न्यूनतम व्यक्तिगत/नींद के समय के साथ, आपके पास पढ़ाई के लिए केवल ${Math.max(0, availableForStudy).toFixed(1)} घंटे उपलब्ध हैं। कृपया अपने अध्ययन लक्ष्य को कम करें।`
+        ));
+        return;
+    }
+    
+    slotsData = defaultSlots(p.exam, p.activityLabel);
+    const findSlot = (id) => slotsData.find(s => s.id === id);
+    let subjectIndex = 0;
+
+    if (document.querySelector('input[name="shiftType"]:checked').value === 'night') {
+        const sleepStartMins = eM + 60;
+        const wakeTimeMins = sleepStartMins + 480; 
+        findSlot('duty_end').time = de;
+        findSlot('home').time = minutesToTime(eM + 30);
+        findSlot('sleep').time = minutesToTime(sleepStartMins);
+        findSlot('wake').time = minutesToTime(wakeTimeMins);
+        findSlot('leave').time = minutesToTime(sM - 30);
+        findSlot('duty_start').time = ds;
+        const dinnerTimeMins = sM - 90;
+        findSlot('dinner').time = minutesToTime(dinnerTimeMins);
+        const studyBlockStart = wakeTimeMins + 30;
+        let currentTime = studyBlockStart;
+
+        if (studyGoalMins > 0) {
+            findSlot('main_study').time = minutesToTime(currentTime);
+            findSlot('main_study').label_en = allSubjects[0] || 'Main Study';
+            findSlot('main_study').label_hi = allSubjects[0] || 'मुख्य पढ़ाई';
+            currentTime += studyGoalMins;
+        }
+
+        slotsData = slotsData.filter(s => ['wake', 'duty_start', 'duty_end', 'home', 'dinner', 'sleep', 'main_study', 'leave'].includes(s.id) && (s.id !== 'main_study' || studyGoalMins > 0));
+
+    } else { // Day shift
+        findSlot('wake').time = minutesToTime(sM - 90);
+        findSlot('leave').time = minutesToTime(sM - 30);
+        findSlot('duty_start').time = ds;
+        findSlot('duty_end').time = de;
+        findSlot('home').time = minutesToTime(eM + 30);
+        findSlot('nap').time = minutesToTime(eM + 60);
+
+        const morningStudyDuration = Math.min(45, studyGoalMins);
+        let eveningStudyMins = studyGoalMins - morningStudyDuration;
+        
+        if(morningStudyDuration > 0) {
+            findSlot('morning_study').time = minutesToTime(sM - 30 - morningStudyDuration);
+            findSlot('morning_study').label_en = allSubjects[subjectIndex % allSubjects.length] || 'Morning Study';
+            findSlot('morning_study').label_hi = allSubjects[subjectIndex % allSubjects.length] || 'सुबह की पढ़ाई';
+            subjectIndex++;
+        } else {
+            slotsData = slotsData.filter(s => s.id !== 'morning_study');
+        }
+
+        let currentTime = timeToMinutes(findSlot('nap').time) + 30; 
+        
+        if(eveningStudyMins > 0) {
+             findSlot('main_study').time = minutesToTime(currentTime);
+             findSlot('main_study').label_en = allSubjects[subjectIndex % allSubjects.length] || 'Main Study';
+             findSlot('main_study').label_hi = allSubjects[subjectIndex % allSubjects.length] || 'मुख्य पढ़ाई';
+             currentTime += eveningStudyMins;
+        } else {
+             slotsData = slotsData.filter(s => s.id !== 'main_study');
+        }
+
+        findSlot('dinner').time = minutesToTime(currentTime + 15);
+        findSlot('sleep').time = minutesToTime(currentTime + 75);
+        slotsData = slotsData.filter(s => !['break', 'practice', 'current_affairs'].includes(s.id));
+    }
+
+    if (useManualWake) { findSlot('wake').time = manualWakeStr; }
+    if (useManualSleep) { findSlot('sleep').time = manualSleepStr; }
+
+} else { // Student
+    const studentParams = {
+        studyHours: parseFloat($('studentStudyGoal').value) || 8,
+        addActivity: $('studentAddActivityCheckbox').checked,
+        activityName: $('studentActivityName').value.trim(),
+        activityDuration: parseFloat($('studentActivityDuration').value) || 1,
+        useWake: $('studentSetWakeUpManual').checked,
+        wakeStr: $('wakeUpTime').value,
+        useSleep: $('studentSetSleepManual').checked,
+        sleepStr: $('sleepTime').value
+    };
+    
+    if (!studentParams.studyHours) { 
+        alert(getBilingualText('Please set your daily study goal.', 'कृपया अपना दैनिक अध्ययन लक्ष्य निर्धारित करें।')); 
+        return; 
+    }
+    
+    const success = generateStudentRoutine(studentParams, allSubjects, focusSubject);
+    if (!success) return;
 }
-let currentTime = eveningStartTime;
-if (eveningStudyMins > 0) {
-const caMins = Math.min(30, eveningStudyMins);
-let remainingEveningStudy = eveningStudyMins - caMins;
-const mainStudyMins = Math.ceil(remainingEveningStudy * 0.65);
-const practiceMins = remainingEveningStudy - mainStudyMins;
-if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedMainMins = mainStudyMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('main_study').label_en = `${subject} Study`; findSlot('main_study').label_hi = `${subject} की पढ़ाई`; findSlot('main_study').msg_en = `Start ${subject} study.`; findSlot('main_study').msg_hi = `${subject} की पढ़ाई शुरू करें।`; findSlot('main_study').time = minutesToTime(currentTime); currentTime += adjustedMainMins; } else { findSlot('main_study').time = minutesToTime(currentTime); currentTime += mainStudyMins; }
-findSlot('break').time = minutesToTime(currentTime);
-currentTime += 30;
-if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedPracticeMins = practiceMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('practice').label_en = `${subject} Practice`; findSlot('practice').label_hi = `${subject} प्रैक्टिस`; findSlot('practice').msg_en = `Time for ${subject} practice.`; findSlot('practice').msg_hi = `${subject} प्रैक्टिस का समय।`; findSlot('practice').time = minutesToTime(currentTime); currentTime += adjustedPracticeMins; } else { findSlot('practice').time = minutesToTime(currentTime); currentTime += practiceMins; }
-if (allSubjects.length > subjectIndex) { const subject = allSubjects[subjectIndex++]; const isFocus = subject.toLowerCase() === focusSubject.toLowerCase(); const adjustedCaMins = caMins + (isFocus ? FOCUS_EXTRA_MINUTES : 0); findSlot('current_affairs').label_en = `${subject} Affairs`; findSlot('current_affairs').label_hi = `${subject} अफेयर्स`; findSlot('current_affairs').msg_en = `Read ${subject}.`; findSlot('current_affairs').msg_hi = `${subject} पढ़ें।`; findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += adjustedCaMins; } else { findSlot('current_affairs').time = minutesToTime(currentTime); currentTime += caMins; }
-} else { slotsData = slotsData.filter(slot => !['main_study', 'break', 'practice', 'current_affairs'].includes(slot.id)); }
-findSlot('dinner').time = minutesToTime(currentTime);
-findSlot('sleep').time = minutesToTime(currentTime + 60);
-}
-} else { // Student logic
-const useManualTime = $('studentSetWakeUpManual').checked;
-let wakeUpTime;
-if (useManualTime) {
-wakeUpTime = $('wakeUpTime').value;
-if (!wakeUpTime) { alert(getBilingualText('Please enter a wake-up time.', 'कृपया जागने का समय डालें।')); return; }
-} else { wakeUpTime = '05:00'; }
-const studentParams = { wakeUpStr: wakeUpTime, studyHours: parseFloat($('studentStudyGoal').value) || 8, addActivity: $('studentAddActivityCheckbox').checked, activityName: $('studentActivityName').value.trim(), activityDuration: parseFloat($('studentActivityDuration').value) || 1 };
-if (!studentParams.studyHours) { alert(getBilingualText('Please set your daily study goal.', 'कृपया अपना दैनिक अध्ययन लक्ष्य निर्धारित करें।')); return; }
-generateStudentRoutine(studentParams, allSubjects, focusSubject);
-}
+
 saveSlotsData();
 renderSlots();
-alert(getBilingualText('Routine Generated!', 'रूटीन जेनरेट हो गया!'));
+
+const manualAlarmModal = $('manualAlarmModal');
+const manualAlarmList = $('manualAlarmList');
+manualAlarmList.innerHTML = ''; 
+
+const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
+
+slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
+slotsData.forEach(slot => {
+    if (importantAlarmIds.includes(slot.id)) {
+        const listItem = document.createElement('li');
+        const labelText = getBilingualText(slot.label_en, slot.label_hi);
+
+        if (slot.id === 'wake') {
+            const originalTime = timeToMinutes(slot.time);
+            const fifteenMinutesEarly = minutesToTime(originalTime - 15);
+            const formattedEarlyTime = formatTime(fifteenMinutesEarly);
+            
+            listItem.innerHTML = `
+                <span>${labelText}</span>
+                <span class="time" style="text-align: right;">
+                    ${formattedEarlyTime}
+                    <small style="display: block; color: var(--muted); font-weight: normal;" data-hi="(15 मिनट पहले)" data-en="(15 mins early)"></small>
+                </span>`;
+        } else {
+            const timeText = formatTime(slot.time);
+            listItem.innerHTML = `<span>${labelText}</span><span class="time">${timeText}</span>`;
+        }
+        manualAlarmList.appendChild(listItem);
+    }
+});
+
+manualAlarmModal.style.display = 'block';
+updateTextContent();
 };
 const toggleOccupationView = (occupation, context) => {
 const dutyFields = (context === 'profile') ? $('profileDutyFields') : $('dutyFields');
@@ -963,8 +1283,9 @@ $('timeFormatSel').value = timeFormat;
 const todayStr = new Date().toISOString().split('T')[0];
 [$('targetDate'), $('profileTargetDate')].forEach(el => el.min = todayStr);
 if (localStorage.getItem('profileSetup') !== 'true') {
-$('setupCard').classList.add('open');
-$('setupCard').querySelector('.card-body').style.display = 'block';
+    $('setupCard').classList.add('open');
+    $('setupCard').querySelector('.card-body').style.display = 'block';
+    $('menuBtn').classList.add('blinking-menu');
 }
 const alarmSound = $('alarmSound');
 const alarmTones = [
@@ -1008,6 +1329,11 @@ $('stopAlarmBtn').addEventListener('click', dismissCurrentAlarm);
 setInterval(checkAlarms, 30000);
 checkAlarms();
 // --- EVENT LISTENERS ---
+
+$('closeManualAlarmModalBtn').addEventListener('click', () => {
+    $('manualAlarmModal').style.display = 'none';
+});
+
 $('langSel').addEventListener('change', handleLanguageChange);
 $('timeFormatSel').addEventListener('change', handleTimeFormatChange);
 $('autoBtn').addEventListener('click', autoGenerate);
@@ -1016,8 +1342,16 @@ $$('#examName, #targetDate, #dutyStart, #dutyEnd, #wakeUpTime, #studentStudyGoal
 $('activityName').addEventListener('input', updateDynamicActivityLabels);
 $$('input[name="occupation"]').forEach(radio => { radio.addEventListener('change', (e) => toggleOccupationView(e.target.value, 'main')); });
 $$('input[name="profileOccupation"]').forEach(radio => { radio.addEventListener('change', (e) => toggleOccupationView(e.target.value, 'profile')); });
+
 $('studentSetWakeUpManual').addEventListener('change', (e) => { $('studentManualWakeUpWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
 $('profileStudentSetWakeUpManual').addEventListener('change', (e) => { $('profileStudentManualWakeUpWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('studentSetSleepManual').addEventListener('change', (e) => { $('studentManualSleepWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('profileStudentSetSleepManual').addEventListener('change', (e) => { $('profileStudentManualSleepWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('dutySetWakeUpManual').addEventListener('change', (e) => { $('dutyManualWakeUpWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('profileDutySetWakeUpManual').addEventListener('change', (e) => { $('profileDutyManualWakeUpWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('dutySetSleepManual').addEventListener('change', (e) => { $('dutyManualSleepWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+$('profileDutySetSleepManual').addEventListener('change', (e) => { $('profileDutyManualSleepWrapper').style.display = e.target.checked ? 'flex' : 'none'; });
+
 $('studentAddActivityCheckbox').addEventListener('change', (e) => { $('studentActivityWrapper').style.display = e.target.checked ? 'block' : 'none'; });
 $('profileStudentAddActivityCheckbox').addEventListener('change', (e) => { $('profileStudentActivityWrapper').style.display = e.target.checked ? 'block' : 'none'; });
 const handleShiftChange = (isProfile = false) => {
@@ -1100,8 +1434,9 @@ if (enteredPassword === storedPassword) {
 try {
 $('adminProfileData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_profile') || '{}'), null, 2);
 $('adminSlotsData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_slots') || '[]'), null, 2);
-$('adminQuotesData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_quotes') || '[]'), null, 2);
+$('adminQuotesData').value = "This section is now managed internally by categories (Hindi, Shayari, Shlokas). To edit, please modify the `initializeData` function in the source code.";
 $('adminAudioData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_audio') || '[]'), null, 2);
+$('adminAppsData').value = JSON.stringify(JSON.parse(localStorage.getItem('smart_study_apps') || '[]'), null, 2);
 adminModal.style.display = 'block';
 } catch (err) { alert('Error loading data.'); }
 } else if (enteredPassword !== null) {
@@ -1129,19 +1464,51 @@ $('newAudioImageUrl').value = '';
 alert(getBilingualText('Audio track added!', 'ऑडियो ट्रैक जोड़ दिया गया!'));
 } catch (e) { alert(getBilingualText('Error adding track. Check JSON format.', 'ट्रैक जोड़ने में त्रुटि। JSON फॉर्मेट जांचें।')); }
 });
+$('addStudyApp').addEventListener('click', () => {
+    const name = $('newAppName').value.trim();
+    const linkUrl = $('newAppUrl').value.trim();
+    const imageUrl = $('newAppImageUrl').value.trim();
+    if (!name || !linkUrl || !imageUrl) {
+        alert(getBilingualText('Please fill name, link URL, and image URL.', 'कृपया नाम, लिंक URL और इमेज URL भरें।'));
+        return;
+    }
+    try {
+        let appsData = JSON.parse($('adminAppsData').value || '[]');
+        if (!Array.isArray(appsData)) appsData = [];
+        appsData.push({ name, linkUrl, imageUrl });
+        $('adminAppsData').value = JSON.stringify(appsData, null, 2);
+        $('newAppName').value = '';
+        $('newAppUrl').value = '';
+        $('newAppImageUrl').value = '';
+        alert(getBilingualText('Study app added to the list!', 'स्टडी ऐप सूची में जोड़ दिया गया है!'));
+    } catch (e) {
+        alert(getBilingualText('Error adding app. Check JSON format.', 'ऐप जोड़ने में त्रुटि। JSON फॉर्मेट जांचें।'));
+    }
+});
 $('closeAdminModal').addEventListener('click', () => adminModal.style.display = 'none');
 $('adminSaveBtn').addEventListener('click', () => {
-try {
-localStorage.setItem('smart_profile', JSON.stringify(JSON.parse($('adminProfileData').value)));
-localStorage.setItem('smart_slots', JSON.stringify(JSON.parse($('adminSlotsData').value)));
-localStorage.setItem('smart_quotes', JSON.stringify(JSON.parse($('adminQuotesData').value)));
-localStorage.setItem('smart_audio', JSON.stringify(JSON.parse($('adminAudioData').value)));
-alert(getBilingualText('Admin data saved!', 'एडमिन डेटा सेव हो गया!'));
-adminModal.style.display = 'none';
-refreshUI();
-} catch (e) {
-alert(getBilingualText('Error: Invalid JSON data.', 'त्रुटि: अमान्य JSON डेटा।'));
-}
+    const saveData = (key, textareaId, fieldName) => {
+        try {
+            if (key === 'smart_quotes') return true;
+            JSON.parse($(textareaId).value); 
+            localStorage.setItem(key, $(textareaId).value);
+            return true;
+        } catch (e) {
+            alert(getBilingualText(`Error in ${fieldName} Data: Invalid JSON format.`, `त्रुटि ${fieldName} डेटा में: अमान्य JSON फॉर्मेट।`));
+            return false;
+        }
+    };
+
+    if (
+        saveData('smart_profile', 'adminProfileData', 'Profile') &&
+        saveData('smart_slots', 'adminSlotsData', 'Slots') &&
+        saveData('smart_audio', 'adminAudioData', 'Audio') &&
+        saveData('smart_study_apps', 'adminAppsData', 'Study Apps')
+    ) {
+        alert(getBilingualText('Admin data saved!', 'एडमिन डेटा सेव हो गया!'));
+        adminModal.style.display = 'none';
+        refreshUI();
+    }
 });
 $('adminResetBtn').addEventListener('click', () => { if (confirm(getBilingualText('Are you sure you want to reset EVERYTHING?', 'क्या आप वाकई सब कुछ रीसेट करना चाहते हैं?'))) { localStorage.clear(); alert(getBilingualText('All data has been reset.', 'सारा डेटा रीसेट कर दिया गया है।')); location.reload(); } });
 // --- NOTES SHARING EVENT LISTENERS ---
@@ -1181,17 +1548,6 @@ window.addEventListener('click', e => { if (e.target.classList.contains('modal')
 const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
 const funnyInsults = [ { en: "Wow, champ! At this pace, you'll finish the syllabus by the next election.", hi: "वाह राजा! इस रफ़्तार से तो अगला चुनाव आते-आते सिलेबस पूरा होगा।" }, { en: "Studied for 5 minutes? The country is proud of your sacrifice.", hi: "5 मिनट पढ़ाई कर ली? देश को तुम पर गर्व है।" }, { en: "Is this a study session or a commercial break?", hi: "यह पढ़ाई का सेशन था या कमर्शियल ब्रेक?" } ];
 const goodJobMessages = [ { en: "Great job! Keep up the momentum.", hi: "बहुत बढ़िया! इसी लगन से लगे रहो।" }, { en: "Excellent work! Every minute counts.", hi: "शानदार काम! हर मिनट मायने रखता है।" }, { en: "That's a solid session. You're on the right track!", hi: "यह एक ठोस सेशन था। तुम सही रास्ते पर हो!" } ];
-const studyApps = [
-{ name: 'RWA', imageUrl: 'https://i.postimg.cc/VNRFGLwr/Picsart-25-10-22-01-32-21-033.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.appx.rojgar_with_ankit' },
-{ name: 'Khan Sir', imageUrl: 'https://i.postimg.cc/pVg1nrLK/Picsart-25-10-22-01-31-29-127.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=xyz.penpencil.khansirofficial' },
-{ name: 'TWA', imageUrl: 'https://i.postimg.cc/tgMzQvsw/Picsart-25-10-22-01-28-09-342.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.targetwith.ankit' },
-{ name: 'StudyIQ', imageUrl: 'https://i.postimg.cc/3wRZqQxz/Picsart-25-10-22-01-28-45-011.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.studyiq.android' },
-{ name: 'Adda247', imageUrl: 'https://i.postimg.cc/vmBvKwZJ/Picsart-25-10-22-01-29-16-840.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.adda247.app' },
-{ name: 'Unacademy', imageUrl: 'https://i.postimg.cc/3wRZqQxV/Picsart-25-10-22-01-29-57-537.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.unacademyapp' },
-{ name: 'Utkarsh', imageUrl: 'https://i.postimg.cc/W437yc1W/Picsart-25-10-22-01-30-15-296.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.utkarshnew.android' },
-{ name: 'PW', imageUrl: 'https://i.postimg.cc/pdTBSMLf/Picsart-25-10-22-01-30-31-797.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=xyz.penpencil.physicswala' },
-{ name: 'YouTube', imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/1280px-YouTube_full-color_icon_%282017%29.svg.png', linkUrl: 'https://www.youtube.com/' }
-];
 const formatStudyTime = (ms) => {
     if (isNaN(ms) || ms < 0) ms = 0;
     const totalSeconds = Math.floor(ms / 1000);
@@ -1226,6 +1582,7 @@ const updateStudyDisplay = () => {
 const renderStudyApps = () => {
     const grid = $('studyAppGrid');
     grid.innerHTML = '';
+    const studyApps = JSON.parse(localStorage.getItem('smart_study_apps') || '[]');
     studyApps.forEach(app => {
         const appDiv = document.createElement('div');
         appDiv.className = 'app-item';
@@ -1373,4 +1730,4 @@ init();
 });
 </script>
 </body>
-</html>```
+</html>
