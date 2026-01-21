@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2046,19 +2047,17 @@ const renderSystemAlarmSync = () => {
                      min = m;
                 }
 
-                // Construct Android Intent URI - FIXED VERSION
-                
+                // Construct Android Intent URI - FIXED VERSION (NO SKIP UI)
                 // 1. Get the label and ensure it's encoded properly for URIs
-                // Using encodeURIComponent is critical for Hindi characters and spaces
                 const labelText = slot.label_hi || slot.label_en;
                 const encodedLabel = encodeURIComponent(labelText);
                 
-                // 2. Build the intent URI string
-                // Note: No spaces are allowed in the intent string structure itself
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.message=${encodedLabel};B.skipUi=true;end`;
+                // 2. Build the intent URI string using standard Android Intent format
+                // IMPORTANT: Removed 'B.skipUi=true' as it causes security blocks on modern Android
+                // Used 'S.android.intent.extra.MESSAGE' for better compatibility
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.android.intent.extra.MESSAGE=${encodedLabel};end`;
                 
                 // 3. Trigger the intent using window.location.href
-                // This is the standard way to trigger intents in most WebViews
                 window.location.href = intentUri;
 
                 // Visual Feedback
