@@ -1,3 +1,8 @@
+भाई, मैं समझ गया। `SKIP_UI=true` और `iframe` वाला तरीका ही सबसे बेस्ट है "Web page not available" एरर से बचने के लिए। यह तरीका ब्राउज़र को पेज बदलने नहीं देता, बस बैकग्राउंड में कमांड भेजता है।
+
+मैंने आपके द्वारा दिए गए **"AUTO-SET ALARM"** कोड को मेन कोड में सही जगह (Logic) पर फिट कर दिया है।
+
+यह रहा **पूरा का पूरा (Complete) कोड**। इसे कॉपी करें और चलाएं:
 
 ```html
 <!DOCTYPE html>
@@ -1986,16 +1991,14 @@ const generateStudentRoutine = (params, subjects, focusSubject) => {
 };
 
 // ===============================================================
-// FIXED: RENDER SYSTEM ALARM SYNC MODAL (Target Blank Fix)
+// FIXED: AUTO-SET ALARM (कोशिश करेगा कि खुद सेट हो जाए)
 // ===============================================================
 const renderSystemAlarmSync = () => {
     const modal = $('systemAlarmModal');
     const list = $('systemAlarmList');
-    list.textContent = ''; // Safe Clear
+    list.textContent = ''; 
 
     const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
-
-    // Sort slots by time
     const sortedSlots = [...slotsData].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
 
     sortedSlots.forEach(slot => {
@@ -2010,10 +2013,22 @@ const renderSystemAlarmSync = () => {
             timeSpan.className = 'alarm-sync-time';
             
             let displayTime = slot.time;
+            let hour, min;
+
             if (slot.id === 'wake') {
                 const originalTime = timeToMinutes(slot.time);
                 const fifteenMinutesEarly = minutesToTime((originalTime - 15 + 1440) % 1440);
                 displayTime = fifteenMinutesEarly;
+                
+                // Calculate numbers for Intent
+                const earlyMins = (originalTime - 15 + 1440) % 1440;
+                hour = Math.floor(earlyMins / 60);
+                min = earlyMins % 60;
+            } else {
+                timeSpan.textContent = formatTime(slot.time);
+                const [h, m] = slot.time.split(':').map(Number);
+                hour = h;
+                min = m;
             }
             timeSpan.textContent = formatTime(displayTime);
 
@@ -2024,46 +2039,32 @@ const renderSystemAlarmSync = () => {
             infoDiv.appendChild(timeSpan);
             infoDiv.appendChild(labelSpan);
 
+            // BUTTON
             const setBtn = document.createElement('button');
             setBtn.className = 'alarm-sync-btn';
-            setBtn.textContent = 'SET';
+            setBtn.textContent = 'AUTO SET'; // Button text changed
             
             setBtn.onclick = () => {
-                let hour, min;
-                if (slot.id === 'wake') {
-                     const originalTime = timeToMinutes(slot.time);
-                     const earlyTime = (originalTime - 15 + 1440) % 1440;
-                     hour = Math.floor(earlyTime / 60);
-                     min = earlyTime % 60;
-                } else {
-                     const [h, m] = slot.time.split(':').map(Number);
-                     hour = h;
-                     min = m;
-                }
-
-                // 1. Encoding (Hindi Fix)
-                const rawLabel = slot.label_hi || slot.label_en || "Alarm";
+                // 1. Label Encode (Hindi Fix)
+                const rawLabel = slot.label_hi || slot.label_en || "Study Alarm";
                 const encodedLabel = encodeURIComponent(rawLabel);
-                
-                // 2. Intent URI
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.android.intent.extra.MESSAGE=${encodedLabel};B.android.intent.extra.SKIP_UI=false;end`;
-                
-                // 3. Anchor Hack with Target Blank (Browser Error Fix)
-                const link = document.createElement('a');
-                link.href = intentUri;
-                link.target = "_blank"; // <--- यह सबसे जरूरी है
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                setTimeout(() => { 
-                    if(document.body.contains(link)) document.body.removeChild(link); 
-                }, 500);
 
-                // Visual Feedback
+                // 2. MAGIC INTENT (Auto Set)
+                // skipUi=true का मतलब है: ऐप मत खोलो, बस अलार्म सेट कर दो
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.android.intent.extra.MESSAGE=${encodedLabel};B.android.intent.extra.SKIP_UI=true;end`;
+                
+                // 3. IFRAME METHOD (Error bypass)
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = intentUri;
+                document.body.appendChild(iframe);
+                
+                // Cleanup
+                setTimeout(() => document.body.removeChild(iframe), 1000);
+
                 setBtn.classList.add('added');
-                setBtn.textContent = 'OPENING...';
-                setTimeout(() => { setBtn.textContent = 'ADDED'; }, 2000);
+                setBtn.textContent = 'SETTING...';
+                setTimeout(() => { setBtn.textContent = 'DONE'; }, 2000);
             };
 
             card.appendChild(infoDiv);
@@ -3120,3 +3121,4 @@ init();
 </script>
 </body>
 </html>
+```
