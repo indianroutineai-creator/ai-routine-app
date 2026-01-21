@@ -1,3 +1,5 @@
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,56 +10,178 @@
 <style>
 :root{ /* New Dark Purple Color Scheme */ --bg:#0d1117; --card:#161b22; --border: #30363d; --muted:#8b949e; --accent:#a371f7; --accent-hover:#b38ff9; --success: #238636; --danger: #da3333; }
 *{box-sizing:border-box}
-body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; background-color:var(--bg); color:#c9d1d9; }
+/* Bold Fonts applied */
+body{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; background-color:var(--bg); color:#c9d1d9; font-weight: 500; }
 .wrap{max-width:820px;margin:12px auto;padding:0 16px}
 header{ display:flex; justify-content:space-between; align-items:center; position:relative; padding: 8px 0; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
 .header-left { flex: 1; text-align: left; }
 .header-center { flex: 2; text-align: center; }
 .header-right { flex: 1; text-align: right; }
 .app-title { font-size: 24px; font-weight: 900; padding: 8px 16px; border-radius: 8px; cursor: pointer; user-select: none; background-image: linear-gradient(45deg, var(--accent), #f778ba); -webkit-background-clip: text; background-clip: text; color: transparent; border: 1px solid rgba(255, 255, 255, 0.1); }
-.user-greeting { font-size: 14px; color: var(--muted); font-weight: 500; }
+.user-greeting { font-size: 14px; color: var(--muted); font-weight: 600; }
 .card{ background-color:var(--card); border-radius:8px; margin-bottom:16px; border: 1px solid var(--border); }
-.card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; font-weight: 600; }
+.card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; font-weight: 700; letter-spacing: 0.5px; }
 .card-body { padding: 16px; border-top: 1px solid var(--border); display: none; }
 .card-body-no-padding { padding: 0 16px 16px; border-top: 1px solid var(--border); display: none; }
-.toggle-icon { transition: transform 0.2s; }
+.toggle-icon { transition: transform 0.2s; font-weight: bold; }
 .open .toggle-icon { transform: rotate(90deg); }
-label{display:block; color:var(--muted); font-size:14px; margin-bottom:8px; font-weight: 500;}
+label{display:block; color:var(--muted); font-size:14px; margin-bottom:8px; font-weight: 600;}
 .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom: 12px;}
 .flex-item { flex: 1; min-width: 120px; }
-input,select,textarea{ background-color:#010409; border:1px solid var(--border); padding:10px; border-radius:6px; color:#c9d1d9; width: 100%; font-family: inherit; }
+input,select,textarea{ background-color:#010409; border:1px solid var(--border); padding:10px; border-radius:6px; color:#c9d1d9; width: 100%; font-family: inherit; font-weight: 500; }
 input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
-.btn{ background-color:var(--accent); border:1px solid var(--accent); color:#fff; padding:10px 16px; border-radius:6px; font-weight:600; cursor:pointer; transition: background-color 0.2s; text-decoration: none; text-align: center; }
+.btn{ background-color:var(--accent); border:1px solid var(--accent); color:#fff; padding:10px 16px; border-radius:6px; font-weight:700; cursor:pointer; transition: background-color 0.2s; text-decoration: none; text-align: center; letter-spacing: 0.5px; }
 .btn:hover{ background-color: var(--accent-hover); }
 .btn-secondary { background-color: #21262d; border-color: var(--border); color: #c9d1d9; }
 .btn-secondary:hover { border-color: var(--muted); background-color: #30363d;}
 .btn-danger { background-color: #da3333; border-color: #da3333; color: #fff; }
 .btn-danger:hover { background-color: #f85149; border-color: #f85149; }
 .slot{ display:grid; grid-template-columns: 70px 1fr auto; gap: 8px 16px; padding:12px; border-radius:8px; margin-bottom:8px; background-color:color-mix(in srgb, var(--accent) 5%, transparent); border-left:4px solid var(--slot-color, var(--accent)); align-items: center; }
-.slot .time{ grid-column: 1; grid-row: 1 / 3; font-weight:700; font-size:18px; color:#fff; text-align: center;}
-.slot .label{ grid-column: 2; font-weight:600; color:#c9d1d9;}
-.slot .tip{ grid-column: 2; font-size:12px; color:var(--muted); font-style:italic;}
-.slot-edit-btn { grid-column: 3; grid-row: 1 / 3; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; border-radius: 50%; line-height: 0; }
-.slot-edit-btn:hover { background-color: rgba(255,255,255,0.1); }
-@keyframes motivationGlow { 0%, 100% { box-shadow: 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent), 0 0 8px color-mix(in srgb, var(--accent) 10%, transparent); } 50% { box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent), 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); } }
-.motivation{ text-align:center; font-size:14px; color:var(--muted); font-style:italic; padding:20px; border-radius:8px; background-color:var(--card); margin-bottom:16px; border:1px solid var(--border); transition: all 0.5s ease; animation: motivationGlow 8s infinite ease-in-out; }
-.strategy{ font-size:14px; color:#c9d1d9; line-height:1.6; }
+.slot .time{ grid-column: 1; grid-row: 1 / 3; font-weight:800; font-size:18px; color:#fff; text-align: center;}
+.slot .label{ grid-column: 2; font-weight:700; color:#c9d1d9;}
+.slot .tip{ grid-column: 2; font-size:12px; color:var(--muted); font-style:italic; font-weight: 500;}
+.slot-edit-btn { grid-column: 3; grid-row: 1 / 3; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; border-radius: 50%; font-size: 18px; color: var(--muted); font-weight: bold; }
+.slot-edit-btn:hover { background-color: rgba(255,255,255,0.1); color: #fff; }
+
+/* --- DEEP GK FACT ENGINE STYLES (BOLD) --- */
+.fact-card {
+    background-color: #161b22;
+    border: 1px solid #a371f7;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(163, 113, 247, 0.1);
+}
+.fact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.fact-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.fact-title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+.fact-content {
+    font-size: 15px; 
+    line-height: 1.6;
+    color: #c9d1d9;
+    margin-bottom: 16px;
+    min-height: 60px;
+    font-weight: 500;
+}
+.fact-actions {
+    display: flex;
+    gap: 10px;
+}
+.fact-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-next-fact {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    color: var(--accent);
+}
+.btn-next-fact:hover {
+    background-color: var(--accent);
+    color: white;
+}
+.btn-share-fact {
+    background-color: #238636;
+    color: white;
+}
+.btn-share-fact:hover {
+    background-color: #2ea043;
+}
+/* New Save Button Style */
+.btn-save-fact {
+    background-color: #1f6feb;
+    color: white;
+    flex: 0 0 60px; /* Small fixed width */
+}
+.btn-save-fact:hover {
+    background-color: #388bfd;
+}
+
+/* --- LIBRARY MODAL STYLES --- */
+#libraryList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 20px;
+}
+.saved-fact-card {
+    background-color: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+}
+.saved-fact-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    padding-right: 30px; /* Space for delete button */
+}
+.saved-fact-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+.delete-fact-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.delete-fact-btn:hover {
+    color: #ff7b72;
+}
+
+/* -------------------------------- */
+
+.strategy{ font-size:14px; color:#c9d1d9; line-height:1.6; font-weight: 500; }
 .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.7);}
 .modal-content{background-color:var(--card);margin:10% auto;padding:24px;border-radius:8px;width:90%;max-width:600px;max-height:80vh;overflow-y:auto;border:1px solid var(--border);}
 #alarmModal .modal-content { text-align: center; animation: pulse 1.2s infinite; }
-#alarmModal h2 { color: var(--accent); font-size: 28px; }
+#alarmModal h2 { color: var(--accent); font-size: 28px; font-weight: 800; }
 @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 70%, transparent); } 70% { transform: scale(1.02); box-shadow: 0 0 10px 20px color-mix(in srgb, var(--accent) 0%, transparent); } 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); } }
 #adminModal .modal-content { max-width: 700px; animation: none; }
-.close{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
+.close{color:#aaa;float:right;font-size:28px;font-weight:900;cursor:pointer;}
 .close:hover{color:var(--accent);}
 .menu-icon {cursor:pointer; padding:8px;}
 .menu-icon div {width:5px; height:5px; background-color:#c9d1d9; border-radius:50%; margin-bottom:4px;}
 .dropdown-menu {display:none; position:absolute; left:0; top:50px; background-color:var(--card); border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.4); z-index:1001; padding:8px 0; border:1px solid var(--border); min-width: 220px;}
-.dropdown-menu a {display:block; padding:10px 16px; color:#c9d1d9; text-decoration:none; font-size:14px;}
+.dropdown-menu a {display:block; padding:10px 16px; color:#c9d1d9; text-decoration:none; font-size:14px; font-weight: 600;}
 .dropdown-menu a:hover {background-color:color-mix(in srgb, var(--accent) 10%, transparent); color:#fff;}
 .dropdown-menu .setting {padding:10px 16px;}
-footer { text-align: center; padding: 24px 0; margin-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
-footer a { color: var(--muted); text-decoration: none; font-weight: 600; margin: 0 8px; }
+footer { text-align: center; padding: 24px 0; margin-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); font-weight: 500; }
+footer a { color: var(--muted); text-decoration: none; font-weight: 700; margin: 0 8px; }
 footer a:hover { color: var(--accent); }
 #adminLoginBtn { font-size: 0; display: inline-block; width: 6px; height: 6px; background-color: var(--muted); border-radius: 50%; transition: background-color 0.2s ease; margin-top: 10px;}
 #adminLoginBtn:hover { background-color: var(--accent); }
@@ -87,7 +211,7 @@ footer a:hover { color: var(--accent); }
 .admin-add-form input { flex: 1; min-width: 150px; }
 .admin-add-form button { flex-shrink: 0; }
 .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 16px; margin-top: 16px; }
-.app-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--muted); font-size: 12px; transition: transform 0.2s ease, color 0.2s ease; cursor: pointer; }
+.app-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--muted); font-size: 12px; transition: transform 0.2s ease, color 0.2s ease; cursor: pointer; font-weight: 600; }
 .app-item:hover { transform: translateY(-4px); color: #fff; }
 .app-item img { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 8px; object-fit: cover; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 @keyframes rainbowGlow { 0%, 100% { border-color: #ff7b72; box-shadow: 0 0 15px rgba(255, 123, 114, 0.8), 0 0 25px rgba(255, 123, 114, 0.6); } 20% { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251, 191, 36, 0.8), 0 0 25px rgba(251, 191, 36, 0.6); } 40% { border-color: #3fb950; box-shadow: 0 0 15px rgba(63, 185, 80, 0.8), 0 0 25px rgba(63, 185, 80, 0.6); } 60% { border-color: #58a6ff; box-shadow: 0 0 15px rgba(88, 166, 255, 0.8), 0 0 25px rgba(88, 166, 255, 0.6); } 80% { border-color: #a371f7; box-shadow: 0 0 15px rgba(163, 113, 247, 0.8), 0 0 25px rgba(163, 113, 247, 0.6); } }
@@ -95,23 +219,23 @@ footer a:hover { color: var(--accent); }
 #studyCard { background-color: #FF8C00 !important; border-color: #E07B00 !important; }
 #studyCard .card-header, #studyCard .card-body { color: #000 !important; }
 #studyCard label, #studyCard .flex-item div { color: #000 !important; }
-#studyCard input, #studyCard select { background-color: rgba(0, 0, 0, 0.8) !important; color: #c9d1d9 !important; border-color: #E07B00 !important; }
+#studyCard input, #studyCard select { background-color: rgba(0, 0, 0, 0.8) !important; color: #c9d1d9 !important; border-color: #E07B00 !important; font-weight: 600 !important; }
 #studyCard .app-item { color: #000 !important; }
 #studyCard .app-item:hover { color: #fff !important; }
 #studyCard .app-item img { background-color: #FF8C00 !important; }
 .occupation-selector { display: flex; gap: 10px; background-color: #010409; padding: 5px; border-radius: 8px; border: 1px solid var(--border); }
-.occupation-selector label { flex: 1; padding: 8px; text-align: center; border-radius: 6px; cursor: pointer; transition: background-color 0.2s, color 0.2s; margin: 0; font-size: 14px; color: var(--muted); }
+.occupation-selector label { flex: 1; padding: 8px; text-align: center; border-radius: 6px; cursor: pointer; transition: background-color 0.2s, color 0.2s; margin: 0; font-size: 14px; color: var(--muted); font-weight: 600; }
 .occupation-selector input { display: none; }
-.occupation-selector input:checked + label { background-color: var(--accent); color: white; font-weight: 600; }
+.occupation-selector input:checked + label { background-color: var(--accent); color: white; font-weight: 700; }
 .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .checkbox-row label { margin-bottom: 0; }
 .checkbox-row input[type="checkbox"] { width: auto; }
 /* NEW: Styles for Subject Selector Modal */
-.subject-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; }
+.subject-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; font-weight: 600; }
 .subject-item:last-child { border-bottom: none; }
 .subject-item:hover { background-color: color-mix(in srgb, var(--accent) 10%, transparent); }
 /* Ad Placeholder Styles */
-.ad-placeholder { min-height: 50px; width: 100%; background-color: #333; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; margin-bottom: 16px; border-radius: 8px; }
+.ad-placeholder { min-height: 50px; width: 100%; background-color: #333; display: flex; align-items: center; justify-content: center; color: #888; font-size: 12px; margin-bottom: 16px; border-radius: 8px; font-weight: 600; }
 
 /* NEW STYLE FOR MANUAL ALARM MODAL */
 #manualAlarmList {
@@ -130,12 +254,13 @@ footer a:hover { color: var(--accent); }
     padding: 10px 12px;
     border-bottom: 1px solid var(--border);
     line-height: 1.4;
+    font-weight: 500;
 }
 #manualAlarmList li:last-child {
     border-bottom: none;
 }
 #manualAlarmList .time {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--accent);
     flex-shrink: 0;
     margin-left: 16px;
@@ -156,6 +281,352 @@ footer a:hover { color: var(--accent); }
   animation: blinkAnimation 1.5s infinite ease-in-out;
   border-radius: 8px;
 }
+/* NEW: Highlighted Subjects Style */
+.highlight-subjects {
+    font-weight: 800;
+    color: #fff;
+    background-color: color-mix(in srgb, var(--accent) 15%, transparent);
+    border: 1px solid var(--accent);
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+/* ================================================= */
+/* UPDATED SLIDER CSS - Manual + Auto Scroll */
+/* ================================================= */
+#subjectImageSlider {
+    width: 100%;
+    margin-bottom: 16px;
+    display: none; /* Hidden by default */
+}
+.slider-container {
+    width: 100%;
+    overflow-x: auto; /* Enable manual scrolling */
+    display: flex;
+    gap: 16px;
+    padding: 10px 0;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+}
+/* Hide scrollbar for cleaner look */
+.slider-container::-webkit-scrollbar {
+    display: none;
+}
+.slider-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.slide-img-wrapper {
+    flex: 0 0 auto; /* Prevent shrinking */
+    width: 260px; /* Bigger width (RWA/YouTube style) */
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.slide-img-wrapper:hover {
+    transform: scale(1.02);
+}
+.slide-img {
+    width: 100%;
+    aspect-ratio: 16/9; /* YouTube Thumbnail Ratio */
+    object-fit: cover;
+    display: block;
+    background-color: #000;
+}
+/* Premium text overlay */
+.slide-text-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0));
+    color: #fff;
+    padding: 20px 10px 10px;
+    font-size: 14px;
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* SCIENCE POPUP GRID */
+.science-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+/* --- ULTRA INTELLIGENT REALITY CHECK STYLES --- */
+.reality-track {
+    width: 100%;
+    height: 36px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    position: relative;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#realityProgressBar {
+    height: 100%;
+    width: 0%;
+    border-right: 1px solid #fff;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+    /* Default Green (On Track) */
+    background: linear-gradient(90deg, #238636, #00ff88, #238636);
+    background-size: 200% 100%;
+    animation: flowGlow 2s linear infinite;
+    box-shadow: 0 0 15px #00ff88;
+}
+
+/* RED MODE: When off track */
+#realityProgressBar.danger-mode {
+    background: linear-gradient(90deg, #8a0000, #ff3333, #8a0000);
+    box-shadow: 0 0 20px #ff3333;
+    animation: flowGlowFast 1s linear infinite;
+}
+
+.reality-text-overlay {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 13px;
+    font-weight: 900;
+    font-family: sans-serif;
+    z-index: 5;
+    pointer-events: none;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    letter-spacing: 1px;
+}
+
+/* Status Text Colors */
+.status-text-good { color: #fff; }
+.status-text-bad { color: #ffcccc; text-shadow: 0 0 8px #ff0000; }
+
+@keyframes flowGlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+@keyframes flowGlowFast {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* =================================================== */
+/* NEW STYLES FOR BUTTONS INSTEAD OF CARD */
+/* =================================================== */
+.action-buttons-grid {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.action-card-btn {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 24px 12px;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-card-btn:active {
+    transform: scale(0.98);
+}
+
+.action-card-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* Left Button: Per Day Test (Green Gradient) */
+.btn-grad-green {
+    background: linear-gradient(135deg, #1a7f37 0%, #2ea043 100%);
+    box-shadow: 0 4px 6px rgba(46, 160, 67, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Right Button: Community Notes (Purple Gradient) */
+.btn-grad-purple {
+    background: linear-gradient(135deg, #8957e5 0%, #a371f7 100%);
+    box-shadow: 0 4px 6px rgba(137, 87, 229, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* New Buttons: Map (Blue) and Books (Orange) */
+.btn-grad-blue {
+    background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    box-shadow: 0 4px 6px rgba(31, 111, 235, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-grad-orange {
+    background: linear-gradient(135deg, #d29922 0%, #f0883e 100%);
+    box-shadow: 0 4px 6px rgba(210, 153, 34, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ================================================== */
+/* FULL SCREEN BUBBLE POP ANIMATION FOR INTERNAL BROWSER */
+/* ================================================== */
+#internalBrowserModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: #0d1117; /* Background matching app */
+}
+
+#internalBrowserModal .modal-content {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    background-color: #0d1117;
+    /* SUPERB ANIMATION: Bubble Pop + Bounce */
+    animation: bubblePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Loader Styles */
+.browser-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 4px solid #30363d;
+    border-top: 4px solid #a371f7; /* Accent Color */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    z-index: 10;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes bubblePop {
+    0% { 
+        transform: scale(0.3); 
+        opacity: 0; 
+        border-radius: 100%;
+    }
+    60% {
+        transform: scale(1.05);
+        opacity: 1;
+        border-radius: 20px;
+    }
+    100% { 
+        transform: scale(1); 
+        opacity: 1; 
+        border-radius: 0;
+    }
+}
+
+/* ============================================== */
+/* SYSTEM ALARM SYNC CENTER STYLES */
+/* ============================================== */
+.alarm-sync-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 4px; /* Space for shadow */
+}
+
+.alarm-sync-card {
+    background-color: #161b22;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s, border-color 0.2s;
+}
+.alarm-sync-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.alarm-sync-info {
+    display: flex;
+    flex-direction: column;
+}
+.alarm-sync-time {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+.alarm-sync-label {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.alarm-sync-btn {
+    background-color: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 0 5px rgba(163, 113, 247, 0.2);
+    min-width: 70px;
+}
+
+.alarm-sync-btn:hover {
+    background-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(163, 113, 247, 0.6);
+}
+
+.alarm-sync-btn.added {
+    background-color: var(--success);
+    border-color: var(--success);
+    color: #fff;
+    box-shadow: none;
+    cursor: default;
+}
+
 </style>
 </head>
 <body>
@@ -206,6 +677,30 @@ footer a:hover { color: var(--accent); }
 <p style="font-size:12px; color:var(--muted); margin-top: 8px;" data-hi="नोट: Grok के लिए X (ट्विटर) प्रीमियम की आवश्यकता हो सकती है।" data-en="Note: Grok may require X (Twitter) Premium."></p>
 </div>
 </div>
+
+<!-- ============================================== -->
+<!-- NEW: INTELLIGENT REALITY CHECK BAR -->
+<!-- ============================================== -->
+<div id="realityCheckContainer">
+    <div class="reality-track">
+        <div id="realityProgressBar"></div>
+        <div class="reality-text-overlay">
+            <!-- Content injected by JS -->
+        </div>
+    </div>
+</div>
+<!-- ============================================== -->
+
+<!-- ======================================================== -->
+<!-- NEW: SUBJECT IMAGE SLIDER (Class 9 Only) -->
+<!-- ======================================================== -->
+<div id="subjectImageSlider">
+    <div class="slider-container" id="sliderContainer">
+        <!-- Images injected via JS -->
+    </div>
+</div>
+<!-- ======================================================== -->
+
 <div id="setupCard" class="card">
 <div class="card-header">
 <span data-hi="सेटअप और स्ट्रेटजी" data-en="Setup & Strategy">Setup & Strategy</span>
@@ -213,19 +708,32 @@ footer a:hover { color: var(--accent); }
 </div>
 <div class="card-body">
 <div id="detailsInputs">
+<!-- NEW: CLASS SELECTOR FOR SETUP CARD -->
+<div class="row">
+<div class="flex-item">
+<label class="small" data-hi="शिक्षा स्तर / कक्षा" data-en="Education Level / Class">Education Level / Class</label>
+<select id="classSelector">
+    <option value="general" data-hi="अन्य / कॉम्पिटिशन तैयारी" data-en="General / Competition Prep">General / Competition Prep</option>
+    <option value="9">Class 9</option>
+    <option value="10">Class 10</option>
+    <option value="11">Class 11</option>
+    <option value="12">Class 12</option>
+</select>
+</div>
+</div>
 <div class="row">
 <div class="flex-item">
 <label class="small" data-hi="आपकी भूमिका" data-en="Your Role">Your Role</label>
 <div class="occupation-selector">
 <input type="radio" id="roleDuty" name="occupation" value="duty" checked>
-<label for="roleDuty" data-hi="पेशेवर" data-en="Professional">Professional</label>
+<label for="roleDuty" data-hi="पेशेवर" data-en="Professional" id="roleDutyLabel">Professional</label>
 <input type="radio" id="roleStudent" name="occupation" value="student">
 <label for="roleStudent" data-hi="छात्र" data-en="Student">Student</label>
 </div>
 </div>
 </div>
 <div class="row">
-<div class="flex-item"><label class="small" data-hi="परीक्षा" data-en="Exam">Exam</label><input type="text" id="examName" placeholder="e.g., UPSC"></div>
+<div class="flex-item" id="setupExamWrapper"><label class="small" data-hi="परीक्षा" data-en="Exam">Exam</label><input type="text" id="examName" placeholder="e.g., UPSC"></div>
 <div class="flex-item"><label class="small" data-hi="लक्ष्य तिथि" data-en="Target Date">Target Date</label><input type="date" id="targetDate"></div>
 </div>
 <div class="row">
@@ -314,9 +822,9 @@ footer a:hover { color: var(--accent); }
 </div>
 </div>
 </div>
-<div id="profileSummary" style="display:none; color:var(--success); line-height:1.6;"></div>
+<div id="profileSummary" style="display:none; color:var(--success); line-height:1.6; font-weight: 600;"></div>
 <div style="margin-top:16px; border-top: 1px solid var(--border); padding-top:16px;">
-<strong data-hi="आपकी स्ट्रेटजी" data-en="Your Strategy">Your Strategy</strong>
+<strong data-hi="आपकी स्ट्रेटजी" data-en="Your Strategy" style="font-weight: 700;">Your Strategy</strong>
 <div id="strategy" class="strategy" style="margin-top:8px;"></div>
 </div>
 <div style="margin-top:16px;" class="row">
@@ -324,7 +832,26 @@ footer a:hover { color: var(--accent); }
 </div>
 </div>
 </div>
-<div class="motivation" id="motivationQuote">Loading motivation...</div>
+
+<!-- ============================================== -->
+<!-- NEW: DEEP GK FACT ENGINE CARD -->
+<!-- ============================================== -->
+<div class="fact-card" id="factCard">
+    <div class="fact-header">
+        <div class="fact-label">Deep GK Fact</div>
+        <!-- Library Access Button -->
+        <div style="font-size: 12px; cursor: pointer; color: var(--accent); font-weight: bold; border: 1px solid var(--accent); padding: 2px 8px; border-radius: 4px;" id="openLibraryBtn">📂 SAVED LIBRARY</div>
+    </div>
+    <div class="fact-title" id="factTitle">Loading Knowledge...</div>
+    <div class="fact-content" id="factText">Exploring the depths of the unknown...</div>
+    <div class="fact-actions">
+        <button class="fact-btn btn-next-fact" id="nextFactBtn">Next Fact</button>
+        <button class="fact-btn btn-save-fact" id="saveFactBtn">Save</button>
+        <button class="fact-btn btn-share-fact" id="shareFactBtn">Share</button>
+    </div>
+</div>
+<!-- ============================================== -->
+
 <div id="studyCard" class="card">
 <div class="card-header">
 <span data-hi="स्टडी ऐप्स और टाइमर" data-en="Study Apps & Timer">Study Apps & Timer</span>
@@ -334,17 +861,18 @@ footer a:hover { color: var(--accent); }
 <div class="row">
 <div class="flex-item">
 <label data-hi="आज का स्टडी टाइम" data-en="Today's Study Time">Today's Study Time</label>
-<div id="todayStudyTime" style="font-size: 24px; font-weight: bold; color: var(--success);">0h 0m 0s</div>
+<div id="todayStudyTime" style="font-size: 24px; font-weight: 800; color: var(--success);">0h 0m 0s</div>
 </div>
 <div class="flex-item">
 <label data-hi="कुल स्टडी टाइम" data-en="Total Study Time">Total Study Time</label>
-<div id="totalStudyTime" style="font-size: 24px; font-weight: bold; color: var(--accent);">0h 0m 0s</div>
+<div id="totalStudyTime" style="font-size: 24px; font-weight: 800; color: var(--accent);">0h 0m 0s</div>
 </div>
 </div>
+
 <!-- NEW: Subject-wise stats display -->
 <div style="margin-top:16px; border-top: 1px solid var(--border); padding-top:16px;">
     <label data-hi="आज का विषय-वार अध्ययन" data-en="Today's Subject-wise Study">Today's Subject-wise Study</label>
-    <div id="subjectStatsDisplay" style="font-size: 14px; line-height: 1.6;"></div>
+    <div id="subjectStatsDisplay" style="font-size: 14px; line-height: 1.6; font-weight: 500;"></div>
 </div>
 <div style="margin-top:16px; border-top: 1px solid var(--border); padding-top:16px;">
 <label data-hi="पढ़ाई शुरू करने के लिए एक ऐप चुनें" data-en="Choose an App to Start Studying">Choose an App to Start Studying</label>
@@ -354,18 +882,38 @@ footer a:hover { color: var(--accent); }
 </div>
 </div>
 </div>
-<!-- NEW SIMPLIFIED NOTES CARD -->
-<div id="notesCard" class="card">
-<div class="card-header">
-<span data-hi="सामुदायिक नोट्स" data-en="Community Notes">Community Notes</span>
-<span class="toggle-icon">▶</span>
+
+<!-- ============================================== -->
+<!-- BUTTONS: ROW 1 (Practice & Notes) -->
+<!-- ============================================== -->
+<div class="action-buttons-grid">
+    <!-- Left: Per Day Test (Green Gradient) -> CHANGED TO "Aaj Ka Abhyas" -->
+    <button id="perDayTestBtn" class="action-card-btn btn-grad-green">
+        <span data-hi="आज का अभ्यास" data-en="Today's Practice">Today's Practice</span>
+    </button>
+    
+    <!-- Right: Community Notes (Purple Gradient) -->
+    <button id="communityNotesMainBtn" class="action-card-btn btn-grad-purple">
+        <span data-hi="सामुदायिक नोट्स" data-en="Community Notes">Community Notes</span>
+    </button>
 </div>
-<div class="card-body">
-<p data-hi="दूसरों के नोट्स पढ़ने या अपना नोट साझा करने के लिए नीचे दिए गए बटन का उपयोग करें।" data-en="Use the buttons below to read notes from others or share your own." style="font-size:14px; color:var(--muted); margin-bottom:20px;"></p>
-<button id="readNotesBtn" class="btn" style="width: 100%; margin-bottom: 12px;" data-hi="नोट्स पढ़ें" data-en="Read Notes">Read Notes</button>
-<button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
+
+<!-- ============================================== -->
+<!-- BUTTONS: ROW 2 (Map & Books) -->
+<!-- ============================================== -->
+<div class="action-buttons-grid">
+    <!-- Left: Map (Blue Gradient) -->
+    <button id="mapBtn" class="action-card-btn btn-grad-blue">
+        <span data-hi="मैप" data-en="Map">Map</span>
+    </button>
+    
+    <!-- Right: Free Books (Orange Gradient) -->
+    <button id="booksBtn" class="action-card-btn btn-grad-orange">
+        <span data-hi="फ्री बुक्स" data-en="Free Books">Free Books</span>
+    </button>
 </div>
-</div>
+<!-- ============================================== -->
+
 <div id="audioCard" class="card">
 <div class="card-header">
 <span data-hi="जल्द आ रहा है" data-en="Coming Soon">Coming Soon</span>
@@ -409,7 +957,7 @@ footer a:hover { color: var(--accent); }
 
 <!-- Bottom Banner -->
 <div class="wrap">
-    <div id="updateBanner" class="ad-placeholder" style="background-color: var(--accent); color: white; cursor: pointer; font-weight: bold; text-align: center; padding: 10px 0; font-size: 14px;">
+    <div id="updateBanner" class="ad-placeholder" style="background-color: var(--accent); color: white; cursor: pointer; font-weight: 800; text-align: center; padding: 10px 0; font-size: 14px;">
         नया अपडेट जल्द आ रहा है! जानने के लिए क्लिक करें
     </div>
 </div>
@@ -418,38 +966,67 @@ footer a:hover { color: var(--accent); }
 <div id="alarmModal" class="modal">
 <div class="modal-content">
 <h2 id="alarmTitle" data-hi="रिमाइंडर!" data-en="Reminder!">Reminder!</h2>
-<p id="alarmMessage" style="font-size: 18px;"></p>
+<p id="alarmMessage" style="font-size: 18px; font-weight: 600;"></p>
 <button id="stopAlarmBtn" class="btn btn-danger" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
 <audio id="alarmSound"></audio>
 </div>
 </div>
 
 <!-- =============================================================== -->
-<!-- ============= NEW MANUAL ALARM SUGGESTION MODAL =============== -->
+<!-- ============= SYSTEM ALARM SYNC CENTER (INTENT BRIDGE) ======== -->
 <!-- =============================================================== -->
-<div id="manualAlarmModal" class="modal">
+<div id="systemAlarmModal" class="modal">
     <div class="modal-content">
-        <h2 data-hi="रूटीन तैयार है!" data-en="Routine Ready!" style="margin-top:0; color: var(--success);">Routine Ready!</h2>
-        <p data-hi="100% भरोसेमंद अलार्म के लिए जो ऐप बंद होने पर भी बजें, कृपया इन ज़रूरी समय को अपने फ़ोन के मुख्य घड़ी (Clock) ऐप में सेट करें।" data-en="For 100% reliable alarms that work even when the app is closed, please set these important times in your phone's main Clock App.">For 100% reliable alarms that work even when the app is closed, please set these important times in your phone's main Clock App.</p>
+        <h2 style="margin-top:0; color: var(--accent); font-weight: 800; font-size: 24px;">
+            ⏰ System Alarm Sync
+        </h2>
+        <p data-hi="100% भरोसेमंद अलार्म के लिए, नीचे दिए गए बटन दबाकर सीधे अपने फोन की घड़ी में अलार्म सेट करें।" 
+           data-en="For 100% reliable alarms, click below to set alarms directly in your phone's Clock app." 
+           style="font-weight: 500; color: var(--muted); margin-bottom: 20px;">
+        </p>
         
-        <ul id="manualAlarmList">
-            <!-- Routine will be dynamically inserted here by JavaScript -->
-        </ul>
+        <div id="systemAlarmList" class="alarm-sync-list">
+            <!-- Dynamic Alarm Cards Injected Here -->
+        </div>
 
-        <button id="closeManualAlarmModalBtn" class="btn" style="width: 100%; margin-top: 20px;" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
+        <button id="closeSystemAlarmModalBtn" class="btn" style="width: 100%; margin-top: 20px; font-weight: 800;" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
     </div>
 </div>
 <!-- =============================================================== -->
-<!-- =============================================================== -->
+
+<!-- SCIENCE SELECTION MODAL -->
+<div id="scienceModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeScienceModal">&times;</span>
+        <h2 data-hi="विज्ञान चुनें" data-en="Select Science" style="margin-top:0; font-weight: 800;">Select Science Branch</h2>
+        <div id="scienceGrid" class="science-grid">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+</div>
 
 
 <!-- Other Modals -->
 <div id="profileModal" class="modal">
 <div class="modal-content">
 <span class="close" id="closeProfileModal">&times;</span>
-<h2 data-hi="प्रोफ़ाइल सेटअप" data-en="Profile Setup" style="margin-top:0;">Profile Setup</h2>
-<div class="row"><div class="flex-item"><label data-hi="नाम" data-en="Name">Name</label><input type="text" id="profileName"></div><div class="flex-item"><label data-hi="उम्र" data-en="Age">Age</label><input type="number" id="profileAge" min="16" max="60"></div></div><div class="row"><div class="flex-item"><label class="small" data-hi="आपकी भूमिका" data-en="Your Role">Your Role</label><div class="occupation-selector"><input type="radio" id="profileRoleDuty" name="profileOccupation" value="duty" checked><label for="profileRoleDuty" data-hi="पेशेवर" data-en="Professional">Professional</label><input type="radio" id="profileRoleStudent" name="profileOccupation" value="student"><label for="profileRoleStudent" data-hi="छात्र" data-en="Student">Student</label></div></div></div>
-<div class="row"><div class="flex-item"><label data-hi="परीक्षा/विषय" data-en="Exam/Subject">Exam/Subject</label><input type="text" id="profileExam"></div></div>
+<h2 data-hi="प्रोफ़ाइल सेटअप" data-en="Profile Setup" style="margin-top:0; font-weight: 800;">Profile Setup</h2>
+<div class="row"><div class="flex-item"><label data-hi="नाम" data-en="Name">Name</label><input type="text" id="profileName"></div><div class="flex-item"><label data-hi="उम्र" data-en="Age">Age</label><input type="number" id="profileAge" min="16" max="60"></div></div>
+<!-- NEW: CLASS SELECTOR FOR PROFILE MODAL -->
+<div class="row">
+<div class="flex-item">
+<label class="small" data-hi="शिक्षा स्तर / कक्षा" data-en="Education Level / Class">Education Level / Class</label>
+<select id="profileClassSelector">
+    <option value="general" data-hi="अन्य / कॉम्पिटिशन तैयारी" data-en="General / Competition Prep">General / Competition Prep</option>
+    <option value="9">Class 9</option>
+    <option value="10">Class 10</option>
+    <option value="11">Class 11</option>
+    <option value="12">Class 12</option>
+</select>
+</div>
+</div>
+<div class="row"><div class="flex-item"><label class="small" data-hi="आपकी भूमिका" data-en="Your Role">Your Role</label><div class="occupation-selector"><input type="radio" id="profileRoleDuty" name="profileOccupation" value="duty" checked><label for="profileRoleDuty" data-hi="पेशेवर" data-en="Professional" id="profileRoleDutyLabel">Professional</label><input type="radio" id="profileRoleStudent" name="profileOccupation" value="student"><label for="profileRoleStudent" data-hi="छात्र" data-en="Student">Student</label></div></div></div>
+<div class="row"><div class="flex-item" id="profileExamWrapper"><label data-hi="परीक्षा/विषय" data-en="Exam/Subject">Exam/Subject</label><input type="text" id="profileExam"></div></div>
 <div class="row"><div class="flex-item"><label data-hi="लक्ष्य तिथि" data-en="Target Date">Target Date</label><input type="date" id="profileTargetDate"></div></div>
 <div class="row"><div class="flex-item"><label data-hi="विषय (प्रत्येक लाइन पर एक)" data-en="Subjects (one per line)">Subjects (one per line)</label><textarea id="profileSubjects" rows="3" placeholder="e.g., History&#10;Math&#10;Science"></textarea></div></div>
 <div class="row"><div class="flex-item"><label data-hi="फोकस सब्जेक्ट (कमजोर विषय)" data-en="Focus Subject (Weak Subject)">Focus Subject (Weak Subject)</label><input type="text" id="profileFocusSubject" placeholder="e.g., Math"></div></div>
@@ -500,7 +1077,7 @@ footer a:hover { color: var(--accent); }
 <div id="slotEditModal" class="modal">
 <div class="modal-content">
 <span class="close" id="closeSlotEdit">&times;</span>
-<h2 id="slotEditTitle" style="margin-top:0;">Edit Slot</h2>
+<h2 id="slotEditTitle" style="margin-top:0; font-weight: 800;">Edit Slot</h2>
 <input type="hidden" id="slotEditId">
 <div class="row"><div class="flex-item"><label data-hi="समय" data-en="Time">Time</label><input type="time" id="slotEditTime"></div></div>
 <div class="row"><div class="flex-item"><label data-hi="हिंदी संदेश" data-en="Hindi Message">Hindi Message</label><input type="text" id="slotEditMsgHi"></div></div>
@@ -512,20 +1089,91 @@ footer a:hover { color: var(--accent); }
 <div id="noteSubmissionModal" class="modal">
 <div class="modal-content">
 <span class="close" id="closeNoteSubmissionModal">&times;</span>
-<h2 data-hi="अपना नोट साझा करें" data-en="Share Your Note" style="margin-top:0;">Share Your Note</h2>
-<p data-hi="आपका नोट समीक्षा के लिए भेजा जाएगा।" data-en="Your note will be sent for review." style="font-size:14px; color:var(--muted); margin-top:-10px; margin-bottom:20px;"></p>
+<h2 data-hi="अपना नोट साझा करें" data-en="Share Your Note" style="margin-top:0; font-weight: 800;">Share Your Note</h2>
+<p data-hi="आपका नोट समीक्षा के लिए भेजा जाएगा।" data-en="Your note will be sent for review." style="font-size:14px; color:var(--muted); margin-top:-10px; margin-bottom:20px; font-weight: 500;"></p>
 <div class="row"><div class="flex-item"><label data-hi="आपका नाम" data-en="Your Name">Your Name</label><input type="text" id="noteAuthor" placeholder="e.g., Amit Kumar"></div></div>
 <div class="row"><div class="flex-item"><label data-hi="नोट का शीर्षक" data-en="Note Title">Note Title</label><input type="text" id="noteTitle" placeholder="e.g., History Imp Dates"></div></div>
 <div class="row"><div class="flex-item"><label data-hi="नोट की सामग्री / लिंक" data-en="Note Content / Link">Note Content / Link</label><textarea id="noteContent" rows="6" placeholder="Write your note here or paste a link..."></textarea></div></div>
 <div class="row" style="margin-top:16px;"><button id="submitNoteBtn" class="btn" data-hi="समीक्षा के लिए सबमिट करें" data-en="Submit for Review">Submit for Review</button></div>
 </div>
 </div>
+
+<!-- NEW: LIBRARY MODAL -->
+<div id="libraryModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeLibraryModal">&times;</span>
+        <h2 data-hi="सेव की गई लाइब्रेरी" data-en="Saved Library" style="margin-top:0; font-weight: 800; color: #a371f7;">Saved Library</h2>
+        <div id="libraryList">
+            <!-- Saved facts will appear here -->
+        </div>
+        <p id="emptyLibraryMsg" style="text-align: center; color: var(--muted); display: none;">No saved facts yet.</p>
+    </div>
+</div>
+
+<!-- NEW: MODAL FOR NOTES OPTIONS (Replaces old card logic) -->
+<div id="notesOptionModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="close" id="closeNotesOptionModal">&times;</span>
+        <h2 data-hi="सामुदायिक नोट्स" data-en="Community Notes" style="color: var(--accent); margin-top:0; font-weight: 800;">Community Notes</h2>
+        <p data-hi="आप क्या करना चाहते हैं?" data-en="What would you like to do?" style="color: var(--muted); margin-bottom: 24px; font-weight: 500;"></p>
+        
+        <button id="readNotesBtn" class="btn" style="width: 100%; margin-bottom: 16px; padding: 14px; font-size: 16px;" data-hi="नोट्स पढ़ें" data-en="Read Notes">Read Notes</button>
+        <button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%; padding: 14px; font-size: 16px;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
+    </div>
+</div>
+
+<!-- NEW: MODAL FOR MAP OPTIONS -->
+<div id="mapOptionModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="close" id="closeMapOptionModal">&times;</span>
+        <h2 data-hi="मैप चुनें" data-en="Select Map" style="color: var(--accent); margin-top:0; font-weight: 800;">Select Map</h2>
+        <p data-hi="आप कौन सा मैप देखना चाहते हैं?" data-en="Which map would you like to view?" style="color: var(--muted); margin-bottom: 24px; font-weight: 500;"></p>
+        
+        <button id="indiaMapBtn" class="btn" style="width: 100%; margin-bottom: 16px; padding: 14px; font-size: 16px; background-color: #1f6feb; border-color: #1f6feb;" data-hi="भारत का मैप" data-en="India Map">India Map</button>
+        <button id="worldMapBtn" class="btn btn-secondary" style="width: 100%; padding: 14px; font-size: 16px;" data-hi="वर्ल्ड मैप" data-en="World Map">World Map</button>
+    </div>
+</div>
+
+<!-- NEW: INTERNAL BROWSER MODAL (IN-APP FULL SCREEN) -->
+<div id="internalBrowserModal">
+    <!-- Close Button (Absolute Top Right) -->
+    <span class="close" id="closeInternalBrowser" style="position: absolute; top: 15px; right: 20px; z-index: 100; color: #fff; font-size: 40px; text-shadow: 0 0 10px #000; cursor: pointer; font-weight: 900;">&times;</span>
+    
+    <!-- Loader -->
+    <div id="browserLoader" class="browser-loader"></div>
+
+    <div class="modal-content">
+        <!-- Iframe Normal View -->
+        <iframe id="internalFrame" style="flex: 1; width: 100%; height: 100%; border: none; background-color: #fff; display: none;" src=""></iframe>
+    </div>
+</div>
+
+<!-- NEW: MODAL FOR PER DAY TEST (Placeholder) -->
+<div id="perDayTestModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="close" id="closePerDayTestModal">&times;</span>
+        <h2 style="color: #2ea043; margin-top:0; font-weight: 800;" data-hi="आज का अभ्यास" data-en="Today's Practice">Today's Practice</h2>
+        <p data-hi="यह फीचर जल्द ही उपलब्ध होगा! यहाँ आप अपने दैनिक अभ्यास टेस्ट दे सकेंगे।" data-en="This feature is coming soon! You will be able to take your daily practice tests here." style="color: var(--muted); margin-bottom: 20px; font-weight: 500;"></p>
+        <button class="btn" style="background-color: #2ea043; border-color: #2ea043;" onclick="document.getElementById('perDayTestModal').style.display='none'" data-hi="ठीक है" data-en="Okay">Okay</button>
+    </div>
+</div>
+
+<!-- NEW: MODAL FOR BOOKS (Coming Soon) -->
+<div id="booksModal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="close" id="closeBooksModal">&times;</span>
+        <h2 style="color: #d29922; margin-top:0; font-weight: 800;" data-hi="फ्री बुक्स" data-en="Free Books">Free Books</h2>
+        <p data-hi="यह फीचर अभी जल्द आने वाला है।" data-en="This feature is coming soon." style="color: var(--muted); margin-bottom: 20px; font-size: 18px; font-weight: 600;"></p>
+        <button class="btn" style="background-color: #d29922; border-color: #d29922;" onclick="document.getElementById('booksModal').style.display='none'" data-hi="ठीक है" data-en="Okay">Okay</button>
+    </div>
+</div>
+
 <!-- SUBJECT SELECTOR MODAL -->
 <div id="subjectSelectorModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeSubjectModal">&times;</span>
-        <h2 data-hi="विषय चुनें" data-en="Select Subject" style="margin-top:0;">Select Subject</h2>
-        <p data-hi="आप कौन सा विषय पढ़ने जा रहे हैं?" data-en="Which subject are you going to study?" style="font-size:14px; color:var(--muted); margin-top:-10px; margin-bottom:20px;"></p>
+        <h2 data-hi="विषय चुनें" data-en="Select Subject" style="margin-top:0; font-weight: 800;">Select Subject</h2>
+        <p data-hi="आप कौन सा विषय पढ़ने जा रहे हैं?" data-en="Which subject are you going to study?" style="font-size:14px; color:var(--muted); margin-top:-10px; margin-bottom:20px; font-weight: 500;"></p>
         <div id="subjectListContainer">
             <!-- Subjects will be loaded here by JavaScript -->
         </div>
@@ -535,7 +1183,7 @@ footer a:hover { color: var(--accent); }
 <div class="modal-content" style="max-height: 85vh; overflow-y: auto;">
 <span class="close" id="closeAdminModal">&times;</span>
 <h2 data-hi="एडमिन पैनल" data-en="Admin Panel">Admin Panel</h2>
-<p style="font-size:12px; color:var(--muted);" data-hi="सावधानी से उपयोग करें: गलत JSON डेटा ऐप को तोड़ सकता है।" data-en="Use with caution: Invalid JSON can break the app."></p>
+<p style="font-size:12px; color:var(--muted); font-weight: 500;" data-hi="सावधानी से उपयोग करें: गलत JSON डेटा ऐप को तोड़ सकता है।" data-en="Use with caution: Invalid JSON can break the app."></p>
 <div class="admin-section">
 <label data-hi="एडमिन पासवर्ड बदलें" data-en="Change Admin Password">Change Admin Password</label>
 <input type="password" id="newPassword" placeholder="Enter new password">
@@ -587,16 +1235,16 @@ footer a:hover { color: var(--accent); }
 <div id="updateDetailsModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeUpdateModal">&times;</span>
-        <h2 style="margin-top:0;">नया अपडेट: स्पीच-टू-टेक्स्ट नोट्स</h2>
-        <p>
+        <h2 style="margin-top:0; font-weight: 800;">नया अपडेट: स्पीच-टू-टेक्स्ट नोट्स</h2>
+        <p style="font-weight: 500;">
             हम एक बेहतरीन नए फीचर पर काम कर रहे हैं जो आपकी पढ़ाई को और भी आसान बना देगा! बहुत जल्द ऐप में <strong>'स्पीच-टू-टेक्स्ट'</strong> का ऑप्शन आने वाला है।
         </p>
-        <p>
+        <p style="font-weight: 500;">
             <strong>यह कैसे काम करेगा?</strong>
             <br>
             जब आप कोई भी स्टडी ऐप (जैसे YouTube, Khan Sir, आदि) खोलकर पढ़ाई कर रहे होंगे, तो आप हमारे इस फीचर को ऑन कर सकते हैं। इसके बाद, वीडियो में जो भी पढ़ाया जा रहा है, हमारा सिस्टम उसे सुनकर अपने आप टेक्स्ट में बदल देगा और आपके लिए एक व्यवस्थित नोट तैयार कर देगा।
         </p>
-        <p style="font-weight: bold; color: var(--accent);">
+        <p style="font-weight: 700; color: var(--accent);">
             अब आपको पढ़ाई के दौरान नोट्स लिखने की चिंता करने की ज़रूरत नहीं पड़ेगी। बस ध्यान से सुनें, नोट्स बनाने का काम हम पर छोड़ दें!
         </p>
     </div>
@@ -606,12 +1254,12 @@ footer a:hover { color: var(--accent); }
 <div id="aboutModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeAboutModal">&times;</span>
-        <h2 data-hi="हमारे बारे में" data-en="About Us" style="margin-top:0;">About Us</h2>
-        <p data-hi="Indian Routine ऐप को भारत के छात्रों और पेशेवरों की मदद करने के एकमात्र उद्देश्य से बनाया गया है ताकि वे अपने सबसे कीमती संसाधन - समय - का प्रबंधन कर सकें।" data-en="Indian Routine is built with the sole purpose of helping students and professionals in India manage their most precious resource - time.">
+        <h2 data-hi="हमारे बारे में" data-en="About Us" style="margin-top:0; font-weight: 800;">About Us</h2>
+        <p data-hi="Indian Routine ऐप को भारत के छात्रों और पेशेवरों की मदद करने के एकमात्र उद्देश्य से बनाया गया है ताकि वे अपने सबसे कीमती संसाधन - समय - का प्रबंधन कर सकें।" data-en="Indian Routine is built with the sole purpose of helping students and professionals in India manage their most precious resource - time." style="font-weight: 500;">
         </p>
-        <p data-hi="हमारा मानना है कि एक अच्छी तरह से संरचित दिनचर्या उत्पादकता और सफलता की कुंजी है। हमारा AI-पावर्ड रूटीन जेनरेटर आपकी ज़रूरतों के हिसाब से एक व्यक्तिगत शेड्यूल बनाने के लिए डिज़ाइन किया गया है, चाहे आप एक कठिन परीक्षा की तैयारी कर रहे हों या काम और पढ़ाई के बीच संतुलन बना रहे हों।" data-en="We believe that a well-structured routine is the key to productivity and success. Our AI-powered routine generator is designed to create a personalized schedule tailored to your needs, whether you're preparing for a tough exam or balancing between a job and studies.">
+        <p data-hi="हमारा मानना है कि एक अच्छी तरह से संरचित दिनचर्या उत्पादकता और सफलता की कुंजी है। हमारा AI-पावर्ड रूटीन जेनरेटर आपकी ज़रूरतों के हिसाब से एक व्यक्तिगत शेड्यूल बनाने के लिए डिज़ाइन किया गया है, चाहे आप एक कठिन परीक्षा की तैयारी कर रहे हों या काम और पढ़ाई के बीच संतुलन बना रहे हों।" data-en="We believe that a well-structured routine is the key to productivity and success. Our AI-powered routine generator is designed to create a personalized schedule tailored to your needs, whether you're preparing for a tough exam or balancing between a job and studies." style="font-weight: 500;">
         </p>
-        <p data-hi="आपकी सफलता की यात्रा में आपका भागीदार बनने के लिए हम यहां हैं।" data-en="We are here to be your partner in your journey to success.">
+        <p data-hi="आपकी सफलता की यात्रा में आपका भागीदार बनने के लिए हम यहां हैं।" data-en="We are here to be your partner in your journey to success." style="font-weight: 500;">
         </p>
     </div>
 </div>
@@ -620,20 +1268,20 @@ footer a:hover { color: var(--accent); }
 <div id="privacyModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closePrivacyModal">&times;</span>
-        <h2 data-hi="गोपनीयता नीति" data-en="Privacy Policy" style="margin-top:0;">Privacy Policy</h2>
-        <p data-hi="आपकी गोपनीयता हमारे लिए महत्वपूर्ण है।" data-en="Your privacy is important to us.">
+        <h2 data-hi="गोपनीयता नीति" data-en="Privacy Policy" style="margin-top:0; font-weight: 800;">Privacy Policy</h2>
+        <p data-hi="आपकी गोपनीयता हमारे लिए महत्वपूर्ण है।" data-en="Your privacy is important to us." style="font-weight: 600;">
         </p>
-        <strong data-hi="डेटा संग्रह और उपयोग" data-en="Data Collection and Usage"></strong>
-        <p data-hi="Indian Routine आपके द्वारा प्रदान की गई जानकारी जैसे नाम, परीक्षा का नाम, विषय और शेड्यूल वरीयताओं को एकत्र करता है। इस डेटा का उपयोग केवल आपके लिए एक व्यक्तिगत दिनचर्या और उपयोगकर्ता अनुभव बनाने के लिए किया जाता है।" data-en="Indian Routine collects information you provide, such as name, exam name, subjects, and schedule preferences. This data is used solely to create a personalized routine and user experience for you.">
+        <strong data-hi="डेटा संग्रह और उपयोग" data-en="Data Collection and Usage" style="font-weight: 700;"></strong>
+        <p data-hi="Indian Routine आपके द्वारा प्रदान की गई जानकारी जैसे नाम, परीक्षा का नाम, विषय और शेड्यूल वरीयताओं को एकत्र करता है। इस डेटा का उपयोग केवल आपके लिए एक व्यक्तिगत दिनचर्या और उपयोगकर्ता अनुभव बनाने के लिए किया जाता है।" data-en="Indian Routine collects information you provide, such as name, exam name, subjects, and schedule preferences. This data is used solely to create a personalized routine and user experience for you." style="font-weight: 500;">
         </p>
-        <strong data-hi="डेटा संग्रहण" data-en="Data Storage"></strong>
-        <p data-hi="सभी व्यक्तिगत डेटा आपके डिवाइस पर स्थानीय रूप से (Local Storage का उपयोग करके) संग्रहीत किया जाता है। यह हमारे सर्वर पर प्रेषित या संग्रहीत नहीं होता है। इसका मतलब है कि आपका डेटा पूरी तरह से आपके नियंत्रण में है।" data-en="All personal data is stored locally on your device (using Local Storage). It is not transmitted or stored on our servers. This means your data is completely under your control.">
+        <strong data-hi="डेटा संग्रहण" data-en="Data Storage" style="font-weight: 700;"></strong>
+        <p data-hi="सभी व्यक्तिगत डेटा आपके डिवाइस पर स्थानीय रूप से (Local Storage का उपयोग करके) संग्रहीत किया जाता है। यह हमारे सर्वर पर प्रेषित या संग्रहीत नहीं होता है। इसका मतलब है कि आपका डेटा पूरी तरह से आपके नियंत्रण में है।" data-en="All personal data is stored locally on your device (using Local Storage). It is not transmitted or stored on our servers. This means your data is completely under your control." style="font-weight: 500;">
         </p>
-        <strong data-hi="डेटा साझाकरण" data-en="Data Sharing"></strong>
-        <p data-hi="हम आपकी व्यक्तिगत जानकारी किसी तीसरे पक्ष के साथ साझा या बेचते नहीं हैं।" data-en="We do not share or sell your personal information with any third parties.">
+        <strong data-hi="डेटा साझाकरण" data-en="Data Sharing" style="font-weight: 700;"></strong>
+        <p data-hi="हम आपकी व्यक्तिगत जानकारी किसी तीसरे पक्ष के साथ साझा या बेचते नहीं हैं।" data-en="We do not share or sell your personal information with any third parties." style="font-weight: 500;">
         </p>
-        <strong data-hi="तृतीय-पक्ष सेवाएँ" data-en="Third-Party Services"></strong>
-        <p data-hi="ऐप में बाहरी सेवाओं (जैसे स्टडी ऐप्स, AI चैट) के लिंक हो सकते हैं। इन सेवाओं की अपनी गोपनीयता नीतियां हैं, और हम उनके प्रथाओं के लिए जिम्मेदार नहीं हैं।" data-en="The app may contain links to external services (like study apps, AI chats). These services have their own privacy policies, and we are not responsible for their practices.">
+        <strong data-hi="तृतीय-पक्ष सेवाएँ" data-en="Third-Party Services" style="font-weight: 700;"></strong>
+        <p data-hi="ऐप में बाहरी सेवाओं (जैसे स्टडी ऐप्स, AI चैट) के लिंक हो सकते हैं। इन सेवाओं की अपनी गोपनीयता नीतियां हैं, और हम उनके प्रथाओं के लिए जिम्मेदार नहीं हैं।" data-en="The app may contain links to external services (like study apps, AI chats). These services have their own privacy policies, and we are not responsible for their practices." style="font-weight: 500;">
         </p>
     </div>
 </div>
@@ -642,12 +1290,12 @@ footer a:hover { color: var(--accent); }
 <div id="disclaimerModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeDisclaimerModal">&times;</span>
-        <h2 data-hi="अस्वीकरण" data-en="Disclaimer" style="margin-top:0;">Disclaimer</h2>
-        <p data-hi="Indian Routine ऐप केवल सूचनात्मक और शैक्षिक उद्देश्यों के लिए एक उपकरण के रूप में प्रदान किया गया है।" data-en="The Indian Routine app is provided as a tool for informational and educational purposes only.">
+        <h2 data-hi="अस्वीकरण" data-en="Disclaimer" style="margin-top:0; font-weight: 800;">Disclaimer</h2>
+        <p data-hi="Indian Routine ऐप केवल सूचनात्मक और शैक्षिक उद्देश्यों के लिए एक उपकरण के रूप में प्रदान किया गया है।" data-en="The Indian Routine app is provided as a tool for informational and educational purposes only." style="font-weight: 500;">
         </p>
-        <p data-hi="AI द्वारा उत्पन्न दिनचर्या और रणनीतियाँ सुझाव हैं और सफलता की गारंटी नहीं देती हैं। उपयोगकर्ताओं को अपने विवेक का उपयोग करना चाहिए और अपनी विशिष्ट आवश्यकताओं के अनुसार प्रदान की गई दिनचर्या को अपनाना चाहिए।" data-en="The routines and strategies generated by the AI are suggestions and do not guarantee success. Users should use their own discretion and adapt the provided routine to their specific needs.">
+        <p data-hi="AI द्वारा उत्पन्न दिनचर्या और रणनीतियाँ सुझाव हैं और सफलता की गारंटी नहीं देती हैं। उपयोगकर्ताओं को अपने विवेक का उपयोग करना चाहिए और अपनी विशिष्ट आवश्यकताओं के अनुसार प्रदान की गई दिनचर्या को अपनाना चाहिए।" data-en="The routines and strategies generated by the AI are suggestions and do not guarantee success. Users should use their own discretion and adapt the provided routine to their specific needs." style="font-weight: 500;">
         </p>
-        <p data-hi="ऐप के डेवलपर्स प्रदान की गई जानकारी के उपयोग से उत्पन्न होने वाले किसी भी परिणाम के लिए उत्तरदायी नहीं हैं। अपनी पढ़ाई और करियर के लिए आप स्वयं जिम्मेदार हैं।" data-en="The developers of the app are not liable for any outcomes resulting from the use of the information provided. You are solely responsible for your own studies and career.">
+        <p data-hi="ऐप के डेवलपर्स प्रदान की गई जानकारी के उपयोग से उत्पन्न होने वाले किसी भी परिणाम के लिए उत्तरदायी नहीं हैं। अपनी पढ़ाई और करियर के लिए आप स्वयं जिम्मेदार हैं।" data-en="The developers of the app are not liable for any outcomes resulting from the use of the information provided. You are solely responsible for your own studies and career." style="font-weight: 500;">
         </p>
     </div>
 </div>
@@ -659,6 +1307,34 @@ let currentLang = localStorage.getItem('smart_lang') || 'en';
 let timeFormat = localStorage.getItem('smart_time_format') || '12h';
 let slotsData = [];
 const FOCUS_EXTRA_MINUTES = 45; // Extra time for focus subject
+
+// === DATA: DEFAULT SUBJECTS FOR CLASSES (Fixed Encoding) ===
+const defaultSubjects = {
+    '9': "हिंदी\nअंग्रेजी\nगणित\nविज्ञान\nसामाजिक विज्ञान\nचित्रकला",
+    '10': "हिंदी\nअंग्रेजी\nगणित\nविज्ञान\nसामाजिक विज्ञान\nचित्रकला",
+    '11': "हिंदी\nअंग्रेजी\nभौतिक विज्ञान\nरसायन विज्ञान\nजीव विज्ञान\nगणित",
+    '12': "हिंदी\nअंग्रेजी\nभौतिक विज्ञान\nरसायन विज्ञान\nजीव विज्ञान\nगणित"
+};
+
+// === NEW: SLIDER DATA (CLASS 9 SPECIFIC) ===
+const subjectsData = [
+    { name: 'Hindi', img: 'https://files.catbox.moe/ttvifz.png', type: 'direct' },
+    { name: 'English', img: 'https://files.catbox.moe/l5she6.png', type: 'direct' },
+    { name: 'Math', img: 'https://files.catbox.moe/gy53m3.png', type: 'direct' },
+    { name: 'Science', img: 'https://files.catbox.moe/feecgi.png', type: 'popup' }, // Popup Trigger
+    { name: 'Social Science', img: 'https://files.catbox.moe/wfej48.png', type: 'direct' },
+    { name: 'Drawing', img: 'https://files.catbox.moe/tkt6k8.png', type: 'direct' },
+    { name: 'AI Class', img: 'https://files.catbox.moe/rno8sr.png', type: 'direct' }
+];
+
+// === NEW: SCIENCE MODAL DATA ===
+const scienceSubjects = [
+    { name: 'Physics', img: 'https://files.catbox.moe/wq5onz.png' },
+    { name: 'Chemistry', img: 'https://files.catbox.moe/2j7b6q.png' },
+    { name: 'Biology', img: 'https://files.catbox.moe/qi80ps.png' }
+];
+
+// ==========================================
 
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -709,7 +1385,7 @@ const initializeData = () => {
     }
 
     // --- NEW: STUDY APPS VERSIONING TO FORCE UPDATE ---
-    const STUDY_APPS_VERSION = 'v1.5'; // Increment this to force an update
+    const STUDY_APPS_VERSION = 'v1.6'; // Increment this to force an update
     const currentAppsVersion = localStorage.getItem('study_apps_version');
 
     if (currentAppsVersion !== STUDY_APPS_VERSION) {
@@ -732,36 +1408,173 @@ const initializeData = () => {
         localStorage.setItem('smart_study_apps', JSON.stringify(defaultStudyApps));
         localStorage.setItem('study_apps_version', STUDY_APPS_VERSION);
     }
-
-    // --- QUOTES LOGIC ---
-    const QUOTES_VERSION = 'v2.0';
-    const currentVersion = localStorage.getItem('quotes_version');
-    if (currentVersion !== QUOTES_VERSION) {
-        const hindiQuotes = [ { hi: 'सफलता अंतिम नहीं है, असफलता घातक नहीं है: यह जारी रखने का साहस है जो मायने रखता है।', en: 'Success is not final, failure is not fatal: it is the courage to continue that counts.' }, { hi: 'आपका समय सीमित है, इसे किसी और की जिंदगी जीकर बर्बाद न करें।', en: 'Your time is limited, so don’t waste it living someone else’s life.' }, { hi: 'महान कार्य करने का एकमात्र तरीका यह है कि आप जो करते हैं उससे प्यार करें।', en: 'The only way to do great work is to love what you do.' }, { hi: 'कड़ी मेहनत प्रतिभा को हरा देती है जब प्रतिभा कड़ी मेहनत नहीं करती।', en: 'Hard work beats talent when talent doesn’t work hard.' }, { hi: 'सपने तब तक काम नहीं करते जब तक आप नहीं करते।', en: 'Dreams don’t work unless you do.' }, { hi: 'यह हमेशा असंभव लगता है जब तक कि यह पूरा न हो जाए।', en: 'It always seems impossible until it’s done.' }, { hi: 'अनुशासन लक्ष्यों और प्राप्ति के बीच का पुल है।', en: 'Discipline is the bridge between goals and accomplishment.' }, { hi: 'शक सपनों को हकीकत से ज्यादा मारता है।', en: 'Doubt kills more dreams than failure ever will.' }, { hi: 'हर विशेषज्ञ कभी एक शुरुआत करने वाला था।', en: 'Every expert was once a beginner.' }, { hi: 'हार मत मानो। शुरुआत हमेशा सबसे कठिन होती है।', en: 'Don’t give up. The beginning is always the hardest.' }, ];
-        const shayaris = [ { hi: 'मंज़िलें उन्हीं को मिलती हैं, जिनके सपनों में जान होती है, पंखों से कुछ नहीं होता, हौसलों से उड़ान होती है।', en: 'Destinations are achieved by those whose dreams have life, wings are not enough, flights are made with courage.' }, { hi: 'लहरों से डर कर नौका पार नहीं होती, कोशिश करने वालों की कभी हार नहीं होती।', en: 'A boat does not cross the sea by fearing the waves, those who try never lose.' }, { hi: 'क्यों डरें कि ज़िंदगी में क्या होगा, हर वक़्त क्यों सोचें कि बुरा होगा, बढ़ते रहें मंज़िलों की ओर हम, कुछ न भी मिला तो क्या? तजुर्बा तो नया होगा।', en: 'Why fear what will happen in life, why always think that something bad will happen, let\'s keep moving towards our goals, even if we get nothing, what then? The experience will be new.' }, { hi: 'हाथों की लकीरों पर मत जा ऐ ग़ालिब, नसीब उनके भी होते हैं जिनके हाथ नहीं होते।', en: 'Don\'t go by the lines on your hands, Ghalib, destiny is also for those who do not have hands.' }, { hi: 'ख़ुदी को कर बुलंद इतना कि हर तक़दीर से पहले, ख़ुदा बंदे से ख़ुद पूछे बता तेरी रज़ा क्या है।', en: 'Elevate yourself so high that before every decree of fate, God himself asks his servant, tell me, what is your will?' }, { hi: 'सफ़र में मुश्किलें आएं तो हिम्मत और बढ़ती है, कोई अगर रास्ता रोके तो जुर्रत और बढ़ती है।', en: 'When difficulties arise in the journey, courage increases, if someone blocks the way, audacity increases.' }, { hi: 'काम करो ऐसा कि एक पहचान बन जाए, हर कदम ऐसा चलो कि निशान बन जाए।', en: 'Work in such a way that it becomes an identity, walk every step in such a way that it leaves a mark.' }, { hi: 'ज़िंदगी जीना आसान नहीं होता, बिना संघर्ष के कोई महान नहीं होता।', en: 'Living life is not easy, without struggle, no one becomes great.' }, { hi: 'जो मुस्कुरा रहा है, उसे दर्द ने पाला होगा, जो चल रहा है, उसके पाँव में छाला होगा, बिना संघर्ष के चमक नहीं मिलती, जो जल रहा है तिल-तिल, उसी दीए में उजाला होगा।', en: 'The one who is smiling must have been raised by pain, the one who is walking must have a blister on his foot, without struggle, there is no shine, the one who is burning bit by bit, only that lamp will have light.' }, { hi: 'ना पूछो कि मेरी मंज़िल कहाँ है, अभी तो सफ़र का इरादा किया है, ना हारूँगा हौसला उम्र भर, ये मैंने किसी से नहीं ख़ुद से वादा किया है।', en: 'Don\'t ask where my destination is, I have just intended to travel, I will not lose courage my whole life, I have made this promise not to anyone but to myself.' }, { hi: 'ऊँचे ख्वाबों के लिए, दिल की गहराई से काम करना पड़ता है, यूँ ही नहीं मिलती सफलता किसी को, मेहनत की आग में दिन-रात जलना पड़ता है।', en: 'For high dreams, one has to work from the depth of the heart, success is not achieved just like that, one has to burn day and night in the fire of hard work.' }, { hi: 'रख हौसला वो मंज़र भी आएगा, प्यासे के पास चल के समंदर भी आएगा, थक कर न बैठ ऐ मंज़िल के मुसाफ़िर, मंज़िल भी मिलेगी और मिलने का मज़ा भी आएगा।', en: 'Have courage, that scene will also come, the ocean will also come to the thirsty, don\'t sit tired, O traveler of the destination, you will get the destination and you will also enjoy meeting it.' }, { hi: 'जब टूटने लगे हौसले तो बस ये याद रखना, बिना मेहनत के हासिल तख़्त-ओ-ताज नहीं होते, ढूँढ़ लेना अँधेरों में ही मंज़िल अपनी, क्योंकि जुगनू कभी रौशनी के मोहताज़ नहीं होते।', en: 'When you start losing courage, just remember this, thrones and crowns are not achieved without hard work, find your destination in the darkness, because fireflies are never dependent on light.' }, { hi: 'अगर आप उस इंसान की तलाश कर रहे हैं जो आपकी ज़िन्दगी बदलेगा, तो आईने में देख लें।', en: 'If you are looking for the person who will change your life, then look in the mirror.' }, { hi: 'सफलता का मुख्य आधार, सकारात्मक सोच और निरंतर प्रयास है।', en: 'The main basis of success is positive thinking and continuous effort.' }, { hi: 'परिंदों को मंज़िल मिलेगी यक़ीनन, ये फैले हुए उनके पर बोलते हैं, अक्सर वो लोग ख़ामोश रहते हैं, ज़माने में जिनके हुनर बोलते हैं।', en: 'Birds will surely find their destination, their spread wings speak, often those people remain silent, whose skills speak in the world.' }, { hi: 'लगातार हो रही असफलताओं से निराश नहीं होना चाहिए, क्योंकि कभी-कभी गुच्छे की आखिरी चाबी भी ताला खोल देती है।', en: 'One should not be discouraged by continuous failures, because sometimes the last key of the bunch also opens the lock.' }, { hi: 'जीत की ख़ातिर बस जुनून चाहिए, जिसमें उबाल हो ऐसा ख़ून चाहिए, ये आसमाँ भी आएगा ज़मीं पर, बस इरादों में जीत की गूँज चाहिए।', en: 'For the sake of victory, you just need passion, you need blood that boils, this sky will also come down to the earth, you just need the echo of victory in your intentions.' }, { hi: 'जिनमें अकेले चलने का हौसला होता है, उनके पीछे एक दिन काफ़िला होता है।', en: 'Those who have the courage to walk alone, one day have a convoy behind them.' }, { hi: 'अगर मेहनत आदत बन जाए, तो कामयाबी मुक़द्दर बन जाती है।', en: 'If hard work becomes a habit, then success becomes destiny.' }, ];
-        const shlokas = [ { hi: 'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br><br><strong>अर्थ:</strong> कर्म पर ही तुम्हारा अधिकार है, उसके फलों पर कभी नहीं।', en: 'You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions.' }, { hi: 'उद्यमेन हि सिध्यन्ति कार्याणि न मनोरथैः।<br><br><strong>अर्थ:</strong> कोई भी काम कड़ी मेहनत से ही सफल होता है, सिर्फ सोचने से नहीं।', en: 'Tasks are accomplished by effort, not by wishful thinking.' }, { hi: 'विद्या ददाति विनयम्।<br><br><strong>अर्थ:</strong> ज्ञान विनम्रता प्रदान करता है।', en: 'Knowledge gives humility.' }, { hi: 'श्रद्धावान् लभते ज्ञानम्।<br><br><strong>अर्थ:</strong> श्रद्धा रखने वाला व्यक्ति ही ज्ञान प्राप्त करता है।', en: 'The one who has faith attains knowledge.' }, { hi: 'योगः कर्मसु कौशलम्।<br><br><strong>अर्थ:</strong> कर्मों में कुशलता लाना ही योग है।', en: 'Yoga is skill in action.' }, { hi: 'मन एव मनुष्याणां कारणं बन्धमोक्षयोः।<br><br><strong>अर्थ:</strong> मन ही मनुष्य के बंधन और मोक्ष का कारण है।', en: 'The mind alone is the cause of human bondage and liberation.' }, { hi: 'आलस्यं हि मनुष्याणां शरीरस्थो महान् रिपुः।<br><br><strong>अर्थ:</strong> आलस्य ही मनुष्य के शरीर में रहने वाला सबसे बड़ा शत्रु है।', en: 'Lethargy is the greatest enemy residing in the human body.' }, { hi: 'क्षणशः कणशश्चैव विद्यामर्थं च साधयेत्।<br><br><strong>अर्थ:</strong> प्रत्येक क्षण का उपयोग सीखने के लिए और प्रत्येक कण का उपयोग धन बचाने के लिए करना चाहिए।', en: 'One should acquire knowledge and wealth moment by moment and bit by bit.' }, { hi: 'अयं निजः परो वेति गणना लघुचेतसाम्। उदारचरितानां तु वसुधैव कुटुम्बकम्।<br><br><strong>अर्थ:</strong> यह मेरा है, यह उसका है, ऐसी सोच छोटे मन वाले लोगों की होती है। विशाल हृदय वालों के लिए तो पूरी पृथ्वी ही एक परिवार है।', en: 'This is mine, that is his, is the calculation of the narrow-minded. For the magnanimous, the entire world is a family.' }, { hi: 'सत्यमेव जयते।<br><br><strong>अर्थ:</strong> सत्य की ही हमेशा विजय होती है।', en: 'Truth alone triumphs.' }, { hi: 'बलवानप्यशक्तोऽसौ धनवानपि निर्धनः। श्रुतवानपि मूर्खोऽसौ यो धर्मविमुखो जनः।<br><br><strong>अर्थ:</strong> जो व्यक्ति धर्म (कर्तव्य) से विमुख होता है, वह बलवान होकर भी असमर्थ, धनवान होकर भी निर्धन और ज्ञानी होकर भी मूर्ख होता है।', en: 'A person who turns away from righteousness is powerless even if strong, poor even if wealthy, and a fool even if learned.' }, { hi: 'पुस्तकस्था तु या विद्या परहस्तगतं धनम्। कार्यकाले समुत्पन्ने न सा विद्या न तद्धनम्।<br><br><strong>अर्थ:</strong> किताबों में रखा ज्ञान और दूसरों के हाथ में गया धन, ज़रूरत पड़ने पर न तो वह ज्ञान काम आता है और न ही वह धन।', en: 'Knowledge that is confined to books and wealth that is in the hands of others are of no use when the time for action comes.' }, { hi: 'काक चेष्टा, बको ध्यानं, श्वान निद्रा तथैव च। अल्पाहारी, गृहत्यागी, विद्यार्थी पंच लक्षणं।<br><br><strong>अर्थ:</strong> कौवे जैसी चेष्टा, बगुले जैसा ध्यान, कुत्ते जैसी नींद, कम भोजन करने वाला और घर का मोह त्यागने वाला - ये विद्यार्थी के पाँच लक्षण हैं।', en: 'The effort of a crow, the concentration of a crane, the sleep of a dog, a light eater, and one who renounces home—these are the five characteristics of a student.' }, { hi: 'अज्ञः सुखमाराध्यः सुखतरमाराध्यते विशेषज्ञः। ज्ञानलवदुर्विदग्धं ब्रह्मापि नरं न रञजयति।<br><br><strong>अर्थ:</strong> अज्ञानी को समझाना आसान है, ज्ञानी को समझाना और भी आसान है, लेकिन अधूरे ज्ञान वाले अहंकारी व्यक्ति को स्वयं ब्रह्मा भी नहीं समझा सकते।', en: 'An ignorant person is easy to please, an expert is even easier. But even Brahma cannot convince a person who is arrogant with a little knowledge.' }, { hi: 'यथा ह्येकेन चक्रेण न रथस्य गतिर्भवेत्। एवं पुरुषकारेण विना दैवं न सिद्ध्यति।<br><br><strong>अर्थ:</strong> जैसे एक पहिये से रथ नहीं चल सकता, उसी प्रकार बिना पुरुषार्थ (कड़ी मेहनत) के भाग्य सिद्ध नहीं होता।', en: 'Just as a chariot cannot move with a single wheel, so fate is not accomplished without human effort.' }, { hi: 'निश्चितं हित्वा योऽनिश्चितं परिधावति। निश्चितं तस्य नश्यति अनिश्चितं नष्टमेव हि।<br><br><strong>अर्थ:</strong> जो व्यक्ति निश्चित को छोड़कर अनिश्चित के पीछे भागता है, उसका निश्चित भी नष्ट हो जाता है और अनिश्चित तो पहले से ही नष्ट होता है।', en: 'He who abandons the certain and runs after the uncertain, loses the certain, and the uncertain is already lost.' }, { hi: 'अश्वस्य भूषणं वेगो मत्तं स्याद् गजभूषणम्। चातुर्यं भूषणं नार्या उद्योगो नरभूषणम्।<br><br><strong>अर्थ:</strong> घोड़े का आभूषण उसकी गति है, हाथी का आभूषण उसका मदमस्त होना है, स्त्री का आभूषण उसकी चतुराई है और पुरुष का आभूषण उसका उद्यमी होना है।', en: 'Speed is the ornament of a horse, intoxication is the ornament of an elephant. Cleverness is the ornament of a woman, and industry is the ornament of a man.' }, { hi: 'दुर्लभं त्रयमेवैतत् देवानुग्रहहेतुकम्। मनुष्यत्वं मुमुक्षुत्वं महापुरुषसंश्रयः।<br><br><strong>अर्थ:</strong> मनुष्य जन्म, मोक्ष की इच्छा और महापुरुषों का साथ - ये तीन चीजें ईश्वर की कृपा से ही दुर्लभ रूप से मिलती हैं।', en: 'These three are indeed rare and are due to the grace of the gods: humanity, the desire for liberation, and the company of great souls.' }, { hi: 'गुणिगणगणनारम्भे न पतति कठिनी सुसंभ्रमाद्यस्य। तेनाम्बा यदि सुतिनी वद वन्ध्या कीदृशी भवति।<br><br><strong>अर्थ:</strong> गुणी लोगों की गिनती करते समय जो व्यक्ति उत्साह से शामिल नहीं होता, अगर उसकी माँ को पुत्रवती कहें, तो फिर बांझ किसे कहेंगे?', en: 'At the beginning of counting virtuous people, he who does not participate with enthusiasm; if his mother is called a mother of a son, then tell me, what would a barren woman be like?' }, { hi: 'सर्पः क्रूरः खलः क्रूरः सर्पात् क्रूरतरः खलः। मन्त्रौषधवशः सर्पः खलः केन निवार्यते।<br><br><strong>अर्थ:</strong> साँप क्रूर होता है और दुष्ट भी क्रूर होता है, लेकिन दुष्ट साँप से भी ज़्यादा क्रूर होता है। साँप को तो मंत्र और औषधि से वश में किया जा सकता है, पर दुष्ट को किससे रोका जा सकता है?', en: 'A snake is cruel, and a wicked person is cruel, but a wicked person is crueler than a snake. A snake can be controlled by mantras and medicine, but by what can a wicked person be stopped?' }, ];
-        localStorage.setItem('smart_hindi_quotes', JSON.stringify(hindiQuotes));
-        localStorage.setItem('smart_shayaris', JSON.stringify(shayaris));
-        localStorage.setItem('smart_shlokas', JSON.stringify(shlokas));
-        localStorage.setItem('quotes_version', QUOTES_VERSION);
-    }
 };
 
-const updateQuote = () => {
-    let quote;
-    let categoryIndex = parseInt(localStorage.getItem('quote_category_index') || '0');
+// --- DEEP GK FACT ENGINE LOGIC ---
+const fetchDeepFact = async () => {
+    const titleEl = document.getElementById('factTitle');
+    const textEl = document.getElementById('factText');
+    const shareBtn = document.getElementById('shareFactBtn');
+    const nextBtn = document.getElementById('nextFactBtn');
+
+    // Loading State
+    titleEl.textContent = "Loading...";
+    textEl.textContent = "Fetching new knowledge...";
+    nextBtn.disabled = true;
+
+    // List of Ancient Indian Kings, Dynasties, and Historical Topics
+    const ancientHistoryTopics = [
+        "चंद्रगुप्त_मौर्य", "बिन्दुसार", "अशोक", "शुंग_वंश", "कण्व_वंश", "सातवाहन_वंश", 
+        "कुषाण_साम्राज्य", "कनिष्क", "गुप्त_साम्राज्य", "समुद्रगुप्त", "चन्द्रगुप्त_द्वितीय", 
+        "हर्षवर्धन", "चालुक्य_राजवंश", "पल्लव_राजवंश", "चोल_राजवंश", "राजराज_चोल_१", 
+        "राष्ट्रकूट_राजवंश", "पाल_साम्राज्य", "गुर्जर-प्रतिहार_राजवंश", "सेन_राजवंश", 
+        "चौहान_वंश", "पृथ्वीराज_चौहान", "तोमर_वंश", "गहड़वाल_राजवंश", "परमार_राजवंश", 
+        "सोलंकी_वंश", "चंदेल_वंश", "कलचुरी_राजवंश", "सिसोदिया_वंश", "गुहिल_राजवंश", 
+        "बप्पा_रावल", "राणा_कुंभा", "राणा_सांगा", "महाराणा_प्रताप", "विजयनगर_साम्राज्य", 
+        "कृष्णदेवराय", "काकतीय_वंश", "होयसल_वंश", "यादव_वंश", "पांड्य_राजवंश", 
+        "चेर_राजवंश", "खारवेल", "कलिंग", "महामेघवाहन_वंश", "वाकाटक_राजवंश", 
+        "इक्ष्वाकु_वंश", "कदंब_राजवंश", "गंग_वंश", "पश्चिमी_गंग_वंश", "पूर्वी_गंग_वंश", 
+        "मैत्रक_वंश", "पुष्यभूति_वंश", "मौखरि_वंश", "हर्यक_वंश", "शिशुनाग_वंश", 
+        "नन्द_वंश", "महापद्मनन्द", "घनानन्द", "सिकंदर_महान", "पोरस", "अंबी", "अभिसार", 
+        "ललितादित्य_मुक्तापीड़", "कर्कोट_वंश", "उत्पल_वंश", "लोहार_वंश", "वर्मन_राजवंश", 
+        "अहोम_राजवंश", "माणिक्य_वंश", "सिंधु_घाटी_सभ्यता", "वैदिक_सभ्यता", "महाजनपद"
+    ];
+
     try {
-        if (categoryIndex === 0) { const quotes = JSON.parse(localStorage.getItem('smart_hindi_quotes')); quote = quotes[Math.floor(Math.random() * quotes.length)]; } 
-        else if (categoryIndex === 1) { const quotes = JSON.parse(localStorage.getItem('smart_shayaris')); quote = quotes[Math.floor(Math.random() * quotes.length)]; } 
-        else { const quotes = JSON.parse(localStorage.getItem('smart_shlokas')); quote = quotes[Math.floor(Math.random() * quotes.length)]; }
-        if (!quote) throw new Error("No quote found");
-    } catch (e) {
-        quote = { en: 'Welcome! Set up your routine.', hi: 'आपका स्वागत है! अपना रूटीन सेट करें।' };
+        let apiUrl;
+        
+        // 85% chance to show Ancient History, 15% random
+        if (Math.random() < 0.85) {
+            const randomTopic = ancientHistoryTopics[Math.floor(Math.random() * ancientHistoryTopics.length)];
+            apiUrl = `https://hi.wikipedia.org/api/rest_v1/page/summary/${randomTopic}`;
+        } else {
+            apiUrl = 'https://hi.wikipedia.org/api/rest_v1/page/random/summary';
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("API Failed");
+        const data = await response.json();
+
+        const title = data.title;
+        // Truncate logic: Split by sentences (using Hindi danda '।') and take first 2.
+        let summary = data.extract;
+        const sentences = summary.split('।');
+        if (sentences.length > 2) {
+            summary = sentences.slice(0, 2).join('।') + '।';
+        }
+
+        titleEl.textContent = title;
+        textEl.textContent = summary;
+
+        // Setup Share Button
+        shareBtn.onclick = () => {
+            const shareText = `क्या आपको पता है? ${title}: ${summary}\n\nऔर गहराई से जानने के लिए Indian Routine App डाउनलोड करें।`;
+            const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+            window.open(url, '_blank');
+        };
+
+    } catch (error) {
+        // Fallback to random if specific topic fails (e.g. 404)
+        try {
+             const fallbackResponse = await fetch('https://hi.wikipedia.org/api/rest_v1/page/random/summary');
+             const fallbackData = await fallbackResponse.json();
+             titleEl.textContent = fallbackData.title;
+             textEl.textContent = fallbackData.extract.split('।').slice(0, 2).join('।') + '।';
+        } catch (e) {
+             titleEl.textContent = "Network Error";
+             textEl.textContent = "Could not fetch fact. Please check your internet connection.";
+        }
+    } finally {
+        nextBtn.disabled = false;
     }
-    $('motivationQuote').innerHTML = `<strong style="color:var(--accent); line-height: 1.6;">${getBilingualText(quote.en, quote.hi)}</strong>`;
-    categoryIndex = (categoryIndex + 1) % 3;
-    localStorage.setItem('quote_category_index', categoryIndex.toString());
 };
+
+// --- NEW: SAVE FACT LOGIC ---
+const saveFact = () => {
+    const titleEl = document.getElementById('factTitle');
+    const textEl = document.getElementById('factText');
+    
+    const title = titleEl.textContent;
+    const text = textEl.textContent;
+
+    if (title === "Loading..." || title === "Network Error") {
+        return; // Don't save placeholders
+    }
+
+    let savedHistory = JSON.parse(localStorage.getItem('user_saved_history') || '[]');
+
+    // Check duplicate
+    if (!savedHistory.some(fact => fact.title === title)) {
+        savedHistory.push({ title, text });
+        localStorage.setItem('user_saved_history', JSON.stringify(savedHistory));
+        alert(getBilingualText('Fact Saved!', 'तथ्य सहेज लिया गया!'));
+    } else {
+        alert(getBilingualText('Fact already saved!', 'तथ्य पहले से ही सहेजा हुआ है!'));
+    }
+};
+
+// --- NEW: LIBRARY LOGIC ---
+const renderLibrary = () => {
+    const listContainer = document.getElementById('libraryList');
+    const emptyMsg = document.getElementById('emptyLibraryMsg');
+    
+    // Clear list safely
+    while (listContainer.firstChild) {
+        listContainer.removeChild(listContainer.firstChild);
+    }
+
+    const savedHistory = JSON.parse(localStorage.getItem('user_saved_history') || '[]');
+
+    if (savedHistory.length === 0) {
+        emptyMsg.style.display = 'block';
+    } else {
+        emptyMsg.style.display = 'none';
+        savedHistory.forEach((fact, index) => {
+            const card = document.createElement('div');
+            card.className = 'saved-fact-card';
+            
+            const title = document.createElement('div');
+            title.className = 'saved-fact-title';
+            title.textContent = fact.title;
+            
+            const text = document.createElement('div');
+            text.className = 'saved-fact-text';
+            text.textContent = fact.text;
+            
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-fact-btn';
+            delBtn.textContent = '×';
+            delBtn.onclick = () => {
+                deleteFact(index);
+            };
+
+            card.appendChild(title);
+            card.appendChild(text);
+            card.appendChild(delBtn);
+            listContainer.appendChild(card);
+        });
+    }
+};
+
+const deleteFact = (index) => {
+    let savedHistory = JSON.parse(localStorage.getItem('user_saved_history') || '[]');
+    savedHistory.splice(index, 1);
+    localStorage.setItem('user_saved_history', JSON.stringify(savedHistory));
+    renderLibrary(); // Re-render
+};
+
+const openLibrary = () => {
+    renderLibrary();
+    document.getElementById('libraryModal').style.display = 'block';
+};
+
+// Add listeners for new buttons
+document.getElementById('saveFactBtn').addEventListener('click', saveFact);
+document.getElementById('openLibraryBtn').addEventListener('click', openLibrary);
+document.getElementById('closeLibraryModal').addEventListener('click', () => {
+    document.getElementById('libraryModal').style.display = 'none';
+});
+
 
 // ====================================================================================
 // ================================= END OF INITIALIZATION ============================
@@ -777,7 +1590,7 @@ $('userGreeting').textContent = '';
 };
 const renderAudioPlayer = () => {
 const select = $('audioTrackSelect'), player = $('audioPlayer'), image = $('audioTrackImage');
-select.innerHTML = '';
+select.textContent = '';
 try {
 const audioTracks = JSON.parse(localStorage.getItem('smart_audio') || '[]');
 if (audioTracks.length > 0) {
@@ -796,18 +1609,45 @@ image.style.display = selectedOption.dataset.imageUrl ? 'block' : 'none';
 } catch(e) { console.error("Could not load audio tracks", e); }
 };
 const renderSlots = () => {
-const container = $('slots');
-container.innerHTML = '';
-slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
-slotsData.forEach(item => {
-const slotDiv = document.createElement('div');
-slotDiv.className = 'slot';
-slotDiv.dataset.id = item.id;
-slotDiv.innerHTML = `<div class="time">${formatTime(item.time)}</div><div class="label" data-hi="${item.label_hi}" data-en="${item.label_en}"></div><div class="tip" data-hi="${item.tip_hi}" data-en="${item.tip_en}"></div><button class="slot-edit-btn" data-id="${item.id}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>`;
-container.appendChild(slotDiv);
-});
-updateTextContent();
+    const container = $('slots');
+    container.textContent = ''; // Using textContent to clear
+    slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+    
+    slotsData.forEach(item => {
+        const slotDiv = document.createElement('div');
+        slotDiv.className = 'slot';
+        slotDiv.dataset.id = item.id;
+
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'time';
+        timeDiv.textContent = formatTime(item.time);
+
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'label';
+        labelDiv.dataset.hi = item.label_hi;
+        labelDiv.dataset.en = item.label_en;
+        labelDiv.textContent = getBilingualText(item.label_en, item.label_hi);
+
+        const tipDiv = document.createElement('div');
+        tipDiv.className = 'tip';
+        tipDiv.dataset.hi = item.tip_hi;
+        tipDiv.dataset.en = item.tip_en;
+        tipDiv.textContent = getBilingualText(item.tip_en, item.tip_hi);
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'slot-edit-btn';
+        editBtn.dataset.id = item.id;
+        editBtn.textContent = '✎'; // Using Emoji instead of innerHTML SVG for safety
+
+        slotDiv.appendChild(timeDiv);
+        slotDiv.appendChild(labelDiv);
+        slotDiv.appendChild(tipDiv);
+        slotDiv.appendChild(editBtn);
+
+        container.appendChild(slotDiv);
+    });
 };
+
 const updateDynamicActivityLabels = () => {
 const activity = $('activityName').value.trim() || getProfile().activityLabel || 'Duty';
 $$('.dynamic-activity-label, .dynamic-activity-label-modal').forEach(el => { el.textContent = activity; });
@@ -822,34 +1662,78 @@ updateDynamicActivityLabels();
 };
 
 const displayStrategy = () => {
-const p = getProfile();
-const exam = $('examName').value || p.exam;
-const targetDate = $('targetDate').value || p.targetDate;
-const subjectsInput = $('subjectsList').value.trim();
-const numSubjects = subjectsInput ? subjectsInput.split('\n').filter(s => s.trim()).length : (p.subjects ? p.subjects.length : 0);
-const focusSubject = $('focusSubject').value.trim() || p.focusSubject || '';
-let studyHours;
-const occupation = document.querySelector('input[name="occupation"]:checked').value || p.occupation;
-if(occupation === 'student') {
-studyHours = p.studentStudyGoal || $('studentStudyGoal').value || 8;
-} else {
-studyHours = p.dutyStudyGoal || $('dutyStudyGoal').value || 3;
-}
-const strategyDiv = $('strategy');
-if (!exam || !targetDate) {
-strategyDiv.innerHTML = `<span style="color:var(--muted)" data-hi="रणनीति के लिए सेटअप पूरा करें" data-en="Complete setup for strategy"></span>`;
-} else {
-const days = daysBetween(new Date(), targetDate);
-strategyDiv.innerHTML = `<div><span data-hi="लक्ष्य" data-en="Goal"></span>: <strong>${exam}</strong></div><div><span data-hi="समय" data-en="Time Left"></span>: <strong>${days} <span data-hi="दिन" data-en="days"></span></strong></div><div><span data-hi="दैनिक लक्ष्य" data-en="Daily Goal"></span>: <strong>${studyHours} <span data-hi="घंटे" data-en="hours"></span></strong></div><div><span data-hi="विषय" data-en="Subjects"></span>: <strong>${numSubjects}</strong></div>${focusSubject ? `<div><span data-hi="फोकस सब्जेक्ट" data-en="Focus Subject"></span>: <strong>${focusSubject} (+${FOCUS_EXTRA_MINUTES} मिनट)</strong></div>` : ''}`;
-}
-updateTextContent();
+    const p = getProfile();
+    const exam = $('examName').value || p.exam;
+    const targetDate = $('targetDate').value || p.targetDate;
+    const subjectsInput = $('subjectsList').value.trim();
+    const numSubjects = subjectsInput ? subjectsInput.split('\n').filter(s => s.trim()).length : (p.subjects ? p.subjects.length : 0);
+    const focusSubject = $('focusSubject').value.trim() || p.focusSubject || '';
+    let studyHours;
+    const occupation = document.querySelector('input[name="occupation"]:checked').value || p.occupation;
+    if(occupation === 'student') {
+        studyHours = p.studentStudyGoal || $('studentStudyGoal').value || 8;
+    } else {
+        studyHours = p.dutyStudyGoal || $('dutyStudyGoal').value || 3;
+    }
+    
+    const strategyDiv = $('strategy');
+    strategyDiv.textContent = ''; // Clear
+
+    if (!exam || !targetDate) {
+        const msg = document.createElement('span');
+        msg.style.color = 'var(--muted)';
+        msg.dataset.hi = "रणनीति के लिए सेटअप पूरा करें";
+        msg.dataset.en = "Complete setup for strategy";
+        msg.textContent = getBilingualText("Complete setup for strategy", "रणनीति के लिए सेटअप पूरा करें");
+        strategyDiv.appendChild(msg);
+    } else {
+        const days = daysBetween(new Date(), targetDate);
+        
+        const createLine = (labelEn, labelHi, value) => {
+            const div = document.createElement('div');
+            const span = document.createElement('span');
+            span.dataset.en = labelEn;
+            span.dataset.hi = labelHi;
+            span.textContent = getBilingualText(labelEn, labelHi);
+            const strong = document.createElement('strong');
+            strong.textContent = ` ${value}`;
+            div.appendChild(span);
+            div.appendChild(document.createTextNode(':'));
+            div.appendChild(strong);
+            return div;
+        };
+
+        strategyDiv.appendChild(createLine("Goal", "लक्ष्य", exam));
+        strategyDiv.appendChild(createLine("Time Left", "समय", `${days} ${getBilingualText('days', 'दिन')}`));
+        strategyDiv.appendChild(createLine("Daily Goal", "दैनिक लक्ष्य", `${studyHours} ${getBilingualText('hours', 'घंटे')}`));
+        strategyDiv.appendChild(createLine("Subjects", "विषय", numSubjects));
+        
+        if (focusSubject) {
+            const fDiv = document.createElement('div');
+            const fSpan = document.createElement('span');
+            fSpan.dataset.en = "Focus Subject";
+            fSpan.dataset.hi = "फोकस सब्जेक्ट";
+            fSpan.textContent = getBilingualText("Focus Subject", "फोकस सब्जेक्ट");
+            const fStrong = document.createElement('strong');
+            fStrong.textContent = ` ${focusSubject} (+${FOCUS_EXTRA_MINUTES} min)`;
+            fDiv.appendChild(fSpan);
+            fDiv.appendChild(document.createTextNode(':'));
+            fDiv.appendChild(fStrong);
+            strategyDiv.appendChild(fDiv);
+        }
+    }
 };
+
 const loadProfileToForm = () => {
 const p = getProfile();
 $('examName').value = p.exam || '';
 $('targetDate').value = p.targetDate || '';
 $('subjectsList').value = p.subjects ? p.subjects.join('\n') : '';
 $('focusSubject').value = p.focusSubject || '';
+
+// NEW: Load Class Selector
+$('classSelector').value = p.studentClass || 'general';
+
 if (p.occupation === 'student') {
 $('roleStudent').checked = true;
 $('studentStudyGoal').value = p.studentStudyGoal || 8;
@@ -882,10 +1766,15 @@ $('dutyManualSleepWrapper').style.display = p.useDutyManualSleep ? 'flex' : 'non
 $('dutySleepTime').value = p.dutySleepTime || '22:00';
 }
 toggleOccupationView(p.occupation || 'duty', 'main');
+
+// NEW: Trigger change event to update UI based on class
+const event = new Event('change');
+$('classSelector').dispatchEvent(event);
+
 if (p.name) {
 $('detailsInputs').style.display = 'none';
 $('profileSummary').style.display = 'block';
-$('profileSummary').innerHTML = `<span data-hi="प्रोफ़ाइल सेट है। इसे बदलने के लिए मेनू का उपयोग करें।" data-en="Profile is set. Use the menu to edit."></span>`;
+$('profileSummary').textContent = getBilingualText("Profile is set. Use the menu to edit.", "प्रोफ़ाइल सेट है। इसे बदलने के लिए मेनू का उपयोग करें।");
 } else {
 $('detailsInputs').style.display = 'block';
 $('profileSummary').style.display = 'none';
@@ -897,7 +1786,8 @@ loadProfileToForm();
 displayStrategy();
 loadSlotsData();
 renderSlots();
-updateQuote();
+// updateQuote(); <-- Replaced by fetchDeepFact
+fetchDeepFact();
 renderUserGreeting();
 renderAudioPlayer();
 renderStudyApps();
@@ -923,6 +1813,10 @@ $('profileTargetDate').value = p.targetDate || '';
 $('profileSubjects').value = p.subjects ? p.subjects.join('\n') : '';
 $('profileFocusSubject').value = p.focusSubject || '';
 $('profileExtraGoal').value = p.extraGoal || '';
+
+// NEW: Load Class Selector in Modal
+$('profileClassSelector').value = p.studentClass || 'general';
+
 if (p.occupation === 'student') {
 $('profileRoleStudent').checked = true;
 $('profileStudentStudyGoal').value = p.studentStudyGoal || 8;
@@ -955,6 +1849,11 @@ $('profileDutyManualSleepWrapper').style.display = p.useDutyManualSleep ? 'flex'
 $('profileDutySleepTime').value = p.dutySleepTime || '22:00';
 }
 toggleOccupationView(p.occupation || 'duty', 'profile');
+
+// NEW: Trigger change event to update UI based on class in modal
+const event = new Event('change');
+$('profileClassSelector').dispatchEvent(event);
+
 updateDynamicActivityLabels();
 $('profileModal').style.display = 'block';
 };
@@ -965,6 +1864,8 @@ name: $('profileName').value.trim(),
 age: parseInt($('profileAge').value) || null,
 exam: $('profileExam').value.trim(),
 occupation: occupation,
+// NEW: Save Class Selection
+studentClass: $('profileClassSelector').value,
 targetDate: $('profileTargetDate').value,
 subjects: $('profileSubjects').value.split('\n').map(s => s.trim()).filter(s => s),
 focusSubject: $('profileFocusSubject').value.trim(),
@@ -1084,6 +1985,89 @@ const generateStudentRoutine = (params, subjects, focusSubject) => {
     return true;
 };
 
+// ===============================================================
+// NEW: RENDER SYSTEM ALARM SYNC MODAL (Replaces Manual List)
+// ===============================================================
+const renderSystemAlarmSync = () => {
+    const modal = $('systemAlarmModal');
+    const list = $('systemAlarmList');
+    list.textContent = ''; // Safe Clear
+
+    const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
+
+    // Sort slots by time
+    const sortedSlots = [...slotsData].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
+    sortedSlots.forEach(slot => {
+        if (importantAlarmIds.includes(slot.id)) {
+            // Create Card Container
+            const card = document.createElement('div');
+            card.className = 'alarm-sync-card';
+
+            // Left Side: Time and Label
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'alarm-sync-info';
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'alarm-sync-time';
+            
+            // 15 Mins Early Logic for Wake Up
+            if (slot.id === 'wake') {
+                const originalTime = timeToMinutes(slot.time);
+                const fifteenMinutesEarly = minutesToTime(originalTime - 15);
+                timeSpan.textContent = formatTime(fifteenMinutesEarly);
+            } else {
+                timeSpan.textContent = formatTime(slot.time);
+            }
+
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'alarm-sync-label';
+            labelSpan.textContent = getBilingualText(slot.label_en, slot.label_hi);
+
+            infoDiv.appendChild(timeSpan);
+            infoDiv.appendChild(labelSpan);
+
+            // Right Side: SET Button (The Intent Bridge)
+            const setBtn = document.createElement('button');
+            setBtn.className = 'alarm-sync-btn';
+            setBtn.textContent = 'SET';
+            
+            setBtn.onclick = () => {
+                // Determine actual time values for Intent
+                let hour, min;
+                if (slot.id === 'wake') {
+                     const originalTime = timeToMinutes(slot.time);
+                     const earlyTime = originalTime - 15;
+                     hour = Math.floor(earlyTime / 60);
+                     min = earlyTime % 60;
+                } else {
+                     const [h, m] = slot.time.split(':').map(Number);
+                     hour = h;
+                     min = m;
+                }
+
+                // Construct Android Intent URI
+                // Note: Standard Intent for Alarm Clock
+                const label = getBilingualText(slot.label_en, slot.label_hi);
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.message=${encodeURIComponent(label)};end`;
+                
+                // Trigger Intent
+                window.location.href = intentUri;
+
+                // Visual Feedback
+                setBtn.classList.add('added');
+                setBtn.textContent = 'ADDED';
+            };
+
+            card.appendChild(infoDiv);
+            card.appendChild(setBtn);
+            list.appendChild(card);
+        }
+    });
+
+    modal.style.display = 'block';
+    updateTextContent();
+};
 
 const autoGenerate = () => {
 const occupation = document.querySelector('input[name="occupation"]:checked').value;
@@ -1234,40 +2218,9 @@ if (occupation === 'duty') {
 saveSlotsData();
 renderSlots();
 
-const manualAlarmModal = $('manualAlarmModal');
-const manualAlarmList = $('manualAlarmList');
-manualAlarmList.innerHTML = ''; 
+// --- REPLACE OLD LIST LOGIC WITH NEW PREMIUM INTENT BRIDGE ---
+renderSystemAlarmSync();
 
-const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
-
-slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
-
-slotsData.forEach(slot => {
-    if (importantAlarmIds.includes(slot.id)) {
-        const listItem = document.createElement('li');
-        const labelText = getBilingualText(slot.label_en, slot.label_hi);
-
-        if (slot.id === 'wake') {
-            const originalTime = timeToMinutes(slot.time);
-            const fifteenMinutesEarly = minutesToTime(originalTime - 15);
-            const formattedEarlyTime = formatTime(fifteenMinutesEarly);
-            
-            listItem.innerHTML = `
-                <span>${labelText}</span>
-                <span class="time" style="text-align: right;">
-                    ${formattedEarlyTime}
-                    <small style="display: block; color: var(--muted); font-weight: normal;" data-hi="(15 मिनट पहले)" data-en="(15 mins early)"></small>
-                </span>`;
-        } else {
-            const timeText = formatTime(slot.time);
-            listItem.innerHTML = `<span>${labelText}</span><span class="time">${timeText}</span>`;
-        }
-        manualAlarmList.appendChild(listItem);
-    }
-});
-
-manualAlarmModal.style.display = 'block';
-updateTextContent();
 };
 const toggleOccupationView = (occupation, context) => {
 const dutyFields = (context === 'profile') ? $('profileDutyFields') : $('dutyFields');
@@ -1302,7 +2255,7 @@ let nextToneIndex = (currentToneIndex + 1) % alarmTones.length;
 localStorage.setItem('currentAlarmToneIndex', nextToneIndex.toString());
 const messageEn = leadTime > 0 ? `Get ready for ${slot.label_en}!` : `It's time for ${slot.label_en}!`;
 const messageHi = leadTime > 0 ? `${slot.label_hi} के लिए तैयार हो जाओ!` : `${slot.label_hi} का समय हो गया है!`;
-$('alarmMessage').innerHTML = getBilingualText(messageEn, messageHi);
+$('alarmMessage').textContent = getBilingualText(messageEn, messageHi);
 $('alarmModal').style.display = 'block';
 alarmSound.play().catch(e => console.error("Alarm sound failed:", e));
 };
@@ -1329,9 +2282,197 @@ setInterval(checkAlarms, 30000);
 checkAlarms();
 // --- EVENT LISTENERS ---
 
-$('closeManualAlarmModalBtn').addEventListener('click', () => {
-    $('manualAlarmModal').style.display = 'none';
+$('closeSystemAlarmModalBtn').addEventListener('click', () => {
+    $('systemAlarmModal').style.display = 'none';
 });
+
+// NEW: Class Selector Logic with Auto-Subjects and Hide Exam
+const handleClassChange = (selectorId, roleDutyId, roleStudentId, dutyLabelId, subjectAreaId, examWrapperId, isProfileContext) => {
+    const selector = $(selectorId);
+    const dutyRadio = $(roleDutyId);
+    const studentRadio = $(roleStudentId);
+    const dutyLabel = $(dutyLabelId);
+    const subjectArea = $(subjectAreaId);
+    const examWrapper = $(examWrapperId);
+
+    selector.addEventListener('change', (e) => {
+        const val = e.target.value;
+        const slider = $('subjectImageSlider');
+
+        if (['9', '10', '11', '12'].includes(val)) {
+            // Hide Professional option
+            dutyRadio.style.display = 'none';
+            dutyLabel.style.display = 'none';
+            
+            // Auto select Student
+            studentRadio.checked = true;
+            toggleOccupationView('student', isProfileContext ? 'profile' : 'main');
+
+            // Hide Exam Name Field for school students
+            if (examWrapper) examWrapper.style.display = 'none';
+
+            // Auto-populate and Highlight subjects
+            if (defaultSubjects[val]) {
+                subjectArea.value = defaultSubjects[val];
+                subjectArea.classList.add('highlight-subjects'); // Make bold/attractive
+            }
+
+            // SHOW SLIDER ONLY FOR CLASS 9
+            if (val === '9' && !isProfileContext) {
+                slider.style.display = 'block';
+                renderSlider();
+                startAutoScroll(); // Start scrolling
+            } else {
+                slider.style.display = 'none';
+                stopAutoScroll(); // Stop logic if hidden
+            }
+
+        } else {
+            // Show Professional option
+            dutyRadio.style.display = 'inline-block';
+            dutyLabel.style.display = 'inline-block';
+
+            // Show Exam Name Field for General
+            if (examWrapper) examWrapper.style.display = 'block'; 
+
+            // Clear subjects (manual fill) and remove highlight
+            const currentVal = subjectArea.value.trim();
+            const isDefault = Object.values(defaultSubjects).some(s => s.trim() === currentVal);
+            
+            if (isDefault || val === 'general') {
+                 if(isDefault) subjectArea.value = '';
+            }
+            subjectArea.classList.remove('highlight-subjects'); 
+            
+            if (!isProfileContext) {
+                slider.style.display = 'none';
+                stopAutoScroll();
+            }
+        }
+    });
+};
+
+// Initialize for Setup Card
+handleClassChange('classSelector', 'roleDuty', 'roleStudent', 'roleDutyLabel', 'subjectsList', 'setupExamWrapper', false);
+// Initialize for Profile Modal
+handleClassChange('profileClassSelector', 'profileRoleDuty', 'profileRoleStudent', 'profileRoleDutyLabel', 'profileSubjects', 'profileExamWrapper', true);
+
+
+// --- SLIDER RENDERING & AUTO-SCROLL LOGIC ---
+let sliderInterval;
+const sliderContainer = $('sliderContainer');
+
+// --- UPDATED SLIDER RENDERER (Starts Timer on Click) ---
+const renderSlider = () => {
+    sliderContainer.textContent = ''; // Clear via textContent
+    let displayData = [];
+    for(let i=0; i<10; i++) { displayData = [...displayData, ...subjectsData]; }
+
+    displayData.forEach(sub => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'slide-img-wrapper';
+        
+        const img = document.createElement('img');
+        img.src = sub.img;
+        img.className = 'slide-img';
+        img.alt = sub.name;
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'slide-text-overlay';
+        overlay.textContent = sub.name;
+        
+        wrapper.appendChild(img);
+        wrapper.appendChild(overlay);
+        
+        wrapper.addEventListener('click', () => {
+            // 1. टाइमर चालू करें (Ultra Intelligent Update)
+            startStudyTimer(sub.name);
+
+            // 2. कंटेंट खोलें
+            if (sub.type === 'popup') {
+                openScienceModal();
+            } else {
+                searchYouTube(sub.name);
+            }
+        });
+        sliderContainer.appendChild(wrapper);
+    });
+};
+
+const startAutoScroll = () => {
+    clearInterval(sliderInterval);
+    sliderInterval = setInterval(() => {
+        sliderContainer.scrollLeft += 1; // Slow auto scroll
+        // Reset if at end (simple loop)
+        if (sliderContainer.scrollLeft >= (sliderContainer.scrollWidth - sliderContainer.clientWidth)) {
+            sliderContainer.scrollLeft = 0; 
+        }
+    }, 20); 
+};
+
+const stopAutoScroll = () => {
+    clearInterval(sliderInterval);
+};
+
+// Manual Scroll Interaction
+sliderContainer.addEventListener('mousedown', stopAutoScroll);
+sliderContainer.addEventListener('touchstart', stopAutoScroll);
+sliderContainer.addEventListener('mouseup', startAutoScroll);
+sliderContainer.addEventListener('touchend', startAutoScroll);
+sliderContainer.addEventListener('mouseleave', startAutoScroll);
+
+
+// --- SCIENCE MODAL LOGIC ---
+const scienceModal = $('scienceModal');
+const scienceGrid = $('scienceGrid');
+
+// --- UPDATED SCIENCE MODAL (Starts Timer on Click) ---
+const openScienceModal = () => {
+    scienceGrid.textContent = ''; // Clear via textContent
+    scienceSubjects.forEach(sub => {
+        const div = document.createElement('div');
+        div.style.textAlign = 'center';
+        div.style.cursor = 'pointer';
+        
+        const img = document.createElement('img');
+        img.src = sub.img;
+        img.style.width = '100%';
+        img.style.height = '80px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
+        img.style.border = '2px solid var(--border)';
+        
+        const textDiv = document.createElement('div');
+        textDiv.style.marginTop = '5px';
+        textDiv.style.fontSize = '12px';
+        textDiv.style.fontWeight = 'bold';
+        textDiv.textContent = sub.name;
+        
+        div.appendChild(img);
+        div.appendChild(textDiv);
+        
+        div.onclick = () => {
+            // यहाँ भी टाइमर चालू करें
+            startStudyTimer(sub.name); 
+            searchYouTube(sub.name);
+            scienceModal.style.display = 'none';
+        };
+        scienceGrid.appendChild(div);
+    });
+    scienceModal.style.display = 'block';
+};
+
+$('closeScienceModal').addEventListener('click', () => {
+    scienceModal.style.display = 'none';
+});
+
+// --- CENTRAL SEARCH FUNCTION ---
+const searchYouTube = (subject) => {
+    const currentYear = new Date().getFullYear(); // e.g., 2026
+    const query = `Class 9 ${subject} ${currentYear} Full Course latest`;
+    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+};
+
 
 $('langSel').addEventListener('change', handleLanguageChange);
 $('timeFormatSel').addEventListener('change', handleTimeFormatChange);
@@ -1389,7 +2530,7 @@ handleTimeFocus(false);
 handleTimeFocus(true);
 const titleElement = document.querySelector('.app-title');
 if (titleElement) { titleElement.addEventListener('click', () => { const color1 = `hsl(${Math.random() * 360}, 100%, 70%)`; const color2 = `hsl(${Math.random() * 360}, 100%, 70%)`; titleElement.style.backgroundImage = `linear-gradient(45deg, ${color1}, ${color2})`; }); }
-setInterval(updateQuote, 60000);
+setInterval(fetchDeepFact, 60000); // Changed to use Fact Engine
 $('menuBtn').addEventListener('click', e => { e.stopPropagation(); const menu = $('dropdownMenu'); menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; });
 $('dropdownMenu').addEventListener('click', e => e.stopPropagation());
 document.addEventListener('click', () => { if($('dropdownMenu')) $('dropdownMenu').style.display = 'none'; });
@@ -1528,9 +2669,67 @@ $('noteTitle').value = '';
 $('noteContent').value = '';
 alert(getBilingualText('Thank you! Your email client has been opened to send the note for review.', 'धन्यवाद! समीक्षा के लिए नोट भेजने हेतु आपका ईमेल क्लाइंट खोल दिया गया है।'));
 });
+
+// NEW: INTERNAL BROWSER LOGIC (IN-APP FULL SCREEN NORMAL MODE WITH REAL LOADER)
+const openInternalBrowser = (url) => {
+    $('notesOptionModal').style.display = 'none'; // Close notes option menu if open
+    $('mapOptionModal').style.display = 'none'; // Close map option menu if open
+    
+    const browserModal = $('internalBrowserModal');
+    const iframe = $('internalFrame');
+    const loader = $('browserLoader');
+
+    // Reset state for new open
+    iframe.style.display = 'none';
+    loader.style.display = 'block';
+    
+    // Show Full Screen Modal
+    browserModal.style.display = 'block';
+
+    // Set URL
+    iframe.src = url;
+
+    // REAL LOADER LOGIC: Hide loader when iframe loads
+    iframe.onload = () => {
+        loader.style.display = 'none';
+        iframe.style.display = 'block';
+    };
+};
+
 $('readNotesBtn').addEventListener('click', () => {
-window.open('https://indianroutineai.blogspot.com', '_blank');
+    openInternalBrowser("https://indianroutineai.blogspot.com");
 });
+
+$('closeInternalBrowser').addEventListener('click', () => {
+    $('internalBrowserModal').style.display = 'none';
+    $('internalFrame').src = ''; // Clear source to stop media/reset
+});
+
+// NEW: Event Listeners for NEW BUTTONS
+$('communityNotesMainBtn').addEventListener('click', () => { $('notesOptionModal').style.display = 'block'; });
+$('closeNotesOptionModal').addEventListener('click', () => { $('notesOptionModal').style.display = 'none'; });
+
+$('perDayTestBtn').addEventListener('click', () => { $('perDayTestModal').style.display = 'block'; });
+$('closePerDayTestModal').addEventListener('click', () => { $('perDayTestModal').style.display = 'none'; });
+
+// MAP BUTTON LOGIC
+$('mapBtn').addEventListener('click', () => { $('mapOptionModal').style.display = 'block'; });
+$('closeMapOptionModal').addEventListener('click', () => { $('mapOptionModal').style.display = 'none'; });
+
+$('indiaMapBtn').addEventListener('click', () => {
+    openInternalBrowser("https://upload.wikimedia.org/wikipedia/commons/b/b3/India_political_map_2019_EN.svg");
+});
+$('worldMapBtn').addEventListener('click', () => {
+    openInternalBrowser("https://upload.wikimedia.org/wikipedia/commons/3/33/Physical_Political_World_Map.jpg");
+});
+
+// BOOKS BUTTON LOGIC
+$('booksBtn').addEventListener('click', () => { $('booksModal').style.display = 'block'; });
+$('closeBooksModal').addEventListener('click', () => { $('booksModal').style.display = 'none'; });
+
+// FACT ENGINE LISTENERS
+document.getElementById('nextFactBtn').addEventListener('click', fetchDeepFact);
+
 const audioPlayer = $('audioPlayer'), playPauseBtn = $('audioPlayPauseBtn'), trackSelect = $('audioTrackSelect'), trackImage = $('audioTrackImage');
 playPauseBtn.addEventListener('click', () => { if (!trackSelect.value) return; if (audioPlayer.paused) audioPlayer.play(); else audioPlayer.pause(); });
 audioPlayer.addEventListener('play', () => { playPauseBtn.textContent = '❚❚'; });
@@ -1556,22 +2755,157 @@ const formatStudyTime = (ms) => {
     return `${h}h ${m}m ${s}s`;
 };
 
+// ============================================
+// ULTRA INTELLIGENT REALITY CHECK (HINDI UPDATE)
+// ============================================
+const updateRealityCheck = () => {
+    const profile = getProfile();
+    let goalHours = 0;
+    if (profile.occupation === 'student') {
+        goalHours = parseFloat(profile.studentStudyGoal) || 8;
+    } else {
+        goalHours = parseFloat(profile.dutyStudyGoal) || 3;
+    }
+
+    const todayMs = parseInt(localStorage.getItem('today_study_time') || '0');
+    const goalMs = goalHours * 60 * 60 * 1000;
+
+    let percentage = (todayMs / goalMs) * 100;
+    if (percentage > 100) percentage = 100;
+    
+    const progressBar = $('realityProgressBar');
+    const overlayContainer = document.querySelector('.reality-text-overlay'); 
+    
+    if (!progressBar) return;
+
+    // INTELLIGENT TIME CALCULATION
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    
+    // Study IDs
+    const studyIds = [
+        'morning_study', 'main_study', 
+        'study1', 'study2', 'study3', 'study4', 'study5', 'study6', 'study7', 'study8',
+        'practice', 'current_affairs'
+    ];
+    
+    const sortedSlots = [...slotsData].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+    let expectedMinutesStudied = 0;
+
+    for (let i = 0; i < sortedSlots.length - 1; i++) {
+        const currentSlot = sortedSlots[i];
+        const nextSlot = sortedSlots[i+1];
+        
+        if (studyIds.includes(currentSlot.id)) {
+            const startM = timeToMinutes(currentSlot.time);
+            const endM = timeToMinutes(nextSlot.time);
+            
+            if (currentMinutes >= endM) {
+                if (endM > startM) expectedMinutesStudied += (endM - startM);
+            }
+            else if (currentMinutes > startM && currentMinutes < endM) {
+                expectedMinutesStudied += (currentMinutes - startM);
+            }
+        }
+    }
+
+    const actualMinutesStudied = Math.floor(todayMs / 60000);
+    const timeLost = expectedMinutesStudied - actualMinutesStudied;
+    const isBehindSchedule = timeLost > 30; // 30 min buffer
+
+    // UI UPDATE
+    progressBar.style.width = `${percentage}%`;
+    
+    // Using textContent and Creating Elements instead of innerHTML
+    overlayContainer.textContent = ''; // Clear
+
+    if (isBehindSchedule) {
+        // --- DANGER MODE (RED) ---
+        progressBar.classList.add('danger-mode');
+        
+        // Hindi Time Formatting
+        const lostH = Math.floor(timeLost / 60);
+        const lostM = timeLost % 60;
+        
+        let timeString = "";
+        if (lostH > 0) {
+            timeString = `${lostH} घंटे ${lostM} मिनट`;
+        } else {
+            timeString = `${lostM} मिनट`;
+        }
+
+        // PURE HINDI MESSAGE
+        const msgHi = `आपने ${timeString} बर्बाद कर दिए!`;
+        
+        const span = document.createElement('span');
+        span.className = 'status-text-bad';
+        span.style.fontSize = '13px';
+        span.style.letterSpacing = '0.5px';
+        span.style.fontWeight = '700'; // Bolder
+        span.textContent = `⚠️ ${msgHi} ⚠️`;
+        overlayContainer.appendChild(span);
+
+    } else {
+        // --- SUCCESS MODE (GREEN) ---
+        progressBar.classList.remove('danger-mode');
+        const percentVal = Math.round(percentage);
+        const percentLeft = 100 - percentVal;
+        
+        if (percentVal >= 100) {
+            const span = document.createElement('span');
+            span.className = 'status-text-good';
+            span.style.fontWeight = '700'; // Bolder
+            span.textContent = '🎉 लक्ष्य पूरा हुआ! (GOAL COMPLETED)';
+            overlayContainer.appendChild(span);
+        } else {
+            const span1 = document.createElement('span');
+            span1.className = 'status-text-good';
+            span1.style.marginRight = 'auto';
+            span1.style.fontWeight = '700'; // Bolder
+            span1.textContent = `${percentVal}% पूर्ण (DONE)`;
+            
+            const span2 = document.createElement('span');
+            span2.className = 'status-text-good';
+            span2.style.fontWeight = '700'; // Bolder
+            span2.textContent = `${percentLeft}% बाकी (LEFT)`;
+            
+            overlayContainer.appendChild(span1);
+            overlayContainer.appendChild(span2);
+        }
+    }
+};
+
 const updateStudyDisplay = () => {
     const todayMs = parseInt(localStorage.getItem('today_study_time') || '0');
     const totalMs = parseInt(localStorage.getItem('total_study_time') || '0');
     $('todayStudyTime').textContent = formatStudyTime(todayMs);
     $('totalStudyTime').textContent = formatStudyTime(totalMs);
 
+    // Call Reality Check Update Here
+    updateRealityCheck();
+
     const subjectTimes = JSON.parse(localStorage.getItem('subject_study_time') || '{}');
     const statsContainer = $('subjectStatsDisplay');
-    statsContainer.innerHTML = '';
+    statsContainer.textContent = ''; // Clear via textContent
+    
     if (Object.keys(subjectTimes).length === 0) {
-        statsContainer.innerHTML = `<span style="color:var(--muted);" data-hi="आज कोई विषय नहीं पढ़ा गया।" data-en="No subjects studied today."></span>`;
+        const msg = document.createElement('span');
+        msg.style.color = 'var(--muted)';
+        msg.dataset.hi = "आज कोई विषय नहीं पढ़ा गया।";
+        msg.dataset.en = "No subjects studied today.";
+        msg.textContent = getBilingualText("No subjects studied today.", "आज कोई विषय नहीं पढ़ा गया।");
+        statsContainer.appendChild(msg);
     } else {
         for (const subject in subjectTimes) {
             const timeString = formatStudyTime(subjectTimes[subject]);
             const statDiv = document.createElement('div');
-            statDiv.innerHTML = `<strong>${subject}:</strong> ${timeString}`;
+            
+            const strong = document.createElement('strong');
+            strong.textContent = `${subject}: `;
+            
+            statDiv.appendChild(strong);
+            statDiv.appendChild(document.createTextNode(timeString));
+            
             statsContainer.appendChild(statDiv);
         }
     }
@@ -1580,13 +2914,22 @@ const updateStudyDisplay = () => {
 
 const renderStudyApps = () => {
     const grid = $('studyAppGrid');
-    grid.innerHTML = '';
+    grid.textContent = ''; // Clear via textContent
     const studyApps = JSON.parse(localStorage.getItem('smart_study_apps') || '[]');
     studyApps.forEach(app => {
         const appDiv = document.createElement('div');
         appDiv.className = 'app-item';
         appDiv.dataset.linkUrl = app.linkUrl;
-        appDiv.innerHTML = `<img src="${app.imageUrl}" alt="${app.name} Logo"><span>${app.name}</span>`;
+        
+        const img = document.createElement('img');
+        img.src = app.imageUrl;
+        img.alt = `${app.name} Logo`;
+        
+        const span = document.createElement('span');
+        span.textContent = app.name;
+        
+        appDiv.appendChild(img);
+        appDiv.appendChild(span);
         grid.appendChild(appDiv);
     });
 };
@@ -1658,7 +3001,8 @@ $('studyAppGrid').addEventListener('click', (e) => {
     }
     
     const subjectListContainer = $('subjectListContainer');
-    subjectListContainer.innerHTML = '';
+    subjectListContainer.textContent = ''; // Clear
+    
     subjects.forEach(subject => {
         const subjectDiv = document.createElement('div');
         subjectDiv.className = 'subject-item';
@@ -1666,7 +3010,46 @@ $('studyAppGrid').addEventListener('click', (e) => {
         subjectDiv.onclick = () => {
             startStudyTimer(subject);
             $('subjectSelectorModal').style.display = 'none';
-            window.open(linkUrl, '_blank');
+
+            if (linkUrl.includes('youtube.com')) {
+                // --- SMART YOUTUBE SEARCH ---
+                const profile = getProfile();
+                const studentClass = profile.studentClass;
+                const currentYear = new Date().getFullYear(); 
+                let searchQuery = '';
+
+                if (studentClass && studentClass !== 'general') {
+                    // School Student: "Class 9 Hindi 2026 Full Course"
+                    searchQuery = `Class ${studentClass} ${subject} ${currentYear} Full Course latest`;
+                } else {
+                    // General/Competition: "UPSC History 2026 Full Course"
+                    const exam = profile.exam || 'Competition';
+                    searchQuery = `${exam} ${subject} ${currentYear} Full Course latest`;
+                }
+                const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
+                window.open(searchUrl, '_blank');
+
+            } else if (linkUrl.includes('play.google.com')) {
+                // --- NEW INTELLIGENT INTENT LOGIC FOR APPS (Khan Sir, RWA, etc) ---
+                try {
+                    const urlObj = new URL(linkUrl);
+                    const packageId = urlObj.searchParams.get('id');
+                    
+                    if (packageId) {
+                        // This intent tries to LAUNCH the app using its Package Name.
+                        // If installed, Android opens it. If not, it falls back to the Play Store link.
+                        const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${packageId};S.browser_fallback_url=${encodeURIComponent(linkUrl)};end`;
+                        window.location.href = intentUrl;
+                    } else {
+                        window.open(linkUrl, '_blank');
+                    }
+                } catch (e) {
+                    window.open(linkUrl, '_blank');
+                }
+            } else {
+                // Normal Website
+                window.open(linkUrl, '_blank');
+            }
         };
         subjectListContainer.appendChild(subjectDiv);
     });
@@ -1729,4 +3112,4 @@ init();
 });
 </script>
 </body>
-    </html>
+</html>
