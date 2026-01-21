@@ -1,5 +1,4 @@
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -625,6 +624,39 @@ footer a:hover { color: var(--accent); }
     color: #fff;
     box-shadow: none;
     cursor: default;
+}
+
+/* NEW: App Toast Notification Style */
+.app-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(22, 27, 34, 0.95);
+    border: 1px solid var(--accent);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 10000;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp 0.3s ease-out;
+}
+.app-toast::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
 }
 
 </style>
@@ -2986,6 +3018,60 @@ const stopStudyTimer = () => {
     alert(`${getBilingualText(message.en, message.hi)} (Studied ${subject} for: ${formatStudyTime(sessionDuration)})`);
 };
 
+// --- NEW SMART LAUNCHER FUNCTION WITH FALLBACK & TOAST ---
+const launchAppSmart = (linkUrl) => {
+    // 1. Extract Package ID
+    let packageId = null;
+    try {
+        const urlObj = new URL(linkUrl);
+        packageId = urlObj.searchParams.get('id');
+    } catch(e) { /* Ignore parsing errors */ }
+
+    if (!packageId) {
+        window.open(linkUrl, '_blank');
+        return;
+    }
+
+    // 2. UI: Show "Opening App..." Toast
+    const toast = document.createElement('div');
+    toast.className = 'app-toast';
+    toast.textContent = 'Opening App...';
+    document.body.appendChild(toast);
+
+    // Auto-remove toast after 3 seconds
+    setTimeout(() => { if(toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
+
+    // 3. Fallback URL (The Web/Play Store Link)
+    const fallbackUrl = linkUrl;
+
+    // 4. Construct Intent URL (Standard Format with Fallback)
+    // Note: We deliberately use S.browser_fallback_url for native handling,
+    // AND a JS timeout for browsers that don't support intents well.
+    const intentUrl = `intent://#Intent;scheme=package;package=${packageId};S.browser_fallback_url=${encodeURIComponent(fallbackUrl)};end`;
+
+    // 5. The Magic Timer Logic
+    const start = Date.now();
+    const timeout = 1000; // 1 second wait
+
+    // Attempt to trigger the Intent
+    window.location.href = intentUrl;
+
+    // Check if the page is still visible after the timeout
+    setTimeout(() => {
+        // If the app opened, the browser usually puts the page in background (hidden).
+        // If the page is still visible, it means the app likely didn't open.
+        // Or if the browser just sat there doing nothing.
+        const elapsed = Date.now() - start;
+        
+        // Check visibility state (most reliable on modern Android Chrome)
+        if (document.visibilityState === 'visible') {
+             console.log("App launch failed or not installed (Timeout), redirecting to Fallback.");
+             window.location.href = fallbackUrl;
+        }
+    }, timeout);
+};
+
+// --- UPDATED EVENT LISTENER FOR STUDY APPS ---
 $('studyAppGrid').addEventListener('click', (e) => {
     e.preventDefault();
     const appItem = e.target.closest('.app-item');
@@ -3030,22 +3116,8 @@ $('studyAppGrid').addEventListener('click', (e) => {
                 window.open(searchUrl, '_blank');
 
             } else if (linkUrl.includes('play.google.com')) {
-                // --- NEW INTELLIGENT INTENT LOGIC FOR APPS (Khan Sir, RWA, etc) ---
-                try {
-                    const urlObj = new URL(linkUrl);
-                    const packageId = urlObj.searchParams.get('id');
-                    
-                    if (packageId) {
-                        // This intent tries to LAUNCH the app using its Package Name.
-                        // If installed, Android opens it. If not, it falls back to the Play Store link.
-                        const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${packageId};S.browser_fallback_url=${encodeURIComponent(linkUrl)};end`;
-                        window.location.href = intentUrl;
-                    } else {
-                        window.open(linkUrl, '_blank');
-                    }
-                } catch (e) {
-                    window.open(linkUrl, '_blank');
-                }
+                // --- USE THE NEW SMART LAUNCHER ---
+                launchAppSmart(linkUrl);
             } else {
                 // Normal Website
                 window.open(linkUrl, '_blank');
@@ -3113,3 +3185,4 @@ init();
 </script>
 </body>
 </html>
+```
