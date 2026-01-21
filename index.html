@@ -1,4 +1,6 @@
 
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2047,22 +2049,29 @@ const renderSystemAlarmSync = () => {
                      min = m;
                 }
 
-                // Construct Android Intent URI - FIXED VERSION (NO SKIP UI)
-                // 1. Get the label and ensure it's encoded properly for URIs
-                const labelText = slot.label_hi || slot.label_en;
-                const encodedLabel = encodeURIComponent(labelText);
+                // Construct Android Intent URI - 100% FIXED
+                // 1. Get the label
+                const labelText = slot.label_hi || slot.label_en || "Alarm";
                 
-                // 2. Build the intent URI string using standard Android Intent format
-                // IMPORTANT: Removed 'B.skipUi=true' as it causes security blocks on modern Android
-                // Used 'S.android.intent.extra.MESSAGE' for better compatibility
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.android.intent.extra.MESSAGE=${encodedLabel};end`;
+                // 2. Build the intent string manually to avoid JS window errors
+                // This syntax specifically targets the ACTION_SET_ALARM intent
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.android.intent.extra.MESSAGE=${labelText};B.skipUi=false;end`;
                 
-                // 3. Trigger the intent using window.location.href
-                window.location.href = intentUri;
+                // 3. THE MAGIC FIX: Create an invisible link and click it.
+                // This bypasses the "navigation" block in some browsers and acts as a user gesture.
+                const link = document.createElement('a');
+                link.href = intentUri;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
                 // Visual Feedback
                 setBtn.classList.add('added');
-                setBtn.textContent = 'ADDED';
+                setBtn.textContent = 'OPENING...';
+                setTimeout(() => {
+                    setBtn.textContent = 'ADDED';
+                }, 1500);
             };
 
             card.appendChild(infoDiv);
@@ -3119,4 +3128,4 @@ init();
 </script>
 </body>
 </html>
-0000000000000000000000
+11111111111
