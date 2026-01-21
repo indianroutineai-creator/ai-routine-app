@@ -1987,6 +1987,9 @@ const generateStudentRoutine = (params, subjects, focusSubject) => {
 // ===============================================================
 // NEW: RENDER SYSTEM ALARM SYNC MODAL (Replaces Manual List)
 // ===============================================================
+// ===============================================================
+// FIXED: RENDER SYSTEM ALARM SYNC MODAL (Target Blank Fix)
+// ===============================================================
 const renderSystemAlarmSync = () => {
     const modal = $('systemAlarmModal');
     const list = $('systemAlarmList');
@@ -1999,22 +2002,18 @@ const renderSystemAlarmSync = () => {
 
     sortedSlots.forEach(slot => {
         if (importantAlarmIds.includes(slot.id)) {
-            // Create Card Container
             const card = document.createElement('div');
             card.className = 'alarm-sync-card';
 
-            // Left Side: Time and Label
             const infoDiv = document.createElement('div');
             infoDiv.className = 'alarm-sync-info';
 
             const timeSpan = document.createElement('span');
             timeSpan.className = 'alarm-sync-time';
             
-            // 15 Mins Early Logic for Wake Up with Midnight Wrap Fix
             let displayTime = slot.time;
             if (slot.id === 'wake') {
                 const originalTime = timeToMinutes(slot.time);
-                // Fix for midnight wrap-around issue (e.g., 00:10 -> 23:55)
                 const fifteenMinutesEarly = minutesToTime((originalTime - 15 + 1440) % 1440);
                 displayTime = fifteenMinutesEarly;
             }
@@ -2027,17 +2026,14 @@ const renderSystemAlarmSync = () => {
             infoDiv.appendChild(timeSpan);
             infoDiv.appendChild(labelSpan);
 
-            // Right Side: SET Button
             const setBtn = document.createElement('button');
             setBtn.className = 'alarm-sync-btn';
             setBtn.textContent = 'SET';
             
             setBtn.onclick = () => {
-                // 1. Determine actual time values for Intent
                 let hour, min;
                 if (slot.id === 'wake') {
                      const originalTime = timeToMinutes(slot.time);
-                     // Fix midnight calc
                      const earlyTime = (originalTime - 15 + 1440) % 1440;
                      hour = Math.floor(earlyTime / 60);
                      min = earlyTime % 60;
@@ -2047,28 +2043,41 @@ const renderSystemAlarmSync = () => {
                      min = m;
                 }
 
-                // 2. Get Label and ENCODE it (Fix for Hindi characters)
-                // Using encodeURIComponent is mandatory for special characters
+                // 1. Encoding (Hindi Fix)
                 const rawLabel = slot.label_hi || slot.label_en || "Alarm";
                 const encodedLabel = encodeURIComponent(rawLabel);
                 
-                // 3. Construct Android Intent URI
-                // Using SKIP_UI=false to force open the Clock app
+                // 2. Intent URI
                 const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.android.intent.extra.MESSAGE=${encodedLabel};B.android.intent.extra.SKIP_UI=false;end`;
                 
-                // 4. THE ANCHOR TAG HACK (Fix for ERR_UNKNOWN_URL_SCHEME)
-                // Instead of window.location, we create a fake link and click it.
-                // This tricks the browser into handling it as a user navigation event.
+                // 3. Anchor Hack with Target Blank (Browser Error Fix)
                 const link = document.createElement('a');
                 link.href = intentUri;
+                link.target = "_blank"; // <--- यह सबसे जरूरी है
                 link.style.display = 'none';
-                link.target = '_top'; // Ensures it breaks out of frames if any
                 document.body.appendChild(link);
+                link.click();
                 
-                try {
-                    link.click();
-                } catch (e) {
-                    console.error("Intent launch failed", e);
+                setTimeout(() => { 
+                    if(document.body.contains(link)) document.body.removeChild(link); 
+                }, 500);
+
+                // Visual Feedback
+                setBtn.classList.add('added');
+                setBtn.textContent = 'OPENING...';
+                setTimeout(() => { setBtn.textContent = 'ADDED'; }, 2000);
+            };
+
+            card.appendChild(infoDiv);
+            card.appendChild(setBtn);
+            list.appendChild(card);
+        }
+    });
+
+    modal.style.display = 'block';
+    updateTextContent();
+};
+
                 }
 
                 // Remove the link after a short delay
