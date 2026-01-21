@@ -1,4 +1,5 @@
 
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1394,7 +1395,7 @@ const initializeData = () => {
             { name: 'YouTube', imageUrl: 'https://files.catbox.moe/jigd74.jpg', linkUrl: 'https://www.youtube.com/' },
             { name: 'Physics Wallah', imageUrl: 'https://files.catbox.moe/06xp1d.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.physicswallah' },
             { name: 'Unacademy', imageUrl: 'https://files.catbox.moe/ojffup.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.unacademyapp' },
-            { name: 'BYJU\'S', imageUrl: 'https://files.catbox.moe/bs29n1.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.byjus.thelearningapp' },
+            { name: "BYJU'S", imageUrl: 'https://files.catbox.moe/bs29n1.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.byjus.thelearningapp' },
             { name: 'Adda247', imageUrl: 'https://files.catbox.moe/0y2ncj.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.adda247.app' },
             { name: 'Testbook', imageUrl: 'https://files.catbox.moe/zgrt4n.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.testbook.tbapp' },
             { name: 'Vedantu', imageUrl: 'https://files.catbox.moe/5o5cr2.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.vedantu.app' },
@@ -1985,9 +1986,6 @@ const generateStudentRoutine = (params, subjects, focusSubject) => {
 };
 
 // ===============================================================
-// NEW: RENDER SYSTEM ALARM SYNC MODAL (Replaces Manual List)
-// ===============================================================
-// ===============================================================
 // FIXED: RENDER SYSTEM ALARM SYNC MODAL (Target Blank Fix)
 // ===============================================================
 const renderSystemAlarmSync = () => {
@@ -2066,35 +2064,6 @@ const renderSystemAlarmSync = () => {
                 setBtn.classList.add('added');
                 setBtn.textContent = 'OPENING...';
                 setTimeout(() => { setBtn.textContent = 'ADDED'; }, 2000);
-            };
-
-            card.appendChild(infoDiv);
-            card.appendChild(setBtn);
-            list.appendChild(card);
-        }
-    });
-
-    modal.style.display = 'block';
-    updateTextContent();
-};
-
-                }
-
-                // Remove the link after a short delay
-                setTimeout(() => {
-                    if (document.body.contains(link)) {
-                        document.body.removeChild(link);
-                    }
-                }, 500);
-
-                // 5. Visual Feedback
-                setBtn.classList.add('added');
-                setBtn.textContent = 'OPENING...';
-                
-                // Revert text after 2 seconds
-                setTimeout(() => {
-                    setBtn.textContent = 'ADDED';
-                }, 2000);
             };
 
             card.appendChild(infoDiv);
