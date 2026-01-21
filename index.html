@@ -2046,22 +2046,20 @@ const renderSystemAlarmSync = () => {
                      min = m;
                 }
 
-                // Construct Android Intent URI
-                // UPDATED: Using a cleaner construction with B.skipUi=true to minimize "strange interface" issues
-                // Also replacing space with + for simple encoding compatibility
-                const label = getBilingualText(slot.label_en, slot.label_hi).replace(/\s/g, '+'); 
+                // Construct Android Intent URI - FIXED VERSION
                 
-                // Using intent scheme that works with most modern Android wrappers/browsers
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.message=${label};B.skipUi=true;end`;
+                // 1. Get the label and ensure it's encoded properly for URIs
+                // Using encodeURIComponent is critical for Hindi characters and spaces
+                const labelText = slot.label_hi || slot.label_en;
+                const encodedLabel = encodeURIComponent(labelText);
                 
-                // Fix for "Strange Interface": Use an anchor click instead of window.location
-                // This forces the browser to handle it as a navigation/intent event properly
-                const link = document.createElement('a');
-                link.href = intentUri;
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                // 2. Build the intent URI string
+                // Note: No spaces are allowed in the intent string structure itself
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.message=${encodedLabel};B.skipUi=true;end`;
+                
+                // 3. Trigger the intent using window.location.href
+                // This is the standard way to trigger intents in most WebViews
+                window.location.href = intentUri;
 
                 // Visual Feedback
                 setBtn.classList.add('added');
