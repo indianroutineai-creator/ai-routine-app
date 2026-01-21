@@ -1,6 +1,4 @@
 
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1396,7 +1394,7 @@ const initializeData = () => {
             { name: 'YouTube', imageUrl: 'https://files.catbox.moe/jigd74.jpg', linkUrl: 'https://www.youtube.com/' },
             { name: 'Physics Wallah', imageUrl: 'https://files.catbox.moe/06xp1d.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.physicswallah' },
             { name: 'Unacademy', imageUrl: 'https://files.catbox.moe/ojffup.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.unacademyapp' },
-            { name: "BYJU'S", imageUrl: 'https://files.catbox.moe/bs29n1.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.byjus.thelearningapp' },
+            { name: 'BYJU\'S', imageUrl: 'https://files.catbox.moe/bs29n1.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.byjus.thelearningapp' },
             { name: 'Adda247', imageUrl: 'https://files.catbox.moe/0y2ncj.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.adda247.app' },
             { name: 'Testbook', imageUrl: 'https://files.catbox.moe/zgrt4n.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.testbook.tbapp' },
             { name: 'Vedantu', imageUrl: 'https://files.catbox.moe/5o5cr2.jpg', linkUrl: 'https://play.google.com/store/apps/details?id=com.vedantu.app' },
@@ -2012,15 +2010,15 @@ const renderSystemAlarmSync = () => {
             const timeSpan = document.createElement('span');
             timeSpan.className = 'alarm-sync-time';
             
-            // 15 Mins Early Logic for Wake Up
+            // 15 Mins Early Logic for Wake Up with Midnight Wrap Fix
+            let displayTime = slot.time;
             if (slot.id === 'wake') {
                 const originalTime = timeToMinutes(slot.time);
-                // Fix for midnight wrap-around issue
+                // Fix for midnight wrap-around issue (e.g., 00:10 -> 23:55)
                 const fifteenMinutesEarly = minutesToTime((originalTime - 15 + 1440) % 1440);
-                timeSpan.textContent = formatTime(fifteenMinutesEarly);
-            } else {
-                timeSpan.textContent = formatTime(slot.time);
+                displayTime = fifteenMinutesEarly;
             }
+            timeSpan.textContent = formatTime(displayTime);
 
             const labelSpan = document.createElement('span');
             labelSpan.className = 'alarm-sync-label';
@@ -2029,13 +2027,13 @@ const renderSystemAlarmSync = () => {
             infoDiv.appendChild(timeSpan);
             infoDiv.appendChild(labelSpan);
 
-            // Right Side: SET Button (The Intent Bridge)
+            // Right Side: SET Button
             const setBtn = document.createElement('button');
             setBtn.className = 'alarm-sync-btn';
             setBtn.textContent = 'SET';
             
             setBtn.onclick = () => {
-                // Determine actual time values for Intent
+                // 1. Determine actual time values for Intent
                 let hour, min;
                 if (slot.id === 'wake') {
                      const originalTime = timeToMinutes(slot.time);
@@ -2049,29 +2047,45 @@ const renderSystemAlarmSync = () => {
                      min = m;
                 }
 
-                // Construct Android Intent URI - 100% FIXED
-                // 1. Get the label
-                const labelText = slot.label_hi || slot.label_en || "Alarm";
+                // 2. Get Label and ENCODE it (Fix for Hindi characters)
+                // Using encodeURIComponent is mandatory for special characters
+                const rawLabel = slot.label_hi || slot.label_en || "Alarm";
+                const encodedLabel = encodeURIComponent(rawLabel);
                 
-                // 2. Build the intent string manually to avoid JS window errors
-                // This syntax specifically targets the ACTION_SET_ALARM intent
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.android.intent.extra.MESSAGE=${labelText};B.skipUi=false;end`;
+                // 3. Construct Android Intent URI
+                // Using SKIP_UI=false to force open the Clock app
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${parseInt(hour)};i.minutes=${parseInt(min)};S.android.intent.extra.MESSAGE=${encodedLabel};B.android.intent.extra.SKIP_UI=false;end`;
                 
-                // 3. THE MAGIC FIX: Create an invisible link and click it.
-                // This bypasses the "navigation" block in some browsers and acts as a user gesture.
+                // 4. THE ANCHOR TAG HACK (Fix for ERR_UNKNOWN_URL_SCHEME)
+                // Instead of window.location, we create a fake link and click it.
+                // This tricks the browser into handling it as a user navigation event.
                 const link = document.createElement('a');
                 link.href = intentUri;
                 link.style.display = 'none';
+                link.target = '_top'; // Ensures it breaks out of frames if any
                 document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                
+                try {
+                    link.click();
+                } catch (e) {
+                    console.error("Intent launch failed", e);
+                }
 
-                // Visual Feedback
+                // Remove the link after a short delay
+                setTimeout(() => {
+                    if (document.body.contains(link)) {
+                        document.body.removeChild(link);
+                    }
+                }, 500);
+
+                // 5. Visual Feedback
                 setBtn.classList.add('added');
                 setBtn.textContent = 'OPENING...';
+                
+                // Revert text after 2 seconds
                 setTimeout(() => {
                     setBtn.textContent = 'ADDED';
-                }, 1500);
+                }, 2000);
             };
 
             card.appendChild(infoDiv);
@@ -3128,4 +3142,3 @@ init();
 </script>
 </body>
 </html>
-11111111111
