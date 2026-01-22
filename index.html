@@ -1,10 +1,4 @@
-यहाँ आपका पूरा अपडेट किया गया कोड है। मैंने आपके द्वारा दिए गए **System Alarm Sync** के नए लॉजिक को `renderSystemAlarmSync` फ़ंक्शन के अंदर पूरी तरह से इंटीग्रेट (implement) कर दिया है।
 
-अब "SET ALARM" बटन दबाने पर यह **`target="_top"`** तकनीक का उपयोग करेगा, जिससे यह सुनिश्चित होगा कि यह WebViews या Internal Browsers के अंदर भी सही ढंग से काम करे और आपके फोन की घड़ी (Clock App) को खोले।
-
-### Updated Complete Code
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2005,33 +1999,25 @@ const renderSystemAlarmSync = () => {
 
     sortedSlots.forEach(slot => {
         if (importantAlarmIds.includes(slot.id)) {
+            // Create Card Container
             const card = document.createElement('div');
             card.className = 'alarm-sync-card';
 
+            // Left Side: Time and Label
             const infoDiv = document.createElement('div');
             infoDiv.className = 'alarm-sync-info';
 
             const timeSpan = document.createElement('span');
             timeSpan.className = 'alarm-sync-time';
             
-            let displayTime = slot.time;
-            let hour, min;
-
+            // 15 Mins Early Logic for Wake Up
             if (slot.id === 'wake') {
                 const originalTime = timeToMinutes(slot.time);
-                const fifteenMinutesEarly = minutesToTime((originalTime - 15 + 1440) % 1440);
-                displayTime = fifteenMinutesEarly;
-                
-                const earlyMins = (originalTime - 15 + 1440) % 1440;
-                hour = Math.floor(earlyMins / 60);
-                min = earlyMins % 60;
+                const fifteenMinutesEarly = minutesToTime(originalTime - 15);
+                timeSpan.textContent = formatTime(fifteenMinutesEarly);
             } else {
                 timeSpan.textContent = formatTime(slot.time);
-                const [h, m] = slot.time.split(':').map(Number);
-                hour = h;
-                min = m;
             }
-            timeSpan.textContent = formatTime(displayTime);
 
             const labelSpan = document.createElement('span');
             labelSpan.className = 'alarm-sync-label';
@@ -2040,36 +2026,36 @@ const renderSystemAlarmSync = () => {
             infoDiv.appendChild(timeSpan);
             infoDiv.appendChild(labelSpan);
 
-            // BUTTON
+            // Right Side: SET Button (The Intent Bridge)
             const setBtn = document.createElement('button');
             setBtn.className = 'alarm-sync-btn';
-            setBtn.textContent = 'OPEN CLOCK'; 
+            setBtn.textContent = 'SET';
             
             setBtn.onclick = () => {
-                // 1. Label Encode
-                const rawLabel = slot.label_hi || slot.label_en || "Study Alarm";
-                const encodedLabel = encodeURIComponent(rawLabel);
+                // Determine actual time values for Intent
+                let hour, min;
+                if (slot.id === 'wake') {
+                     const originalTime = timeToMinutes(slot.time);
+                     const earlyTime = originalTime - 15;
+                     hour = Math.floor(earlyTime / 60);
+                     min = earlyTime % 60;
+                } else {
+                     const [h, m] = slot.time.split(':').map(Number);
+                     hour = h;
+                     min = m;
+                }
 
-                // 2. INTENT URI
-                // SKIP_UI=false: Open the app
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.android.intent.extra.MESSAGE=${encodedLabel};B.android.intent.extra.SKIP_UI=false;end`;
+                // Construct Android Intent URI
+                // Note: Standard Intent for Alarm Clock
+                const label = getBilingualText(slot.label_en, slot.label_hi);
+                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.message=${encodeURIComponent(label)};end`;
                 
-                // 3. ANCHOR TAG FIX (TARGET _TOP) - CORRECT METHOD
-                const link = document.createElement('a');
-                link.href = intentUri;
-                link.target = "_top";  
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                
-                link.click();
-                
-                setTimeout(() => { 
-                    if(document.body.contains(link)) document.body.removeChild(link); 
-                }, 500);
+                // Trigger Intent
+                window.location.href = intentUri;
 
+                // Visual Feedback
                 setBtn.classList.add('added');
-                setBtn.textContent = 'OPENING...';
-                setTimeout(() => { setBtn.textContent = 'DONE'; }, 2000);
+                setBtn.textContent = 'ADDED';
             };
 
             card.appendChild(infoDiv);
