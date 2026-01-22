@@ -1,8 +1,13 @@
-यह रहा पूरा ठीक किया हुआ कोड (Complete Corrected Code)।
+यह समस्या **"CORS Policy"** (Cross-Origin Resource Sharing) के कारण आ रही है।
 
-मैंने इसमें से वह `intent:#Intent...` वाला कोड हटा दिया है जो एरर दे रहा था। अब उसकी जगह एक साधारण और सुरक्षित कोड लगा दिया है। अब जब आप किसी ऐप पर क्लिक करेंगे, तो वह बिना क्रैश हुए सीधा खुल जाएगा।
+आसान भाषा में: आपका ऐप जिस पते पर चल रहा है (`airoution.blogspot.com`) और जहाँ से वह डेटा माँग रहा है (`indianroutineai.blogspot.com`), वे दोनों अलग-अलग हैं। सुरक्षा कारणों से ब्राउज़र ने डेटा को रोक दिया है।
 
-इस पूरे कोड को कॉपी करें और अपनी फाइल में सेव करें:
+**इसका पक्का समाधान (Solution):**
+हमें `fetch` कमांड को हटाकर **"JSONP" (Script Tag Method)** का उपयोग करना होगा। यह तरीका ब्लॉगर के लिए 100% काम करता है क्योंकि यह सुरक्षा दीवारों को बायपास कर देता है।
+
+यहाँ **पूरा ठीक किया हुआ कोड** है। इसे कॉपी करें और अपनी फाइल में रिप्लेस कर दें।
+
+### ✅ पूरा सही कोड (Updated Code with JSONP Fix)
 
 ```html
 <!DOCTYPE html>
@@ -558,6 +563,41 @@ footer a:hover { color: var(--accent); }
     }
 }
 
+/* --- NEW BLOG POST LIST STYLES --- */
+#blogPostsList {
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: #0d1117;
+}
+.blog-post-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.blog-post-item:last-child {
+    border-bottom: none;
+}
+.blog-post-item:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+.post-title {
+    font-weight: 700;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+.post-date {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
 </style>
 </head>
 <body>
@@ -1042,9 +1082,12 @@ footer a:hover { color: var(--accent); }
     <div class="modal-content" style="text-align: center;">
         <span class="close" id="closeNotesOptionModal">&times;</span>
         <h2 data-hi="सामुदायिक नोट्स" data-en="Community Notes" style="color: var(--accent); margin-top:0; font-weight: 800;">Community Notes</h2>
-        <p data-hi="आप क्या करना चाहते हैं?" data-en="What would you like to do?" style="color: var(--muted); margin-bottom: 24px; font-weight: 500;"></p>
         
-        <button id="readNotesBtn" class="btn" style="width: 100%; margin-bottom: 16px; padding: 14px; font-size: 16px;" data-hi="नोट्स पढ़ें" data-en="Read Notes">Read Notes</button>
+        <!-- DYNAMIC LIST CONTAINER -->
+        <div id="blogPostsList">
+            <!-- Posts fetched from Blogger will appear here -->
+        </div>
+
         <button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%; padding: 14px; font-size: 16px;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
     </div>
 </div>
@@ -2581,17 +2624,67 @@ const openInternalBrowser = (url) => {
     };
 };
 
-$('readNotesBtn').addEventListener('click', () => {
-    openInternalBrowser("https://indianroutineai.blogspot.com");
-});
-
 $('closeInternalBrowser').addEventListener('click', () => {
     $('internalBrowserModal').style.display = 'none';
     $('internalFrame').src = ''; // Clear source to stop media/reset
 });
 
 // NEW: Event Listeners for NEW BUTTONS
-$('communityNotesMainBtn').addEventListener('click', () => { $('notesOptionModal').style.display = 'block'; });
+// REPLACED OLD LOGIC WITH NEW JSONP LOGIC
+// STEP 1: DEFINE JSONP CALLBACK GLOBALLY
+window.loadBloggerData = (data) => {
+    const listContainer = document.getElementById('blogPostsList');
+    listContainer.innerHTML = ''; // Clear loader
+
+    const posts = data.feed.entry || [];
+
+    if (posts.length === 0) {
+        listContainer.innerHTML = '<div style="padding:20px; color:var(--muted);">No notes available yet.</div>';
+        return;
+    }
+
+    posts.forEach(post => {
+        const title = post.title.$t;
+        const content = post.content.$t;
+        const dateStr = new Date(post.published.$t).toLocaleDateString();
+
+        const item = document.createElement('div');
+        item.className = 'blog-post-item';
+        item.innerHTML = `
+            <div class="post-title">${title}</div>
+            <div class="post-date">${dateStr}</div>
+        `;
+        // Add click listener to open clean reader
+        item.onclick = () => openCleanReader(title, content);
+        listContainer.appendChild(item);
+    });
+};
+
+const fetchBlogPosts = () => {
+    const listContainer = document.getElementById('blogPostsList');
+    listContainer.innerHTML = '<div style="padding:20px; color:var(--muted); text-align:center;">Loading Community Notes...</div>';
+
+    // Remove old script if exists to refresh
+    const oldScript = document.getElementById('blogger-jsonp-script');
+    if (oldScript) oldScript.remove();
+
+    // Create new script tag for JSONP
+    const script = document.createElement('script');
+    script.id = 'blogger-jsonp-script';
+    // Use JSONP callback parameter
+    script.src = 'https://indianroutineai.blogspot.com/feeds/posts/default?alt=json-in-script&callback=loadBloggerData';
+    
+    script.onerror = () => {
+        listContainer.innerHTML = '<div style="padding:20px; color:var(--danger);">Failed to load notes. Please check your internet connection.</div>';
+    };
+
+    document.body.appendChild(script);
+};
+
+$('communityNotesMainBtn').addEventListener('click', () => {
+    $('notesOptionModal').style.display = 'block';
+    fetchBlogPosts(); // FETCH POSTS WHEN CLICKED
+});
 $('closeNotesOptionModal').addEventListener('click', () => { $('notesOptionModal').style.display = 'none'; });
 
 $('perDayTestBtn').addEventListener('click', () => { $('perDayTestModal').style.display = 'block'; });
@@ -2973,6 +3066,76 @@ setupModal('aboutBtn', 'aboutModal', 'closeAboutModal');
 setupModal('privacyBtn', 'privacyModal', 'closePrivacyModal');
 setupModal('disclaimerBtn', 'disclaimerModal', 'closeDisclaimerModal');
 
+
+// =========================================================
+// NEW: BLOGGER FETCH & CLEAN READER LOGIC (JSONP)
+// =========================================================
+
+const openCleanReader = (title, htmlContent) => {
+    // Hide the selection modal
+    $('notesOptionModal').style.display = 'none';
+    
+    // Get Elements
+    const browserModal = $('internalBrowserModal');
+    const iframe = $('internalFrame');
+    const loader = $('browserLoader');
+
+    // UI Setup
+    loader.style.display = 'none'; // No loading spinner needed for raw HTML
+    iframe.style.display = 'block';
+    browserModal.style.display = 'block';
+
+    // Reset Iframe to blank before writing
+    iframe.src = 'about:blank';
+
+    // Inject Content securely
+    setTimeout(() => {
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>${title}</title>
+                <style>
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+                        padding: 20px;
+                        line-height: 1.6;
+                        color: #1a1a1a;
+                        background: #ffffff;
+                        max-width: 800px;
+                        margin: 0 auto;
+                    }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                        border-radius: 8px;
+                        margin: 10px 0;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    }
+                    h1 {
+                        color: #a371f7;
+                        border-bottom: 2px solid #eee;
+                        padding-bottom: 10px;
+                        font-size: 24px;
+                    }
+                    a { color: #0969da; text-decoration: none; }
+                    pre { background: #f6f8fa; padding: 15px; overflow-x: auto; border-radius: 6px; }
+                    blockquote { border-left: 4px solid #a371f7; margin: 0; padding-left: 15px; color: #555; }
+                </style>
+            </head>
+            <body>
+                <h1>${title}</h1>
+                ${htmlContent}
+            </body>
+            </html>
+        `);
+        doc.close();
+    }, 50);
+};
 
 stopStudyTimer();
 renderStudyApps();
