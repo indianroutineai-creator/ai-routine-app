@@ -552,80 +552,6 @@ footer a:hover { color: var(--accent); }
     }
 }
 
-/* ============================================== */
-/* SYSTEM ALARM SYNC CENTER STYLES */
-/* ============================================== */
-.alarm-sync-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
-    max-height: 50vh;
-    overflow-y: auto;
-    padding: 4px; /* Space for shadow */
-}
-
-.alarm-sync-card {
-    background-color: #161b22;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.2s, border-color 0.2s;
-}
-.alarm-sync-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent);
-}
-
-.alarm-sync-info {
-    display: flex;
-    flex-direction: column;
-}
-.alarm-sync-time {
-    font-size: 20px;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: 0.5px;
-}
-.alarm-sync-label {
-    font-size: 13px;
-    color: var(--accent);
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.alarm-sync-btn {
-    background-color: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 800;
-    cursor: pointer;
-    font-size: 12px;
-    text-transform: uppercase;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 0 5px rgba(163, 113, 247, 0.2);
-    min-width: 70px;
-}
-
-.alarm-sync-btn:hover {
-    background-color: var(--accent);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(163, 113, 247, 0.6);
-}
-
-.alarm-sync-btn.added {
-    background-color: var(--success);
-    border-color: var(--success);
-    color: #fff;
-    box-shadow: none;
-    cursor: default;
-}
-
 </style>
 </head>
 <body>
@@ -972,25 +898,21 @@ footer a:hover { color: var(--accent); }
 </div>
 
 <!-- =============================================================== -->
-<!-- ============= SYSTEM ALARM SYNC CENTER (INTENT BRIDGE) ======== -->
+<!-- ============= NEW MANUAL ALARM SUGGESTION MODAL =============== -->
 <!-- =============================================================== -->
-<div id="systemAlarmModal" class="modal">
+<div id="manualAlarmModal" class="modal">
     <div class="modal-content">
-        <h2 style="margin-top:0; color: var(--accent); font-weight: 800; font-size: 24px;">
-            ⏰ System Alarm Sync
-        </h2>
-        <p data-hi="100% भरोसेमंद अलार्म के लिए, नीचे दिए गए बटन दबाकर सीधे अपने फोन की घड़ी में अलार्म सेट करें।" 
-           data-en="For 100% reliable alarms, click below to set alarms directly in your phone's Clock app." 
-           style="font-weight: 500; color: var(--muted); margin-bottom: 20px;">
-        </p>
+        <h2 data-hi="रूटीन तैयार है!" data-en="Routine Ready!" style="margin-top:0; color: var(--success); font-weight: 800;">Routine Ready!</h2>
+        <p data-hi="100% भरोसेमंद अलार्म के लिए जो ऐप बंद होने पर भी बजें, कृपया इन ज़रूरी समय को अपने फ़ोन के मुख्य घड़ी (Clock) ऐप में सेट करें।" data-en="For 100% reliable alarms that work even when the app is closed, please set these important times in your phone's main Clock App." style="font-weight: 500;">For 100% reliable alarms that work even when the app is closed, please set these important times in your phone's main Clock App.</p>
         
-        <div id="systemAlarmList" class="alarm-sync-list">
-            <!-- Dynamic Alarm Cards Injected Here -->
-        </div>
+        <ul id="manualAlarmList">
+            <!-- Routine will be dynamically inserted here by JavaScript -->
+        </ul>
 
-        <button id="closeSystemAlarmModalBtn" class="btn" style="width: 100%; margin-top: 20px; font-weight: 800;" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
+        <button id="closeManualAlarmModalBtn" class="btn" style="width: 100%; margin-top: 20px;" data-hi="ठीक है, समझ गया!" data-en="Okay, Got It!">Okay, Got It!</button>
     </div>
 </div>
+<!-- =============================================================== -->
 <!-- =============================================================== -->
 
 <!-- SCIENCE SELECTION MODAL -->
@@ -1984,89 +1906,6 @@ const generateStudentRoutine = (params, subjects, focusSubject) => {
     return true;
 };
 
-// ===============================================================
-// NEW: RENDER SYSTEM ALARM SYNC MODAL (Replaces Manual List)
-// ===============================================================
-const renderSystemAlarmSync = () => {
-    const modal = $('systemAlarmModal');
-    const list = $('systemAlarmList');
-    list.textContent = ''; // Safe Clear
-
-    const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
-
-    // Sort slots by time
-    const sortedSlots = [...slotsData].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
-
-    sortedSlots.forEach(slot => {
-        if (importantAlarmIds.includes(slot.id)) {
-            // Create Card Container
-            const card = document.createElement('div');
-            card.className = 'alarm-sync-card';
-
-            // Left Side: Time and Label
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'alarm-sync-info';
-
-            const timeSpan = document.createElement('span');
-            timeSpan.className = 'alarm-sync-time';
-            
-            // 15 Mins Early Logic for Wake Up
-            if (slot.id === 'wake') {
-                const originalTime = timeToMinutes(slot.time);
-                const fifteenMinutesEarly = minutesToTime(originalTime - 15);
-                timeSpan.textContent = formatTime(fifteenMinutesEarly);
-            } else {
-                timeSpan.textContent = formatTime(slot.time);
-            }
-
-            const labelSpan = document.createElement('span');
-            labelSpan.className = 'alarm-sync-label';
-            labelSpan.textContent = getBilingualText(slot.label_en, slot.label_hi);
-
-            infoDiv.appendChild(timeSpan);
-            infoDiv.appendChild(labelSpan);
-
-            // Right Side: SET Button (The Intent Bridge)
-            const setBtn = document.createElement('button');
-            setBtn.className = 'alarm-sync-btn';
-            setBtn.textContent = 'SET';
-            
-            setBtn.onclick = () => {
-                // Determine actual time values for Intent
-                let hour, min;
-                if (slot.id === 'wake') {
-                     const originalTime = timeToMinutes(slot.time);
-                     const earlyTime = originalTime - 15;
-                     hour = Math.floor(earlyTime / 60);
-                     min = earlyTime % 60;
-                } else {
-                     const [h, m] = slot.time.split(':').map(Number);
-                     hour = h;
-                     min = m;
-                }
-
-                // Construct Android Intent URI
-                // Note: Standard Intent for Alarm Clock
-                const label = getBilingualText(slot.label_en, slot.label_hi);
-                const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.message=${encodeURIComponent(label)};end`;
-                
-                // Trigger Intent
-                window.location.href = intentUri;
-
-                // Visual Feedback
-                setBtn.classList.add('added');
-                setBtn.textContent = 'ADDED';
-            };
-
-            card.appendChild(infoDiv);
-            card.appendChild(setBtn);
-            list.appendChild(card);
-        }
-    });
-
-    modal.style.display = 'block';
-    updateTextContent();
-};
 
 const autoGenerate = () => {
 const occupation = document.querySelector('input[name="occupation"]:checked').value;
@@ -2217,9 +2056,50 @@ if (occupation === 'duty') {
 saveSlotsData();
 renderSlots();
 
-// --- REPLACE OLD LIST LOGIC WITH NEW PREMIUM INTENT BRIDGE ---
-renderSystemAlarmSync();
+const manualAlarmModal = $('manualAlarmModal');
+const manualAlarmList = $('manualAlarmList');
+manualAlarmList.textContent = ''; 
 
+const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
+
+slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
+slotsData.forEach(slot => {
+    if (importantAlarmIds.includes(slot.id)) {
+        const listItem = document.createElement('li');
+        
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = getBilingualText(slot.label_en, slot.label_hi);
+        
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'time';
+
+        if (slot.id === 'wake') {
+            const originalTime = timeToMinutes(slot.time);
+            const fifteenMinutesEarly = minutesToTime(originalTime - 15);
+            const formattedEarlyTime = formatTime(fifteenMinutesEarly);
+            
+            timeSpan.style.textAlign = 'right';
+            timeSpan.textContent = formattedEarlyTime;
+            
+            const small = document.createElement('small');
+            small.style.display = 'block';
+            small.style.color = 'var(--muted)';
+            small.style.fontWeight = 'normal';
+            small.textContent = getBilingualText('(15 mins early)', '(15 मिनट पहले)');
+            timeSpan.appendChild(small);
+        } else {
+            timeSpan.textContent = formatTime(slot.time);
+        }
+        
+        listItem.appendChild(labelSpan);
+        listItem.appendChild(timeSpan);
+        manualAlarmList.appendChild(listItem);
+    }
+});
+
+manualAlarmModal.style.display = 'block';
+updateTextContent();
 };
 const toggleOccupationView = (occupation, context) => {
 const dutyFields = (context === 'profile') ? $('profileDutyFields') : $('dutyFields');
@@ -2281,8 +2161,8 @@ setInterval(checkAlarms, 30000);
 checkAlarms();
 // --- EVENT LISTENERS ---
 
-$('closeSystemAlarmModalBtn').addEventListener('click', () => {
-    $('systemAlarmModal').style.display = 'none';
+$('closeManualAlarmModalBtn').addEventListener('click', () => {
+    $('manualAlarmModal').style.display = 'none';
 });
 
 // NEW: Class Selector Logic with Auto-Subjects and Hide Exam
@@ -3111,4 +2991,4 @@ init();
 </script>
 </body>
 </html>
-```
+``` 
