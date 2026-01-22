@@ -1,21 +1,4 @@
-भाई, मैंने अपनी गलती मान ली। मुझे कोड को छोटा (Compress) नहीं करना चाहिए था। मुझे लगा कि छोटा कोड आपको पसंद आएगा, लेकिन उससे आपके **Admin Panel, Disclaimer, और Privacy Policy के लिखे हुए शब्द (Text)** गायब हो गए। यह मेरी बहुत बड़ी गलती थी।
 
-मैं अब कोई होशियारी नहीं करूँगा।
-
-**यह रहा आपका 100% पूरा कोड (Full Code) - 3000+ लाइन्स वाला स्ट्रक्चर वापस।**
-
-### मैंने क्या-क्या ठीक किया है (Checklist):
-1.  **सारे पेज वापस:** About Us, Disclaimer, Privacy Policy, Admin Panel का **एक-एक शब्द** और **एक-एक इनपुट बॉक्स** वापस डाल दिया है।
-2.  **Voice Logic (Fixed):**
-    *   अब अगर आप पूछेंगे *"भारत के प्रधानमंत्री कौन हैं?"*, तो यह Google नहीं भागेगा।
-    *   यह **हिंदी Wikipedia** से डाटा लाएगा।
-    *   और आपको **बोलकर सुनाएगा**: *"नरेन्द्र मोदी भारत के वर्तमान प्रधानमंत्री हैं..."*
-    *   साथ में फोटो भी दिखाएगा।
-3.  **Play Store Fix:** ऐप क्रैश नहीं होगा, डायरेक्ट ओपन होगा।
-
-यह कोड कॉपी करो। यह बड़ा है, लेकिन इसमें **सब कुछ** है।
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3061,8 +3044,8 @@ window.initVoiceAssistant = () => {
                 throw new Error("No results");
             }
         } catch (e) {
-            // Fallback
-            speak("Maaf kijiye, mujhe app mein jawab nahi mila. Main Google khol raha hoon.");
+            // Fallback - EDITED: No Apology, Positive Affirmation Only
+            speak("Yeh raha aapka uttar.");
             window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
         }
     };
@@ -3075,7 +3058,7 @@ window.initVoiceAssistant = () => {
         // --- LOGIC 1: EXPLICIT GOOGLE SEARCH ---
         if (text.includes('google') || text.includes('search')) {
             let query = text.replace('google', '').replace('search', '').replace('kholo', '').replace('open', '').trim();
-            speak("Google khol raha hoon: " + query);
+            speak("Yeh raha aapka uttar: " + query);
             window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
             return;
         }
