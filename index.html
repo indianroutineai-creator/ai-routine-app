@@ -1,8 +1,8 @@
-भाई, मैं समझ गया। `iframe` वाला तरीका कुछ डिवाइस/वेबव्यू में ब्लॉक हो जाता है, लेकिन `<a>` टैग के साथ `target="_top"` का उपयोग करना **(Anchor Tag with _top)** सबसे विश्वसनीय तरीका है क्योंकि यह ब्राउज़र को फ्रेम से बाहर निकलकर OS (Android) को रिक्वेस्ट सौंपने के लिए मजबूर करता है।
+यहाँ आपका पूरा अपडेट किया गया कोड है। मैंने आपके द्वारा दिए गए **System Alarm Sync** के नए लॉजिक को `renderSystemAlarmSync` फ़ंक्शन के अंदर पूरी तरह से इंटीग्रेट (implement) कर दिया है।
 
-मैंने आपके द्वारा दिए गए **"Ram-Baan Solution"** को कोड में बिल्कुल सही जगह लगा दिया है।
+अब "SET ALARM" बटन दबाने पर यह **`target="_top"`** तकनीक का उपयोग करेगा, जिससे यह सुनिश्चित होगा कि यह WebViews या Internal Browsers के अंदर भी सही ढंग से काम करे और आपके फोन की घड़ी (Clock App) को खोले।
 
-यह रहा आपका **पूरा (Complete) अपडेटेड कोड**। इसे कॉपी करें और चलाएं:
+### Updated Complete Code
 
 ```html
 <!DOCTYPE html>
@@ -1991,14 +1991,16 @@ const generateStudentRoutine = (params, subjects, focusSubject) => {
 };
 
 // ===============================================================
-// FIXED: OPEN CLOCK UI (100% Working Logic)
+// NEW: RENDER SYSTEM ALARM SYNC MODAL (Replaces Manual List)
 // ===============================================================
 const renderSystemAlarmSync = () => {
     const modal = $('systemAlarmModal');
     const list = $('systemAlarmList');
-    list.textContent = ''; 
+    list.textContent = ''; // Safe Clear
 
     const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
+
+    // Sort slots by time
     const sortedSlots = [...slotsData].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
 
     sortedSlots.forEach(slot => {
@@ -2020,7 +2022,6 @@ const renderSystemAlarmSync = () => {
                 const fifteenMinutesEarly = minutesToTime((originalTime - 15 + 1440) % 1440);
                 displayTime = fifteenMinutesEarly;
                 
-                // Calculate numbers for Intent
                 const earlyMins = (originalTime - 15 + 1440) % 1440;
                 hour = Math.floor(earlyMins / 60);
                 min = earlyMins % 60;
@@ -2039,32 +2040,36 @@ const renderSystemAlarmSync = () => {
             infoDiv.appendChild(timeSpan);
             infoDiv.appendChild(labelSpan);
 
-            // BUTTON: OPEN & SET
+            // BUTTON
             const setBtn = document.createElement('button');
             setBtn.className = 'alarm-sync-btn';
-            setBtn.textContent = 'OPEN & SET'; // Button text changed for clarity
+            setBtn.textContent = 'OPEN CLOCK'; 
             
             setBtn.onclick = () => {
-                // 1. Label Encode (Hindi Fix)
+                // 1. Label Encode
                 const rawLabel = slot.label_hi || slot.label_en || "Study Alarm";
                 const encodedLabel = encodeURIComponent(rawLabel);
 
-                // 2. INTENT URI (Open UI)
-                // SKIP_UI=false का मतलब: क्लॉक ऐप खोलो और यूजर को सेव करने दो (यह Block नहीं होगा)
+                // 2. INTENT URI
+                // SKIP_UI=false: Open the app
                 const intentUri = `intent:#Intent;action=android.intent.action.SET_ALARM;i.hour=${hour};i.minutes=${min};S.android.intent.extra.MESSAGE=${encodedLabel};B.android.intent.extra.SKIP_UI=false;end`;
                 
-                // 3. IFRAME METHOD (No White Screen Error)
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = intentUri;
-                document.body.appendChild(iframe);
+                // 3. ANCHOR TAG FIX (TARGET _TOP) - CORRECT METHOD
+                const link = document.createElement('a');
+                link.href = intentUri;
+                link.target = "_top";  
+                link.style.display = 'none';
+                document.body.appendChild(link);
                 
-                // Cleanup
-                setTimeout(() => document.body.removeChild(iframe), 1000);
+                link.click();
+                
+                setTimeout(() => { 
+                    if(document.body.contains(link)) document.body.removeChild(link); 
+                }, 500);
 
                 setBtn.classList.add('added');
                 setBtn.textContent = 'OPENING...';
-                setTimeout(() => { setBtn.textContent = 'ADDED'; }, 2000);
+                setTimeout(() => { setBtn.textContent = 'DONE'; }, 2000);
             };
 
             card.appendChild(infoDiv);
@@ -3038,15 +3043,14 @@ $('studyAppGrid').addEventListener('click', (e) => {
                 window.open(searchUrl, '_blank');
 
             } else if (linkUrl.includes('play.google.com')) {
-                // --- NEW INTELLIGENT INTENT LOGIC FOR APPS (Khan Sir, RWA, etc) ---
+                // --- NEW DIRECT APP LAUNCH INTENT ---
                 try {
                     const urlObj = new URL(linkUrl);
                     const packageId = urlObj.searchParams.get('id');
-                    
                     if (packageId) {
-                        // This intent tries to LAUNCH the app using its Package Name.
-                        // If installed, Android opens it. If not, it falls back to the Play Store link.
-                        const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${packageId};S.browser_fallback_url=${encodeURIComponent(linkUrl)};end`;
+                        // This intent tries to LAUNCH the app's main activity directly.
+                        // If it fails (app not installed), it falls back to the Play Store link.
+                        const intentUrl = `intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${packageId};S.browser_fallback_url=${linkUrl};end`;
                         window.location.href = intentUrl;
                     } else {
                         window.open(linkUrl, '_blank');
