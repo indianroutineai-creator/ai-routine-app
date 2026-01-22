@@ -1,12 +1,4 @@
-भाई, गुस्सा मत करो, मेरी गलती है। लेआउट (HTML Structure) में एक `</div>` टैग मिस होने की वजह से **सारे कार्ड एक के अंदर एक घुस गए थे**। यह मेरी भारी चूक थी।
 
-आपने सही कहा, पुराना कोड ही सबसे बेस्ट था। मैं कोई नया एक्सपेरिमेंट नहीं कर रहा हूँ।
-
-यह रहा आपका **बिलकुल पुराना और 100% सही कोड**। इसमें कार्ड्स अलग-अलग हैं, लेआउट एकदम सही है, और फंक्शन वही पुराने वाले हैं जो सही चल रहे थे।
-
-यहाँ से कॉपी करें (Old Stable Version):
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -698,7 +690,7 @@ footer a:hover { color: var(--accent); }
 <input type="radio" id="shiftDay" name="shiftType" value="day" checked>
 <label for="shiftDay" data-hi="दिन की शिफ्ट" data-en="Day Shift">Day Shift</label>
 <input type="radio" id="shiftNight" name="shiftType" value="night">
-<label for="shiftNight" data-hi="रात की शिफ्ट" data-en="Night Shift</label>
+<label for="shiftNight" data-hi="रात की शिफ्ट" data-en="Night Shift">Night Shift</label>
 </div>
 </div>
 </div>
@@ -3052,8 +3044,8 @@ window.initVoiceAssistant = () => {
                 throw new Error("No results");
             }
         } catch (e) {
-            // Fallback - EDITED: No Apology, Positive Affirmation Only
-            speak("Yeh raha aapka uttar.");
+            // Fallback
+            speak("Maaf kijiye, mujhe app mein jawab nahi mila. Main Google khol raha hoon.");
             window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
         }
     };
@@ -3066,7 +3058,7 @@ window.initVoiceAssistant = () => {
         // --- LOGIC 1: EXPLICIT GOOGLE SEARCH ---
         if (text.includes('google') || text.includes('search')) {
             let query = text.replace('google', '').replace('search', '').replace('kholo', '').replace('open', '').trim();
-            speak("Yeh raha aapka uttar: " + query);
+            speak("Google khol raha hoon: " + query);
             window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
             return;
         }
