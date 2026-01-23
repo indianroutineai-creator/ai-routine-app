@@ -1,15 +1,4 @@
-यह समस्या **"CORS Policy"** (Cross-Origin Resource Sharing) के कारण आ रही है।
 
-आसान भाषा में: आपका ऐप जिस पते पर चल रहा है (`airoution.blogspot.com`) और जहाँ से वह डेटा माँग रहा है (`indianroutineai.blogspot.com`), वे दोनों अलग-अलग हैं। सुरक्षा कारणों से ब्राउज़र ने डेटा को रोक दिया है।
-
-**इसका पक्का समाधान (Solution):**
-हमें `fetch` कमांड को हटाकर **"JSONP" (Script Tag Method)** का उपयोग करना होगा। यह तरीका ब्लॉगर के लिए 100% काम करता है क्योंकि यह सुरक्षा दीवारों को बायपास कर देता है।
-
-यहाँ **पूरा ठीक किया हुआ कोड** है। इसे कॉपी करें और अपनी फाइल में रिप्लेस कर दें।
-
-### ✅ पूरा सही कोड (Updated Code with JSONP Fix)
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1077,30 +1066,18 @@ footer a:hover { color: var(--accent); }
     </div>
 </div>
 
-<!-- NEW: MODAL FOR NOTES OPTIONS (Replaces old card logic) -->
-<div id="notesOptionModal" class="modal">
+<!-- NEW: GENERIC DYNAMIC CONTENT LIST MODAL -->
+<div id="dynamicContentModal" class="modal">
     <div class="modal-content" style="text-align: center;">
-        <span class="close" id="closeNotesOptionModal">&times;</span>
-        <h2 data-hi="सामुदायिक नोट्स" data-en="Community Notes" style="color: var(--accent); margin-top:0; font-weight: 800;">Community Notes</h2>
+        <span class="close" id="closeDynamicContentModal">&times;</span>
+        <h2 id="dynamicModalTitle" style="color: var(--accent); margin-top:0; font-weight: 800;">Loading...</h2>
         
         <!-- DYNAMIC LIST CONTAINER -->
         <div id="blogPostsList">
             <!-- Posts fetched from Blogger will appear here -->
         </div>
 
-        <button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%; padding: 14px; font-size: 16px;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
-    </div>
-</div>
-
-<!-- NEW: MODAL FOR MAP OPTIONS -->
-<div id="mapOptionModal" class="modal">
-    <div class="modal-content" style="text-align: center;">
-        <span class="close" id="closeMapOptionModal">&times;</span>
-        <h2 data-hi="मैप चुनें" data-en="Select Map" style="color: var(--accent); margin-top:0; font-weight: 800;">Select Map</h2>
-        <p data-hi="आप कौन सा मैप देखना चाहते हैं?" data-en="Which map would you like to view?" style="color: var(--muted); margin-bottom: 24px; font-weight: 500;"></p>
-        
-        <button id="indiaMapBtn" class="btn" style="width: 100%; margin-bottom: 16px; padding: 14px; font-size: 16px; background-color: #1f6feb; border-color: #1f6feb;" data-hi="भारत का मैप" data-en="India Map">India Map</button>
-        <button id="worldMapBtn" class="btn btn-secondary" style="width: 100%; padding: 14px; font-size: 16px;" data-hi="वर्ल्ड मैप" data-en="World Map">World Map</button>
+        <button id="shareNoteBtn" class="btn btn-secondary" style="width: 100%; padding: 14px; font-size: 16px; display: none;" data-hi="अपना नोट साझा करें" data-en="Share Your Note">Share Your Note</button>
     </div>
 </div>
 
@@ -1115,26 +1092,6 @@ footer a:hover { color: var(--accent); }
     <div class="modal-content">
         <!-- Iframe Normal View -->
         <iframe id="internalFrame" style="flex: 1; width: 100%; height: 100%; border: none; background-color: #fff; display: none;" src=""></iframe>
-    </div>
-</div>
-
-<!-- NEW: MODAL FOR PER DAY TEST (Placeholder) -->
-<div id="perDayTestModal" class="modal">
-    <div class="modal-content" style="text-align: center;">
-        <span class="close" id="closePerDayTestModal">&times;</span>
-        <h2 style="color: #2ea043; margin-top:0; font-weight: 800;" data-hi="आज का अभ्यास" data-en="Today's Practice">Today's Practice</h2>
-        <p data-hi="यह फीचर जल्द ही उपलब्ध होगा! यहाँ आप अपने दैनिक अभ्यास टेस्ट दे सकेंगे।" data-en="This feature is coming soon! You will be able to take your daily practice tests here." style="color: var(--muted); margin-bottom: 20px; font-weight: 500;"></p>
-        <button class="btn" style="background-color: #2ea043; border-color: #2ea043;" onclick="document.getElementById('perDayTestModal').style.display='none'" data-hi="ठीक है" data-en="Okay">Okay</button>
-    </div>
-</div>
-
-<!-- NEW: MODAL FOR BOOKS (Coming Soon) -->
-<div id="booksModal" class="modal">
-    <div class="modal-content" style="text-align: center;">
-        <span class="close" id="closeBooksModal">&times;</span>
-        <h2 style="color: #d29922; margin-top:0; font-weight: 800;" data-hi="फ्री बुक्स" data-en="Free Books">Free Books</h2>
-        <p data-hi="यह फीचर अभी जल्द आने वाला है।" data-en="This feature is coming soon." style="color: var(--muted); margin-bottom: 20px; font-size: 18px; font-weight: 600;"></p>
-        <button class="btn" style="background-color: #d29922; border-color: #d29922;" onclick="document.getElementById('booksModal').style.display='none'" data-hi="ठीक है" data-en="Okay">Okay</button>
     </div>
 </div>
 
@@ -2600,8 +2557,7 @@ alert(getBilingualText('Thank you! Your email client has been opened to send the
 
 // NEW: INTERNAL BROWSER LOGIC (IN-APP FULL SCREEN NORMAL MODE WITH REAL LOADER)
 const openInternalBrowser = (url) => {
-    $('notesOptionModal').style.display = 'none'; // Close notes option menu if open
-    $('mapOptionModal').style.display = 'none'; // Close map option menu if open
+    $('dynamicContentModal').style.display = 'none'; // Close content list
     
     const browserModal = $('internalBrowserModal');
     const iframe = $('internalFrame');
@@ -2629,17 +2585,19 @@ $('closeInternalBrowser').addEventListener('click', () => {
     $('internalFrame').src = ''; // Clear source to stop media/reset
 });
 
-// NEW: Event Listeners for NEW BUTTONS
-// REPLACED OLD LOGIC WITH NEW JSONP LOGIC
-// STEP 1: DEFINE JSONP CALLBACK GLOBALLY
-window.loadBloggerData = (data) => {
+// =========================================================
+// NEW: DYNAMIC BLOGGER FETCH LOGIC (JSONP)
+// =========================================================
+
+// Global Callback for JSONP
+window.handleBloggerResponse = (data) => {
     const listContainer = document.getElementById('blogPostsList');
     listContainer.innerHTML = ''; // Clear loader
 
     const posts = data.feed.entry || [];
 
     if (posts.length === 0) {
-        listContainer.innerHTML = '<div style="padding:20px; color:var(--muted);">No notes available yet.</div>';
+        listContainer.innerHTML = '<div style="padding:20px; color:var(--muted); font-weight:500;">No content available in this section yet.</div>';
         return;
     }
 
@@ -2660,50 +2618,62 @@ window.loadBloggerData = (data) => {
     });
 };
 
-const fetchBlogPosts = () => {
-    const listContainer = document.getElementById('blogPostsList');
-    listContainer.innerHTML = '<div style="padding:20px; color:var(--muted); text-align:center;">Loading Community Notes...</div>';
+const fetchLabelData = (label, titleHi, titleEn) => {
+    // 1. Setup Modal
+    const modal = $('dynamicContentModal');
+    const modalTitle = $('dynamicModalTitle');
+    const listContainer = $('blogPostsList');
+    const shareBtn = $('shareNoteBtn');
 
-    // Remove old script if exists to refresh
+    modalTitle.textContent = getBilingualText(titleEn, titleHi);
+    
+    // Show Share Button only for Notes
+    if(label === 'Notes') {
+        shareBtn.style.display = 'block';
+    } else {
+        shareBtn.style.display = 'none';
+    }
+
+    listContainer.innerHTML = '<div style="padding:20px; color:var(--muted); text-align:center;">Loading content...</div>';
+    modal.style.display = 'block';
+
+    // 2. Remove old script
     const oldScript = document.getElementById('blogger-jsonp-script');
     if (oldScript) oldScript.remove();
 
-    // Create new script tag for JSONP
+    // 3. Create new script tag for JSONP with LABEL
     const script = document.createElement('script');
     script.id = 'blogger-jsonp-script';
     // Use JSONP callback parameter
-    script.src = 'https://indianroutineai.blogspot.com/feeds/posts/default?alt=json-in-script&callback=loadBloggerData';
+    // URL Format: /feeds/posts/default/-/LABELNAME?alt=json-in-script
+    script.src = `https://indianroutineai.blogspot.com/feeds/posts/default/-/${label}?alt=json-in-script&callback=handleBloggerResponse`;
     
     script.onerror = () => {
-        listContainer.innerHTML = '<div style="padding:20px; color:var(--danger);">Failed to load notes. Please check your internet connection.</div>';
+        listContainer.innerHTML = '<div style="padding:20px; color:var(--danger);">Failed to load content. Please check your internet connection.</div>';
     };
 
     document.body.appendChild(script);
 };
 
+// Event Listeners for Dynamic Buttons
 $('communityNotesMainBtn').addEventListener('click', () => {
-    $('notesOptionModal').style.display = 'block';
-    fetchBlogPosts(); // FETCH POSTS WHEN CLICKED
-});
-$('closeNotesOptionModal').addEventListener('click', () => { $('notesOptionModal').style.display = 'none'; });
-
-$('perDayTestBtn').addEventListener('click', () => { $('perDayTestModal').style.display = 'block'; });
-$('closePerDayTestModal').addEventListener('click', () => { $('perDayTestModal').style.display = 'none'; });
-
-// MAP BUTTON LOGIC
-$('mapBtn').addEventListener('click', () => { $('mapOptionModal').style.display = 'block'; });
-$('closeMapOptionModal').addEventListener('click', () => { $('mapOptionModal').style.display = 'none'; });
-
-$('indiaMapBtn').addEventListener('click', () => {
-    openInternalBrowser("https://upload.wikimedia.org/wikipedia/commons/b/b3/India_political_map_2019_EN.svg");
-});
-$('worldMapBtn').addEventListener('click', () => {
-    openInternalBrowser("https://upload.wikimedia.org/wikipedia/commons/3/33/Physical_Political_World_Map.jpg");
+    fetchLabelData('Notes', 'सामुदायिक नोट्स', 'Community Notes');
 });
 
-// BOOKS BUTTON LOGIC
-$('booksBtn').addEventListener('click', () => { $('booksModal').style.display = 'block'; });
-$('closeBooksModal').addEventListener('click', () => { $('booksModal').style.display = 'none'; });
+$('mapBtn').addEventListener('click', () => {
+    fetchLabelData('Map', 'महत्वपूर्ण मैप्स', 'Important Maps');
+});
+
+$('booksBtn').addEventListener('click', () => {
+    fetchLabelData('Book', 'फ्री बुक्स', 'Free Books');
+});
+
+$('perDayTestBtn').addEventListener('click', () => {
+    fetchLabelData('Practice', 'आज का अभ्यास', 'Today\'s Practice');
+});
+
+$('closeDynamicContentModal').addEventListener('click', () => { $('dynamicContentModal').style.display = 'none'; });
+
 
 // FACT ENGINE LISTENERS
 document.getElementById('nextFactBtn').addEventListener('click', fetchDeepFact);
@@ -3068,12 +3038,12 @@ setupModal('disclaimerBtn', 'disclaimerModal', 'closeDisclaimerModal');
 
 
 // =========================================================
-// NEW: BLOGGER FETCH & CLEAN READER LOGIC (JSONP)
+// NEW: BLOGGER CLEAN READER LOGIC
 // =========================================================
 
 const openCleanReader = (title, htmlContent) => {
     // Hide the selection modal
-    $('notesOptionModal').style.display = 'none';
+    $('dynamicContentModal').style.display = 'none';
     
     // Get Elements
     const browserModal = $('internalBrowserModal');
