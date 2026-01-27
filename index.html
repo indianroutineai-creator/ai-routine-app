@@ -191,13 +191,14 @@ footer a:hover { color: var(--accent); }
 #audioTrackSelect { flex: 1; }
 /* Slot Colors */
 .slot[data-id=wake] {--slot-color:#238636;}
-.slot[data-id=morning_study], .slot[data-id=study1], .slot[data-id=study2], .slot[data-id=study3], .slot[data-id=study4], .slot[data-id=study5] {--slot-color:#e3b341;}
-.slot[data-id=leave] {--slot-color:#58a6ff;}
+.slot[data-id=morning_study], .slot[data-id=morning_rev_emergency], .slot[data-id=study1], .slot[data-id=study2], .slot[data-id=study3], .slot[data-id=study4], .slot[data-id=study5], .slot[data-id=study6] {--slot-color:#e3b341;}
+.slot[data-id=leave], .slot[data-id=leave_school] {--slot-color:#58a6ff;}
 .slot[data-id=duty_start] {--slot-color:#da3633;}
 .slot[data-id=duty_end] {--slot-color:#da3633;}
-.slot[data-id=home] {--slot-color:#a371f7;}
+.slot[data-id=school], .slot[data-id=mock_test], .slot[data-id=war_mode_test] {--slot-color:#da3633;}
+.slot[data-id=home], .slot[data-id=test_analysis], .slot[data-id=war_mode_analysis] {--slot-color:#a371f7;}
 .slot[data-id=nap] {--slot-color:#d29922;}
-.slot[data-id=main_study] {--slot-color:#f778ba;}
+.slot[data-id=main_study], .slot[data-id=night_rev_emergency] {--slot-color:#f778ba;}
 .slot[data-id=break], .slot[data-id=long_break] {--slot-color:#3fb950;}
 .slot[data-id=practice] {--slot-color:#f778ba;}
 .slot[data-id=current_affairs] {--slot-color:#1f6feb;}
@@ -205,6 +206,10 @@ footer a:hover { color: var(--accent); }
 .slot[data-id=relax] { --slot-color: #3fb950; }
 .slot[data-id=dinner] {--slot-color:#8957e5;}
 .slot[data-id=sleep] {--slot-color:#8b949e;}
+.slot[data-id^=memory_rev] { --slot-color: #f778ba; border-left: 4px solid #f778ba; background-color: rgba(247, 120, 186, 0.1); }
+/* EMERGENCY MISSED REVISION STYLE */
+.slot[data-id^=emergency_missed] { --slot-color: #da3333; border-left: 4px solid #da3333; background-color: rgba(218, 51, 51, 0.2); animation: pulse 2s infinite; }
+
 .admin-section { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
 .admin-add-form { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .admin-add-form input { flex: 1; min-width: 150px; }
@@ -262,8 +267,28 @@ footer a:hover { color: var(--accent); }
     font-weight: 700;
     color: var(--accent);
     flex-shrink: 0;
-    margin-left: 16px;
+    margin-left: 0;
 }
+
+/* NEW: Google Calendar Button Style */
+.btn-gcal {
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+}
+.btn-gcal:hover {
+    background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
 
 /* NEW: Blinking Menu Animation */
 @keyframes blinkAnimation {
@@ -587,6 +612,219 @@ footer a:hover { color: var(--accent); }
     font-weight: 500;
 }
 
+/* ============================================== */
+/* NEW: SMART DYNAMIC TOAST NOTIFICATION STYLES (SINGLE COLOR PREMIUM) */
+/* ============================================== */
+#toast-notification {
+    visibility: hidden;
+    min-width: 260px;
+    max-width: 90%;
+    /* SINGLE PREMIUM DARK COLOR - NO GRADIENT CONFUSION */
+    background: rgba(22, 27, 34, 0.98); 
+    color: #fff;
+    text-align: center;
+    border-radius: 50px; /* Capsule Shape */
+    padding: 12px 24px;
+    position: fixed;
+    z-index: 10000;
+    left: 50%;
+    /* Positioning higher up as requested */
+    top: 30px; 
+    transform: translateX(-50%) translateY(-20px);
+    
+    /* Clean Border Glow instead of bg gradient */
+    border: 1px solid rgba(163, 113, 247, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 10px rgba(163, 113, 247, 0.2);
+    
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#toast-notification.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* Slide straight down */
+}
+
+#toast-title {
+    display: block;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 2px;
+    font-size: 15px;
+}
+
+/* ============================================== */
+/* NEW: STUDY SESSION RESULT MODAL (CLEAN & CENTERED) */
+/* ============================================== */
+#studyResultModal .modal-content {
+    text-align: center;
+    border: 2px solid var(--border);
+    /* No pulsing animation, kept clean */
+    background-color: #161b22; 
+    max-width: 90%; 
+    width: 400px;
+}
+
+/* Large Time Display (Hero Element) */
+.result-time {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 15px 0;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+}
+
+/* Message styling */
+.result-message-box {
+    font-size: 16px;
+    color: #c9d1d9; 
+    font-weight: 500; 
+    padding: 15px; 
+    background: rgba(255,255,255,0.05); 
+    border-radius: 8px;
+    margin-top: 10px;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+}
+
+.result-subject-label {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+/* --- NEW: SEARCH BAR STYLE --- */
+#dynamicSearchInput {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background-color: #0d1117;
+    border: 1px solid var(--border);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+#dynamicSearchInput:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(163, 113, 247, 0.2);
+}
+
+/* --- EMERGENCY BANNER --- */
+.emergency-banner {
+    background-color: var(--danger);
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(218, 51, 51, 0.4);
+    animation: pulse 2s infinite;
+}
+
+/* ============================================== */
+/* === BEAST MODE (PHASE 2 & 4) CSS === */
+/* ============================================== */
+#revisionBeastModal {
+    display: none;
+    position: fixed;
+    z-index: 10000; /* Phase 2: High Z-index */
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Phase 4: Anti-Distraction Background */
+    overflow: hidden;
+}
+
+#revisionBeastModal .modal-content {
+    background: #000;
+    border: 2px solid #ff004c;
+    box-shadow: 0 0 30px rgba(255, 0, 76, 0.6);
+    text-align: center;
+    animation: beastPulse 1.5s infinite alternate;
+}
+
+@keyframes beastPulse {
+    0% { box-shadow: 0 0 20px rgba(255, 0, 76, 0.5); transform: scale(1); }
+    100% { box-shadow: 0 0 40px rgba(255, 0, 76, 0.9); transform: scale(1.02); }
+}
+
+.beast-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ff004c;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 0, 76, 0.8);
+}
+
+.beast-topic {
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    margin: 20px 0;
+    text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff; /* Phase 2: Neon Glow */
+    animation: neonBlink 0.5s infinite alternate; /* Phase 2: Blinking Soul */
+}
+
+@keyframes neonBlink {
+    0% { opacity: 1; text-shadow: 0 0 10px #00ffff; }
+    100% { opacity: 0.8; text-shadow: 0 0 30px #00ffff, 0 0 50px #00ffff; }
+}
+
+.beast-msg {
+    color: #ccc;
+    font-size: 16px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.btn-beast-start {
+    background: linear-gradient(45deg, #ff004c, #ff5e00);
+    color: #fff;
+    font-size: 20px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 20px rgba(255, 94, 0, 0.5);
+    transition: transform 0.2s;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.btn-beast-start:active { transform: scale(0.95); }
+
+/* Phase 3: Highlight Class for Smart Navigation */
+.blinking-target {
+    animation: targetBlink 1s infinite;
+    border: 2px solid #00ffff !important;
+    box-shadow: 0 0 15px #00ffff !important;
+}
+
+@keyframes targetBlink {
+    0%, 100% { border-color: #00ffff; box-shadow: 0 0 15px #00ffff; }
+    50% { border-color: #ff004c; box-shadow: 0 0 25px #ff004c; }
+}
+
 </style>
 </head>
 <body>
@@ -629,6 +867,8 @@ footer a:hover { color: var(--accent); }
 <span class="toggle-icon">▶</span>
 </div>
 <div class="card-body" style="display: block;">
+<!-- Emergency Banner will be injected here if needed -->
+<div id="emergencyContainer"></div>
 <p data-hi="अपने डाउट्स सॉल्व करने के लिए नीचे दिए गए किसी भी AI को चुनें।" data-en="Choose any AI below to solve your doubts."></p>
 <div class="row">
 <a href="https://chat.deepseek.com/" target="_blank" class="btn flex-item" data-hi="Deepseek से पूछें" data-en="Ask Deepseek">Ask Deepseek</a>
@@ -706,6 +946,21 @@ footer a:hover { color: var(--accent); }
 <div class="flex-item"><label class="small" data-hi="फोकस सब्जेक्ट (कमजोर विषय)" data-en="Focus Subject (Weak Subject)">Focus Subject (Weak Subject)</label><input type="text" id="focusSubject" placeholder="e.g., Math"></div>
 </div>
 <div id="dutyFields">
+<!-- NEW: Job Intensity Selector -->
+<div class="row">
+<div class="flex-item">
+<label class="small" data-hi="नौकरी की कठिनाई (शारीरिक/मानसिक)" data-en="Job Intensity (Physical/Mental)">Job Intensity (Physical/Mental)</label>
+<div class="occupation-selector">
+<input type="radio" id="jobHard" name="jobIntensity" value="hard">
+<label for="jobHard" data-hi="कठिन" data-en="Hard">Hard</label>
+<input type="radio" id="jobMedium" name="jobIntensity" value="medium" checked>
+<label for="jobMedium" data-hi="मध्यम" data-en="Medium">Medium</label>
+<input type="radio" id="jobNormal" name="jobIntensity" value="normal">
+<label for="jobNormal" data-hi="सामान्य" data-en="Normal">Normal</label>
+</div>
+</div>
+</div>
+<!-- End Job Intensity -->
 <div class="row">
 <div class="flex-item">
 <label class="small" data-hi="शिफ्ट का प्रकार" data-en="Shift Type">Shift Type</label>
@@ -750,6 +1005,12 @@ footer a:hover { color: var(--accent); }
 <div class="row">
 <div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="studentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div>
 </div>
+<!-- NEW: School Time Wrapper (Hidden by default, shown for Class 9-12) -->
+<div id="schoolTimeWrapper" class="row" style="display:none; background-color: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 6px; border: 1px solid var(--accent);">
+<div class="flex-item"><label class="small" data-hi="स्कूल शुरू" data-en="School Start">School Start</label><input type="time" id="schoolStartTime" value="08:00"></div>
+<div class="flex-item"><label class="small" data-hi="स्कूल खत्म" data-en="School End">School End</label><input type="time" id="schoolEndTime" value="14:00"></div>
+</div>
+<!-- End School Time Wrapper -->
 <div class="checkbox-row">
 <input type="checkbox" id="studentSetWakeUpManual">
 <label for="studentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label>
@@ -922,6 +1183,73 @@ footer a:hover { color: var(--accent); }
     </div>
 </div>
 
+<!-- ============================================== -->
+<!-- NEW: SMART DYNAMIC TOAST NOTIFICATION -->
+<!-- ============================================== -->
+<div id="toast-notification">
+    <span id="toast-title"></span>
+    <span id="toast-message"></span>
+</div>
+<!-- ============================================== -->
+
+<!-- ============================================== -->
+<!-- NEW: STUDY SESSION RESULT MODAL (CLEAN & CENTERED) -->
+<!-- ============================================== -->
+<div id="studyResultModal" class="modal">
+    <div class="modal-content">
+        <h2 style="margin-top:0; color:var(--accent); font-weight:900;">Study Session Ended</h2>
+        <div id="studyResultBody">
+            <!-- Content Injected via JS -->
+        </div>
+        <button class="btn" style="width:100%; margin-top:16px;" onclick="document.getElementById('studyResultModal').style.display='none'">OK</button>
+    </div>
+</div>
+<!-- ============================================== -->
+
+<!-- ============================================== -->
+<!-- NEW: TOPIC ENTRY MODAL (FOR 80% GOAL ACHIEVEMENT) -->
+<!-- ============================================== -->
+<div id="topicEntryModal" class="modal">
+    <div class="modal-content" style="text-align: center; background-color: #161b22; border: 1px solid var(--accent);">
+        <h2 id="topicModalSubject" style="font-size:32px; color:var(--accent); margin-bottom: 5px; text-transform: uppercase; font-weight: 900;">SUBJECT</h2>
+        <h4 id="topicModalDate" style="color:var(--muted); margin-top:0; margin-bottom: 20px;">DATE</h4>
+        <h3 id="topicModalTime" style="color:var(--success); font-size: 24px; font-weight: 800; margin-bottom: 10px;">Time Studied: 00m 00s</h3>
+        <p style="color: #fff; font-weight: 500;">Great job! You hit >80% of your goal.</p>
+        
+        <div style="text-align: left; margin-top: 20px;">
+            <label style="color: var(--accent); font-size: 16px;">आज आपने इसमें क्या पढ़ा? (Topic Name)</label>
+            <input type="text" id="studiedTopicInput" placeholder="e.g. Alankar, Newton's Laws..." style="font-size:18px; margin: 10px 0; background-color: #0d1117; color: #fff; border: 1px solid var(--border);">
+        </div>
+
+        <button id="saveTopicBtn" class="btn" style="width:100%; margin-top:16px;">Save Topic</button>
+    </div>
+</div>
+<!-- ============================================== -->
+
+<!-- ============================================== -->
+<!-- NEW: BEAST MODE REVISION OVERLAY (PHASE 2) -->
+<!-- ============================================== -->
+<div id="revisionBeastModal">
+    <div class="modal-content" style="margin: 30% auto; padding: 30px; border-radius: 12px; width: 85%; max-width: 400px;">
+        <div class="beast-title">⚡ Beast Mode On ⚡</div>
+        <div id="beastUserGreeting" style="color: #888; font-weight: 700; margin-bottom: 10px;"></div>
+        
+        <div id="beastSubject" style="font-size: 18px; color: #ff004c; font-weight: 800; text-transform: uppercase;">SUBJECT</div>
+        <div id="beastTopic" class="beast-topic">TOPIC NAME</div>
+        
+        <div id="beastMsg" class="beast-msg">
+            Warning message goes here.
+        </div>
+        
+        <!-- PHASE 3: SMART NAVIGATION BUTTON -->
+        <button id="beastStartBtn" class="btn-beast-start">Start Now</button>
+        
+        <button id="beastSnoozeBtn" class="btn btn-secondary" style="width: 100%; margin-top: 10px; background: transparent; border: 1px solid #444;">Snooze (I'm Weak)</button>
+    </div>
+</div>
+<!-- ============================================== -->
+
+
 <!-- ALARM MODAL (This is for the app's internal, less reliable alarm) -->
 <div id="alarmModal" class="modal">
 <div class="modal-content">
@@ -987,6 +1315,21 @@ footer a:hover { color: var(--accent); }
 <div class="row"><div class="flex-item"><label data-hi="विषय (प्रत्येक लाइन पर एक)" data-en="Subjects (one per line)">Subjects (one per line)</label><textarea id="profileSubjects" rows="3" placeholder="e.g., History&#10;Math&#10;Science"></textarea></div></div>
 <div class="row"><div class="flex-item"><label data-hi="फोकस सब्जेक्ट (कमजोर विषय)" data-en="Focus Subject (Weak Subject)">Focus Subject (Weak Subject)</label><input type="text" id="profileFocusSubject" placeholder="e.g., Math"></div></div>
 <div id="profileDutyFields">
+<!-- NEW: Profile Job Intensity Selector -->
+<div class="row">
+<div class="flex-item">
+<label class="small" data-hi="नौकरी की कठिनाई" data-en="Job Intensity">Job Intensity</label>
+<div class="occupation-selector">
+<input type="radio" id="profileJobHard" name="profileJobIntensity" value="hard">
+<label for="profileJobHard" data-hi="कठिन" data-en="Hard">Hard</label>
+<input type="radio" id="profileJobMedium" name="profileJobIntensity" value="medium" checked>
+<label for="profileJobMedium" data-hi="मध्यम" data-en="Medium">Medium</label>
+<input type="radio" id="profileJobNormal" name="profileJobIntensity" value="normal">
+<label for="profileJobNormal" data-hi="सामान्य" data-en="Normal">Normal</label>
+</div>
+</div>
+</div>
+<!-- End Profile Job Intensity -->
 <div class="row"><div class="flex-item"><label class="small" data-hi="शिफ्ट का प्रकार" data-en="Shift Type">Shift Type</label><div class="occupation-selector"><input type="radio" id="profileShiftDay" name="profileShiftType" value="day" checked><label for="profileShiftDay" data-hi="दिन की शिफ्ट" data-en="Day Shift">Day Shift</label><input type="radio" id="profileShiftNight" name="profileShiftType" value="night"><label for="profileShiftNight" data-hi="रात की शिफ्ट" data-en="Night Shift">Night Shift</label></div></div></div>
 <div class="row"><div class="flex-item"><label data-hi="गतिविधि का नाम" data-en="Activity Name">Activity Name</label><input type="text" id="profileActivityName" placeholder="e.g., Duty, Office"></div><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileDutyStudyGoal" placeholder="e.g., 3" min="1" max="8" step="0.5" value="3"></div></div>
 <div class="row">
@@ -1014,7 +1357,14 @@ footer a:hover { color: var(--accent); }
 </div>
 </div>
 </div>
-<div id="profileStudentFields" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileStudentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div></div><div class="checkbox-row"><input type="checkbox" id="profileStudentSetWakeUpManual"><label for="profileStudentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label></div><div id="profileStudentManualWakeUpWrapper" class="row" style="display:none;"><div class="flex-item"><label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label><input type="time" id="profileWakeUpTime" value="05:00"></div></div>
+<div id="profileStudentFields" style="display:none;"><div class="row"><div class="flex-item"><label class="small" data-hi="दैनिक अध्ययन लक्ष्य (घंटे)" data-en="Daily Study Goal (Hours)">Daily Study Goal (Hours)</label><input type="number" id="profileStudentStudyGoal" placeholder="e.g., 8" min="1" max="16" step="0.5" value="8"></div></div>
+<!-- NEW: Profile School Time Wrapper -->
+<div id="profileSchoolTimeWrapper" class="row" style="display:none; background-color: rgba(255, 255, 255, 0.05); padding: 10px; border-radius: 6px; border: 1px solid var(--accent);">
+<div class="flex-item"><label class="small" data-hi="स्कूल शुरू" data-en="School Start">School Start</label><input type="time" id="profileSchoolStartTime" value="08:00"></div>
+<div class="flex-item"><label class="small" data-hi="स्कूल खत्म" data-en="School End">School End</label><input type="time" id="profileSchoolEndTime" value="14:00"></div>
+</div>
+<!-- End Profile School Time Wrapper -->
+<div class="checkbox-row"><input type="checkbox" id="profileStudentSetWakeUpManual"><label for="profileStudentSetWakeUpManual" data-hi="जागने का समय खुद सेट करें" data-en="Set wake-up time manually">Set wake-up time manually</label></div><div id="profileStudentManualWakeUpWrapper" class="row" style="display:none;"><div class="flex-item"><label class="small" data-hi="जागने का समय" data-en="Wake Up Time">Wake Up Time</label><input type="time" id="profileWakeUpTime" value="05:00"></div></div>
 <div class="checkbox-row">
 <input type="checkbox" id="profileStudentSetSleepManual">
 <label for="profileStudentSetSleepManual" data-hi="सोने का समय खुद सेट करें" data-en="Set sleep time manually">Set sleep time manually</label>
@@ -1072,6 +1422,9 @@ footer a:hover { color: var(--accent); }
         <span class="close" id="closeDynamicContentModal">&times;</span>
         <h2 id="dynamicModalTitle" style="color: var(--accent); margin-top:0; font-weight: 800;">Loading...</h2>
         
+        <!-- NEW: SEARCH BAR -->
+        <input type="text" id="dynamicSearchInput" placeholder="Search here... (e.g. History, Math)" autocomplete="off">
+
         <!-- DYNAMIC LIST CONTAINER -->
         <div id="blogPostsList">
             <!-- Posts fetched from Blogger will appear here -->
@@ -1234,6 +1587,7 @@ let currentLang = localStorage.getItem('smart_lang') || 'en';
 let timeFormat = localStorage.getItem('smart_time_format') || '12h';
 let slotsData = [];
 const FOCUS_EXTRA_MINUTES = 45; // Extra time for focus subject
+let globalRevisionContext = null; // Phase 3: Global Context for Revision Search
 
 // === DATA: DEFAULT SUBJECTS FOR CLASSES (Fixed Encoding) ===
 const defaultSubjects = {
@@ -1285,6 +1639,200 @@ const defaultSlots = (exam = 'Study', activity = 'Duty') => [
 { id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: '21:00', msg_hi: 'डिनर करो', msg_en: 'Have dinner', tip_hi: 'हल्का भोजन करें।', tip_en: 'Have a light meal.' },
 { id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: '22:00', msg_hi: 'सोने की तैयारी करो', msg_en: 'Time to sleep', tip_hi: 'अच्छी नींद लें।', tip_en: 'Get a good sleep.' }
 ];
+
+// --- CUSTOM TOAST NOTIFICATION FUNCTION ---
+let toastTimeout;
+const showToast = (title, msg) => {
+    const toast = $('toast-notification');
+    const titleEl = $('toast-title');
+    const msgEl = $('toast-message');
+
+    titleEl.textContent = title;
+    msgEl.textContent = msg;
+
+    // Remove old show class to reset if clicked rapidly
+    toast.classList.remove('show');
+    
+    // Clear existing timeout to restart duration
+    if(toastTimeout) clearTimeout(toastTimeout);
+
+    // Short delay to allow browser to register removal of class
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 50);
+
+    // Hide after 5 seconds
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 5000);
+};
+
+// --- NEW: STUDY SESSION RESULT MODAL FUNCTION ---
+const showStudySessionResult = (subject, durationMs) => {
+    const modal = $('studyResultModal');
+    const body = $('studyResultBody');
+    
+    // Calculate Time (Ghante, Minute, Second)
+    const totalSeconds = Math.floor(durationMs / 1000);
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = Math.floor(totalSeconds % 60);
+    
+    // Format: 1 Hr 5 Min 3 Sec
+    let timeString = "";
+    if (h > 0) timeString += `${h} Hr `;
+    timeString += `${m} Min ${s} Sec`;
+
+    // --- FULL DATA: FUNNY INSULTS (For < 30 Mins) ---
+    const funnyInsults = [
+        "Wow, champ! At this pace, you'll finish the syllabus by the next election. (वाह राजा! इस रफ़्तार से तो अगला चुनाव आते-आते सिलेबस पूरा होगा।)",
+        "Studied for 5 minutes? The country is proud of your sacrifice. (5 मिनट पढ़ाई कर ली? देश को तुम्हारे इस बलिदान पर गर्व है।)",
+        "Is this a study session or a commercial break? (यह पढ़ाई का सेशन था या टीवी का कमर्शियल ब्रेक?)",
+        "Even my phone battery lasts longer than your focus. (तुम्हारे फोकस से ज्यादा तो मेरे फोन की बैटरी टिकती है।)",
+        "With this speed, you will become an IAS officer in your next life. (इस स्पीड से तो तुम अगले जन्म में ही IAS बन पाओगे।)",
+        "Congratulations! You just won the Gold Medal in laziness. (बधाई हो! आलस्य प्रतियोगिता में आपको गोल्ड मेडल मिला है।)",
+        "Maggi takes 2 minutes, your study took less. (मैगी बनने में 2 मिनट लगते हैं, तुम्हारी पढ़ाई उससे पहले ही खत्म हो गई।)",
+        "Did you open the book or just stare at the cover? (किताब खोली थी या बस कवर को घूर रहे थे?)",
+        "Your parents think you are studying. Cute. (तुम्हारे घर वालों को लगता है तुम पढ़ रहे हो। कितने मासूम हैं वो।)",
+        "Einstein is crying in heaven looking at your dedication. (तुम्हारी मेहनत देखकर आइंस्टीन भी स्वर्ग में रो रहे होंगे।)",
+        "So much hard work? Take a break for 6 months now. (ओ हो! इतनी कड़ी तपस्या? अब 6 महीने का ब्रेक तो बनता है।)",
+        "Are you studying or counting the ceiling fans? (पढ़ाई कर रहे थे या पंखे की पंखुड़ियाँ गिन रहे थे?)",
+        "Don't stress, selling vegetables is also a career option. (टेंशन मत लो, सब्जी का ठेला लगाना भी एक करियर ऑप्शन है।)",
+        "Just 10 minutes? Even a goldfish has a better attention span. (सिर्फ 10 मिनट? इससे ज्यादा याददाश्त तो मछली की होती है।)",
+        "You closed the app faster than you close your textbooks. (किताब बंद करने से तेज तो तुमने ये ऐप बंद कर दिया।)",
+        "Sharma Ji's son has revised the chapter twice by now. (शर्मा जी के बेटे ने इतनी देर में दो बार रिवीज़न कर लिया होगा।)",
+        "Oh, you're done? I thought you were just adjusting your chair. (अरे, हो गई पढ़ाई? मुझे लगा अभी तुम कुर्सी ही ठीक कर रहे हो।)",
+        "Keep scrolling Reels, exams will clear themselves via Bluetooth. (रील्स देखते रहो, एग्जाम तो ब्लूटूथ से पास हो ही जाएगा।)",
+        "Did you study or were you daydreaming about your wedding? (पढ़ाई की या अपनी शादी के सपने देख रहे थे?)",
+        "Legend says he is still finding the right page. (कहा जाता है कि यह छात्र अभी तक सही पन्ना ही ढूंढ रहा है।)",
+        "Your brain is still in airplane mode. (लगता है तुम्हारा दिमाग अभी भी फ्लाइट मोड पर है।)",
+        "If procrastination was a subject, you'd be the topper. (अगर 'कामचोरी' कोई विषय होता, तो तुम पक्का टॉपर होते।)",
+        "Enough for today, don't want to overheat that tiny brain. (आज के लिए बहुत है, कहीं छोटा सा दिमाग गरम न हो जाए।)",
+        "Calling your dad... just kidding, but you got scared, right? (पापा को फोन लगाऊँ? ...मजाक कर रहा हूँ, पर डर तो गए थे ना?)",
+        "You study like you are doing a favor to humanity. (तुम ऐसे पढ़ते हो जैसे पूरी मानवता पर एहसान कर रहे हो।)",
+        "Focus level: Zero. Excuses level: 100. (फोकस लेवल: जीरो। बहाने बनाने का लेवल: 100।)",
+        "Go back to sleep, reality is too hard for you. (जाओ सो जाओ, हकीकत तुम्हारे बस की बात नहीं है।)",
+        "Was that a study session or a power nap? (वो पढ़ाई थी या झपकी (Power Nap) ले रहे थे?)",
+        "At this rate, you'll need a microscope to find your marks. (इस हिसाब से तुम्हारे नंबर ढूँढने के लिए माइक्रोस्कोप लगेगा।)",
+        "Please don't tire yourself, the bed is missing you. (कृपया खुद को न थकाएं, बिस्तर आपको याद कर रहा है।)",
+        "A moment of silence for your syllabus. (तुम्हारे सिलेबस के लिए दो मिनट का मौन रखा जाए।)",
+        "Are you waiting for divine intervention to pass? (क्या तुम पास होने के लिए किसी चमत्कार का इंतजार कर रहे हो?)",
+        "Why study when you can just become a meme material? (पढ़ना क्यों है जब तुम वैसे भी मीम मटेरियल बन सकते हो?)",
+        "Shortest love story ever: You and your books. (दुनिया की सबसे छोटी लव स्टोरी: तुम और तुम्हारी किताबें।)",
+        "Alert: Brain not found. (चेतावनी: दिमाग नहीं मिला। कृपया दोबारा प्रयास करें।)",
+        "You spent more time selecting the subject than studying it. (जितनी देर पढ़ने में लगाई, उससे ज्यादा देर तो विषय चुनने में लगा दी।)",
+        "Don't worry, Zuckerberg also dropped out. But he had a brain. (चिंता मत करो, जुकरबर्ग ने भी पढ़ाई छोड़ी थी। पर उसके पास दिमाग था।)",
+        "Books are crying tears of dust waiting for you. (तुम्हारी किताबें धूल फांकते-फांकते रो रही हैं।)",
+        "Mission Failed. We'll get 'em next time (maybe). (मिशन फेल। अगली बार देखेंगे (शायद)।)",
+        "You are the reason why teachers take early retirement. (तुम वो कारण हो जिसकी वजह से टीचर जल्दी रिटायरमेंट ले लेते हैं।)",
+        "Look at the time! Oh wait, you barely studied. (समय तो देखो! अरे रुको, तुमने तो पढ़ाई ही नहीं की।)",
+        "Keep it up! The tea stall business is booming these days. (लगे रहो! आजकल चाय की टपरी का बिज़नेस बहुत चल रहा है।)",
+        "Error 404: Motivation not found. (Error 404: मोटिवेशन नहीं मिला।)",
+        "Did a mosquito distract you or was it just air? (मच्छर ने डिस्टर्ब किया था या हवा से ही डर गए?)",
+        "Save some knowledge for the rest of us, genius. (सारा ज्ञान आज ही ले लोगे क्या, जीनियस?)",
+        "Your phone misses your touch. Go back to it. (तुम्हारे फोन को तुम्हारी याद आ रही है। जाओ, उसे चलाओ।)",
+        "Studying hard or hardly studying? (पढ़ाई कर रहे थे या सिर्फ पढ़ाई का नाटक?)",
+        "Success is chasing you, but you are faster. (कामयाबी तुम्हारे पीछे भाग रही है, पर तुम उससे तेज भाग रहे हो।)",
+        "Open the book, not your mouth to yawn. (किताब खोलो, उबासी लेने के लिए मुँह नहीं।)",
+        "Gajab Bejjati Hai! (What an insult!) (गजब बेइज्जती है यार! 2 मिनट भी नहीं टिके?)",
+        "Hey King, tired already? Planning to lift sacks in future? (का राजा? 5 मिनट में थक गए? भविष्य में बोरा उठाओगे का?)",
+        "Was that a study session or a movie teaser? (ई का था बे? पढ़ाई थी या साउथ मूवी का टीज़र? शुरू होते ही ख़त्म!)",
+        "Just 2 minutes? Even 2-minute noodles take longer. (अरे २ मिनट? एतनी देर में तो 'मैगी' का मसाला भी नहीं फड़ता, तुम का खाक कलेक्टर बनोगे?)",
+        "Go sleep kid, this isn't for you. (जाओ बबुआ, रजाई ओढ़ के सूत जाओ। ई पढ़ाई-लिखाई तुम्हारे बस का ना है, तुमसे न हो पाएगा!)",
+        "Oh, Instagram missed you? Go watch Reels. (का हो? इंस्टाग्राम की रील्स याद आ रही थीं? उहे देख लो, एग्जाम में 'कच्चा बादाम' लिख के आना।)",
+        "Are you crazy or just acting? (का बे? बोकवा हो का एकदम? किताब खोले अभी 10 मिनट भी नहीं हुआ!)",
+        "Your father is dreaming of an officer, you are dreaming of sleep. (बाप सोच रहा है लड़का 'अफसर' बनेगा, और लड़का यहाँ खाली 'अफ़सोस' बढ़ा रहा है।)",
+        "Why study? Go open a tea stall. (काहे कष्ट ले रहे हो महाराज? जाके 'चाय की टपरी' काहे नहीं खोल लेते?)",
+        "Focus level: Zero. Drama level: 100. (लच्छन तो हमको तुम्हारे ठीक नहीं लग रहे। ऐसे पास करोगे UPSC?)",
+        "Did you study or just count the pages? (पन्ना पलट के हवा खा रहे थे का? दिमाग में तो कुछ गया नहीं।)",
+        "Keep scrolling, labor work pays well too. (रील्स खिसकाते रहो, नरेगा में मजदूरी का रेट बढ़ गया है, उहे कर लेना।)",
+        "Acting like a topper, studying like a failure. (भौकाल पूरा टाइट है, और पढ़ाई एकदम लुल्ल है।)",
+        "Even a rickshaw puller works harder than this. (एतना मेहनत तो रिक्शा वाला भी नहीं थकता जितना तुम किताब देख के थक गए।)",
+        "Is there an award for laziness? You won. (कोढ़ियापन का अवार्ड होता तो तुम पक्का 'भारत रत्न' लाते।)",
+        "Are you studying or doing a formality? (ई पढ़ाई हो रही है या खानापूर्ति? एहसान कर रहे हो का हम पर?)",
+        "Look at Sharma Ji's son, and look at you. (शर्मा जी के लइका को देखो, और अपना थोबड़ा देखो। शर्म नहीं आता?)",
+        "Brain is empty, stomach is full. (दिमाग में भूसा भरा है और पेट में समोसा, पढ़ाई कैसे होगी राजा?)",
+        "Planning to become a politician? No education needed there. (का विचार है? नेता बनोगे का? उहाँ बिना पढ़े काम चल जाता है।)",
+        "You have the attention span of a mosquito. (मच्छर से भी कम फोकस है तुम्हारा, उ भी 2 मिनट टिक के खून चूसता है।)",
+        "Don't stress, sell vegetables. (काहे लोड ले रहे हो? सब्जी मंडी में 'आलू-प्याज' का रेट पता करो जाओ।)",
+        "Are you a student or a tourist? (किताब में टूरिस्ट बन के आये थे का? दर्शन किये और निकल लिए?)",
+        "Just checking if the book is real? (का बे? खाली चेक कर रहे थे कि किताब असली है या नकली?)",
+        "Legend! You studied for whole 5 minutes. (गजबे हो भाई! पूरा 5 मिनट पढ़ लिए? अब तो एम्बुलेंस बुलानी पड़ेगी थकान मिटाने को।)",
+        "Mobile is your first wife, books are the enemy. (मोबाइल तो पतोहू (बीवी) है तुम्हारी, उसी को चिपकाये रहो छाती से।)",
+        "Are you waiting for a miracle? (कौन से चमत्कार के फेर में हो? ऊपर वाला आके पेपर लिखेगा का?)",
+        "You are spoiling your parents' money. (बाप का पैसा और अपना जवानी... दोनों काहे बर्बाद कर रहे हो?)",
+        "Stop the drama, start studying. (ई नौटंकी बंद करो और चुपचाप पढ़ाई करो, समझे?)",
+        "Your future is darker than my phone screen. (ई लच्छन रहे न, तो भविष्य 'अमवस की रात' से भी करिया (काला) होगा।)",
+        "Did you get scared of the syllabus? (का हुआ? सिलेबस देख के फेफड़ा कांप गया का?)",
+        "Even the fan is spinning faster than your brain. (ऊपर पंखा चल रहा है, और नीचे तुम्हारा दिमाग जाम है।)",
+        "What will you write in exam? Songs? (एग्जाम में का लिखोगे? 'भोजपुरी गाना'? पढ़ाई-लिखाई तो है नहीं।)",
+        "Don't fool yourself. (दुनिया को बेवकूफ बनाओ, खुद को काहे बना रहे हो लल्ला?)",
+        "Are you doing Bakaiti or studying? (पढ़ाई कम और 'बकैती' ज्यादा हो रही है।)",
+        "Go wash your face, you look sleepy. (जाके मुँह धो के आओ, नशा चढ़ल है का नींद का?)",
+        "Study now, or cry later. (अभी मजे ले लो, बाद में जब रिजल्ट आएगा तब 'रोवनी' सूरत बनाना।)",
+        "Who are you cheating? (ई 2 मिनट पढ़ के किसको ठग रहे हो? हमको या अपने बाबूजी को?)",
+        "Become a Tiktoker, studying is hard. (तुमसे न होगा, तुम जाके 'टिकटॉकर' बन जाओ, वही ठीक है।)",
+        "Wasting time like a pro. (समय ऐसे बर्बाद कर रहे हो जैसे बाप के पास कुबेर का खजाना गड़ा है।)",
+        "Are you tired of doing nothing? (किए कुछ नहीं और थक गए? गजबे लेजी आदमी हो बे।)",
+        "The book is crying. (किताब भी सोचती होगी- 'किस मनहूस के हाथ में आ गए'.)",
+        "Planning to cheat in exam? (का जी? भरोसे बैठे हो कि पर्ची (Nakal) मिल जाएगी?)",
+        "You closed the app faster than light. (बिजली की रफ़्तार से आये और तूफ़ान की रफ़्तार से भाग गए?)",
+        "Is your brain on holiday? (भेजा (Brain) घास चरने गया है का?)",
+        "Do you have shame? (शर्म-लिहाज बेच खाये हो का? जाके पढ़ो!)",
+        "My battery has more life than your career. (हमरी बैटरी का लाइफ तुम्हारे करियर से ज्यादा है।)",
+        "What a joke you are. (का मजाक चल रहा है यहाँ? सर्कस है ई?)",
+        "Don't dream, do work. (खयाली पुलाव पकाना बंद करो, और पेन-कॉपी उठाओ।)",
+        "Are you waiting for auspicious time? (का पंडित जी से 'मुहूर्त' निकलवाएं तब पढ़ोगे?)",
+        "Gajab Bejjati Hai! (गजब बेइज्जती है यार! 10 मिनट भी नहीं टिक सके?)",
+        "Beta, tumse na ho payega (Son, you can't do it). (बेटा, तुमसे न हो पाएगा! हमें तुम्हारे लच्छन बिलकुल ठीक नहीं लग रहे।)",
+        "Hey Romeo, focus on books not looks. (का रे ठरकी? पढ़ाई में मन नहीं लग रहा है? सुधर जाओ!)"
+    ];
+
+    // --- FULL DATA: APPRECIATION QUOTES (For > 30 Mins) ---
+    const appreciationQuotes = [
+        "Great job! Consistency is key. (बहुत बढ़िया! निरंतरता ही सफलता की कुंजी है।)",
+        "You are getting closer to your goal. (आप अपने लक्ष्य के करीब पहुंच रहे हैं।)",
+        "Keep this momentum going! (इस गति को बनाए रखें!)",
+        "Success comes to those who work for it. (सफलता उन्हीं को मिलती है जो इसके लिए काम करते हैं।)",
+        "Well done! Another step towards your dream. (बहुत अच्छे! अपने सपने की ओर एक और कदम।)",
+        "Your future self will thank you for this effort. (आपका भविष्य का स्व आपको इस प्रयास के लिए धन्यवाद देगा।)",
+        "Excellent focus today! (आज बेहतरीन फोकस था!)",
+        "Keep pushing, you are doing great. (प्रयास करते रहें, आप बहुत अच्छा कर रहे हैं।)",
+        "Every minute counts, and you made them count. (हर मिनट मायने रखता है, और आपने उनका सही इस्तेमाल किया।)",
+        "Proud of your dedication. (आपकी लगन पर गर्व है।)",
+        "This is how champions are made. (चैंपियन ऐसे ही बनते हैं।)",
+        "Stay hungry, stay foolish, stay studying. (सीखते रहो, आगे बढ़ते रहो।)",
+        "You are building a better tomorrow. (आप एक बेहतर कल का निर्माण कर रहे हैं।)",
+        "Fantastic effort! Take a small break and come back stronger. (शानदार प्रयास! थोड़ा ब्रेक लें और मजबूती से वापसी करें।)",
+        "Believe in yourself, you are capable of amazing things. (खुद पर विश्वास रखें, आप अद्भुत चीजें करने में सक्षम हैं।)"
+    ];
+
+    let message = "";
+    let verdictColor = "";
+    
+    // LOGIC: < 30 Mins = Insult, > 30 Mins = Appreciation
+    // 30 Minutes = 30 * 60 * 1000 milliseconds
+    if (durationMs < 30 * 60 * 1000) {
+        // Randomly pick from ALL funny insults
+        message = funnyInsults[Math.floor(Math.random() * funnyInsults.length)];
+        verdictColor = "#da3633"; // Red
+    } else {
+        // Randomly pick from ALL appreciation quotes
+        message = appreciationQuotes[Math.floor(Math.random() * appreciationQuotes.length)];
+        verdictColor = "#238636"; // Green
+    }
+
+    // Construct HTML (Clean, Centered, No "Verdict" Header)
+    body.innerHTML = `
+        <div class="result-subject-label">Subject: ${subject}</div>
+        <div class="result-time">${timeString}</div>
+        <div class="result-message-box" style="border-left: 4px solid ${verdictColor};">
+            "${message}"
+        </div>
+    `;
+
+    modal.style.display = 'block';
+};
 
 const getProfile = () => JSON.parse(localStorage.getItem('smart_profile') || '{"occupation":"duty"}');
 const loadSlotsData = () => {
@@ -1434,9 +1982,16 @@ const saveFact = () => {
     if (!savedHistory.some(fact => fact.title === title)) {
         savedHistory.push({ title, text });
         localStorage.setItem('user_saved_history', JSON.stringify(savedHistory));
-        alert(getBilingualText('Fact Saved!', 'तथ्य सहेज लिया गया!'));
+        // REPLACED STANDARD ALERT WITH TOAST
+        showToast(
+            "✅ Saved!",
+            "आपके ज्ञान के खजाने में सुरक्षित।"
+        );
     } else {
-        alert(getBilingualText('Fact already saved!', 'तथ्य पहले से ही सहेजा हुआ है!'));
+        showToast(
+            "⚠️ Already Saved",
+            "यह तथ्य पहले से सुरक्षित है।"
+        );
     }
 };
 
@@ -1545,6 +2100,20 @@ const renderSlots = () => {
         slotDiv.className = 'slot';
         slotDiv.dataset.id = item.id;
 
+        // --- NEW: Add Click to Revision Slots to Start Timer ---
+        if(item.id.startsWith('memory_rev') || item.id.startsWith('emergency_missed')) {
+            slotDiv.style.cursor = 'pointer';
+            slotDiv.onclick = (e) => {
+                if(e.target.classList.contains('slot-edit-btn')) return; // ignore edit click
+                // Extract Subject from Label if possible, or use topic
+                // Logic: Start timer with the Topic Name to track it
+                let topicName = item.label_en.split(': ')[1] || "Revision";
+                startStudyTimer(topicName, item.id); // Pass Slot ID to track completion
+                
+                showToast("Revision Started", `Timer started for: ${topicName}`);
+            };
+        }
+
         const timeDiv = document.createElement('div');
         timeDiv.className = 'time';
         timeDiv.textContent = formatTime(item.time);
@@ -1606,7 +2175,7 @@ const displayStrategy = () => {
     const strategyDiv = $('strategy');
     strategyDiv.textContent = ''; // Clear
 
-    if (!exam || !targetDate) {
+    if ((!exam || !targetDate) && (p.studentClass === 'general' || !p.studentClass)) {
         const msg = document.createElement('span');
         msg.style.color = 'var(--muted)';
         msg.dataset.hi = "रणनीति के लिए सेटअप पूरा करें";
@@ -1614,7 +2183,7 @@ const displayStrategy = () => {
         msg.textContent = getBilingualText("Complete setup for strategy", "रणनीति के लिए सेटअप पूरा करें");
         strategyDiv.appendChild(msg);
     } else {
-        const days = daysBetween(new Date(), targetDate);
+        const days = targetDate ? daysBetween(new Date(), targetDate) : '-';
         
         const createLine = (labelEn, labelHi, value) => {
             const div = document.createElement('div');
@@ -1630,8 +2199,8 @@ const displayStrategy = () => {
             return div;
         };
 
-        strategyDiv.appendChild(createLine("Goal", "लक्ष्य", exam));
-        strategyDiv.appendChild(createLine("Time Left", "समय", `${days} ${getBilingualText('days', 'दिन')}`));
+        if(exam) strategyDiv.appendChild(createLine("Goal", "लक्ष्य", exam));
+        if(days !== '-') strategyDiv.appendChild(createLine("Time Left", "समय", `${days} ${getBilingualText('days', 'दिन')}`));
         strategyDiv.appendChild(createLine("Daily Goal", "दैनिक लक्ष्य", `${studyHours} ${getBilingualText('hours', 'घंटे')}`));
         strategyDiv.appendChild(createLine("Subjects", "विषय", numSubjects));
         
@@ -1664,6 +2233,10 @@ $('classSelector').value = p.studentClass || 'general';
 if (p.occupation === 'student') {
 $('roleStudent').checked = true;
 $('studentStudyGoal').value = p.studentStudyGoal || 8;
+// School Times
+$('schoolStartTime').value = p.schoolStartTime || '08:00';
+$('schoolEndTime').value = p.schoolEndTime || '14:00';
+
 $('studentSetWakeUpManual').checked = p.useStudentManualWakeUp || false;
 $('studentManualWakeUpWrapper').style.display = p.useStudentManualWakeUp ? 'flex' : 'none';
 $('wakeUpTime').value = p.wakeUpTime || '05:00';
@@ -1680,6 +2253,12 @@ $('activityName').value = p.activityLabel || 'Duty';
 $('dutyStart').value = p.dutyStart || '09:00';
 $('dutyEnd').value = p.dutyEnd || '18:00';
 $('dutyStudyGoal').value = p.dutyStudyGoal || 3;
+
+// LOAD JOB INTENSITY
+if (p.jobIntensity === 'hard') $('jobHard').checked = true;
+else if (p.jobIntensity === 'normal') $('jobNormal').checked = true;
+else $('jobMedium').checked = true; // Default
+
 if (p.shiftType === 'night') {
 $('shiftNight').checked = true;
 } else {
@@ -1747,6 +2326,10 @@ $('profileClassSelector').value = p.studentClass || 'general';
 if (p.occupation === 'student') {
 $('profileRoleStudent').checked = true;
 $('profileStudentStudyGoal').value = p.studentStudyGoal || 8;
+// Profile School Times
+$('profileSchoolStartTime').value = p.schoolStartTime || '08:00';
+$('profileSchoolEndTime').value = p.schoolEndTime || '14:00';
+
 $('profileStudentSetWakeUpManual').checked = p.useStudentManualWakeUp || false;
 $('profileStudentManualWakeUpWrapper').style.display = p.useStudentManualWakeUp ? 'flex' : 'none';
 $('profileWakeUpTime').value = p.wakeUpTime || '05:00';
@@ -1763,6 +2346,12 @@ $('profileActivityName').value = p.activityLabel || 'Duty';
 $('profileDutyStart').value = p.dutyStart || '09:00';
 $('profileDutyEnd').value = p.dutyEnd || '18:00';
 $('profileDutyStudyGoal').value = p.dutyStudyGoal || 3;
+
+// LOAD PROFILE JOB INTENSITY
+if (p.jobIntensity === 'hard') $('profileJobHard').checked = true;
+else if (p.jobIntensity === 'normal') $('profileJobNormal').checked = true;
+else $('profileJobMedium').checked = true;
+
 if (p.shiftType === 'night') {
 $('profileShiftNight').checked = true;
 } else {
@@ -1797,12 +2386,19 @@ targetDate: $('profileTargetDate').value,
 subjects: $('profileSubjects').value.split('\n').map(s => s.trim()).filter(s => s),
 focusSubject: $('profileFocusSubject').value.trim(),
 extraGoal: $('profileExtraGoal').value.trim(),
+// === 10 DAY ACTIVATION LOCK LOGIC ===
+createdDate: JSON.parse(localStorage.getItem('smart_profile') || '{}').createdDate || new Date().toISOString()
+// ===================================
 };
 if (occupation === 'duty') {
 profile.activityLabel = $('profileActivityName').value.trim() || 'Duty';
 profile.dutyStart = $('profileDutyStart').value;
 profile.dutyEnd = $('profileDutyEnd').value;
 profile.dutyStudyGoal = parseFloat($('profileDutyStudyGoal').value) || 3;
+
+// SAVE JOB INTENSITY
+profile.jobIntensity = document.querySelector('input[name="profileJobIntensity"]:checked').value;
+
 profile.shiftType = document.querySelector('input[name="profileShiftType"]:checked').value;
 profile.useDutyManualWakeUp = $('profileDutySetWakeUpManual').checked;
 profile.dutyWakeUpTime = $('profileDutyWakeUpTime').value;
@@ -1810,6 +2406,10 @@ profile.useDutyManualSleep = $('profileDutySetSleepManual').checked;
 profile.dutySleepTime = $('profileDutySleepTime').value;
 } else {
 profile.studentStudyGoal = parseFloat($('profileStudentStudyGoal').value) || 8;
+// Save School Times
+profile.schoolStartTime = $('profileSchoolStartTime').value;
+profile.schoolEndTime = $('profileSchoolEndTime').value;
+
 profile.useStudentManualWakeUp = $('profileStudentSetWakeUpManual').checked;
 profile.wakeUpTime = $('profileWakeUpTime').value;
 profile.useStudentManualSleep = $('profileStudentSetSleepManual').checked;
@@ -1824,93 +2424,461 @@ $('menuBtn').classList.remove('blinking-menu');
 $('profileModal').style.display = 'none';
 refreshUI();
 };
-const generateStudentRoutine = (params, subjects, focusSubject) => {
-    const { studyHours, addActivity, activityName, activityDuration, useWake, wakeStr, useSleep, sleepStr } = params;
+
+// ==============================================
+// === PERMANENT MEMORY CYCLE (1-3-7-30) LOGIC ===
+// ==============================================
+
+// 1. Storage Logic
+const saveTopicToLedger = (subject, topic) => {
+    const ledger = JSON.parse(localStorage.getItem('Memory_Ledger') || '[]');
+    const entry = {
+        id: Date.now(),
+        subject: subject,
+        topic: topic,
+        date: new Date().toISOString().split('T')[0] // Store YYYY-MM-DD
+    };
+    ledger.push(entry);
+    localStorage.setItem('Memory_Ledger', JSON.stringify(ledger));
+};
+
+// 2. Retrieval & Calculation Logic (UPDATED: Missed Logic)
+const getMemoryCycleTasks = () => {
+    const profile = getProfile();
+    // Activation Lock: 10 Days
+    const createdStr = profile.createdDate;
+    if (!createdStr) return []; // No start date, no revisions
     
+    const createdDate = new Date(createdStr);
+    const today = new Date();
+    
+    // Calculate Age of Profile in Days
+    const profileAgeMs = today - createdDate;
+    const profileAgeDays = profileAgeMs / (1000 * 60 * 60 * 24);
+    
+    if (profileAgeDays < 10) {
+        return []; // Lock Active. Collecting data only.
+    }
+
+    const ledger = JSON.parse(localStorage.getItem('Memory_Ledger') || '[]');
+    const history = JSON.parse(localStorage.getItem('Revision_History') || '[]');
+    const tasks = [];
+    
+    // Helper to check if done
+    const isCompleted = (ledgerId, cycleDay) => {
+        return history.some(h => h.ledgerId == ledgerId && h.cycleDay == cycleDay);
+    };
+
+    ledger.forEach(entry => {
+        const studyDate = new Date(entry.date);
+        studyDate.setHours(0,0,0,0);
+        const todayNormalized = new Date();
+        todayNormalized.setHours(0,0,0,0);
+
+        const diffTime = todayNormalized - studyDate;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        // Logic for DUE vs MISSED
+        const checkCycle = (targetDay, msgHiDue, msgEnDue) => {
+            // Is it today?
+            if (diffDays === targetDay) {
+                // If already done today, don't show? Or show as checked? 
+                // Let's show it, user completes via timer.
+                if (!isCompleted(entry.id, targetDay)) {
+                    tasks.push({ 
+                        type: 'due',
+                        id: entry.id, // Ledger ID
+                        day: targetDay, 
+                        topic: entry.topic,
+                        msgHi: msgHiDue, 
+                        msgEn: msgEnDue 
+                    });
+                }
+            }
+            // Is it MISSED? (Past date, not done)
+            else if (diffDays > targetDay && diffDays < (targetDay + 3) && !isCompleted(entry.id, targetDay)) {
+                // Show as EMERGENCY. 3 day buffer to stop showing extremely old stuff
+                tasks.push({ 
+                    type: 'emergency',
+                    id: entry.id,
+                    day: targetDay,
+                    topic: entry.topic,
+                    msgHi: `🚨 EMERGENCY: ${entry.topic} का ${targetDay}-दिन वाला रिवीज़न छूट गया! तुरंत करें!`,
+                    msgEn: `🚨 EMERGENCY: Missed ${targetDay}-Day revision for ${entry.topic}! Do it NOW!`
+                });
+            }
+        };
+
+        checkCycle(1, `पवन भैया: कल आपने जो पढ़ा था (${entry.topic}), उसे 15 मिनट में फिर से याद कर लें।`, `Pawan Bhaiya: Recall yesterday's topic (${entry.topic}) in 15 mins.`);
+        checkCycle(3, `3 दिन बीत गए! ${entry.topic} फिसल रहा है, 20 मिनट देकर जकड़ लें।`, `3 days gone! ${entry.topic} is slipping, grab it in 20 mins.`);
+        checkCycle(7, `एक हफ्ता पूरा! ${entry.topic} को पक्की याददाश्त का हिस्सा बना लें।`, `One week done! Make ${entry.topic} a permanent memory.`);
+        checkCycle(30, `30 दिन का मील का पत्थर! ${entry.topic} को अमर बना दें।`, `30 days milestone! Make ${entry.topic} immortal today.`);
+    });
+
+    // Prioritize Emergency tasks
+    return tasks.sort((a, b) => (a.type === 'emergency' ? -1 : 1));
+};
+
+// ==============================================
+
+
+const generateStudentRoutine = (params, subjects, focusSubject, studentClass) => {
+    const { studyHours, addActivity, activityName, activityDuration, useWake, wakeStr, useSleep, sleepStr, schoolStart, schoolEnd } = params;
+    
+    // --- ADAPTIVE EXAM INTENSITY ENGINE LOGIC ---
+    const profile = getProfile();
+    let USER_PHASE = 'Normal';
+    let daysLeft = 0;
+    
+    // Determine USER_PHASE
+    if (profile.targetDate) {
+        const today = new Date();
+        const examDate = new Date(profile.targetDate);
+        const diffTime = examDate - today;
+        daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (['9','10','11','12'].includes(studentClass) && daysLeft <= 60 && daysLeft >= 0) {
+            USER_PHASE = 'Exam_School';
+        } else if (studentClass === 'general' && daysLeft <= 30 && daysLeft >= 0) {
+            USER_PHASE = 'Exam_Aspirant';
+        }
+    }
+
+    // --- UI NOTIFICATION (Dynamic Injection) ---
+    const emergencyContainer = document.getElementById('emergencyContainer');
+    if (emergencyContainer) {
+        if (USER_PHASE === 'Exam_School') {
+            emergencyContainer.innerHTML = `
+                <div class="emergency-banner">
+                    ⚠️ पवन भैया, एग्जाम में सिर्फ ${daysLeft} दिन बचे हैं! रूटीन में 1.5 घंटा एक्स्ट्रा जोड़ दिया गया है। ⚠️
+                </div>
+            `;
+        } else if (USER_PHASE === 'Exam_Aspirant') {
+             emergencyContainer.innerHTML = `
+                <div class="emergency-banner">
+                    ⚠️ WAR MODE ON: ${daysLeft} दिन बचे हैं! केवल रिवीजन और प्रैक्टिस। ⚠️
+                </div>
+            `;
+        } else {
+            emergencyContainer.innerHTML = '';
+        }
+    }
+
+    // --- SMART SUBJECT INJECTION HELPER ---
+    const getNextExamSubject = (allSubjects, fSubject, phase, slotIndex, timeOfDay) => {
+        // Double the focus subject
+        let weightedSubjects = [...allSubjects];
+        if (fSubject) weightedSubjects.push(fSubject); 
+        
+        // Ensure index wraps around the weighted array
+        let rawSubject = weightedSubjects[slotIndex % weightedSubjects.length] || "Subject";
+
+        if (phase === 'Exam_School') {
+            // Pattern: 1=New, 2=Rev, 3=Test
+            let type = slotIndex % 3; 
+            if (type === 1) return `⚡ New Content: ${rawSubject}`;
+            if (type === 2) return `⚡ Revision: ${rawSubject}`;
+            return `⚡ Test Prep: ${rawSubject}`; // type 0 (mod 3) maps to 3rd slot conceptually
+        }
+        
+        if (phase === 'Exam_Aspirant') {
+            // Logic based on Time of Day (passed from main loop)
+            // Morning: High Yield Rev, Afternoon: PYQ, Evening: Analysis
+            if (timeOfDay === 'Morning') return `⚡ High-Yield Revision: ${rawSubject}`;
+            if (timeOfDay === 'Afternoon') return `⚡ PYQ / Quiz: ${rawSubject}`;
+            if (timeOfDay === 'Evening') return `⚡ Weak Area Analysis`; // Subject less relevant here, strategy matters
+            return `⚡ Revision (No New): ${rawSubject}`;
+        }
+        
+        return rawSubject; // Normal Mode
+    };
+
     const newSlots = [];
-    const totalStudyMins = studyHours * 60;
-    const activityMins = addActivity ? activityDuration * 60 : 0;
-    
-    const sessions = Math.max(1, Math.ceil(studyHours / 1.5));
-    const shortBreaks = sessions > 1 ? sessions - 1 : 0;
-    const longBreaks = sessions > 2 ? 1 : 0;
-    const dinnerBreak = 1;
-    const totalBreakMins = (shortBreaks * 15) + (longBreaks * 60) + (dinnerBreak * 45);
-    
-    const PERSONAL_TIME_MINS = 5 * 60; 
-    const totalRequiredMins = totalStudyMins + activityMins + totalBreakMins + PERSONAL_TIME_MINS;
-
+    const isSchoolStudent = ['9', '10', '11', '12'].includes(studentClass);
     let wakeTimeMins, sleepTimeMins;
-
+    
+    // --- TIME CALCULATION LOGIC ---
     if (useWake && useSleep) {
         wakeTimeMins = timeToMinutes(wakeStr);
         sleepTimeMins = timeToMinutes(sleepStr);
-         if (wakeTimeMins >= sleepTimeMins) {
-            alert(getBilingualText('Invalid Time: Wake-up time must be before sleep time for a single day cycle.', 'अमान्य समय: जागने का समय सोने के समय से पहले होना चाहिए।'));
-            return false;
-        }
     } else if (useWake) {
         wakeTimeMins = timeToMinutes(wakeStr);
-        sleepTimeMins = wakeTimeMins + totalRequiredMins; 
+        sleepTimeMins = (wakeTimeMins + (24*60) - (8*60)) % 1440;
+        if (sleepTimeMins < wakeTimeMins) sleepTimeMins += 1440;
     } else if (useSleep) {
         sleepTimeMins = timeToMinutes(sleepStr);
-        wakeTimeMins = sleepTimeMins - totalRequiredMins;
+        wakeTimeMins = (sleepTimeMins - (16*60));
+        if (wakeTimeMins < 0) wakeTimeMins += 1440;
     } else {
         wakeTimeMins = timeToMinutes("05:00");
-        sleepTimeMins = wakeTimeMins + totalRequiredMins;
+        sleepTimeMins = timeToMinutes("22:00");
     }
 
-    let availableMins = (sleepTimeMins - wakeTimeMins);
-    if (availableMins < 0) { availableMins += 1440; }
-    
-    const sleepDuration = 1440 - availableMins;
-
-    if (availableMins < totalRequiredMins - PERSONAL_TIME_MINS || sleepDuration < 360) { 
-        alert(getBilingualText(
-            `Your schedule is not realistic. You have approx. ${Math.round(availableMins/60)} hours available, but your goals require at least ${Math.round((totalRequiredMins - PERSONAL_TIME_MINS)/60)} hours for activities alone. Please adjust your study goal, activity duration, or allow for at least 6 hours of sleep.`,
-            `आपकी दिनचर्या व्यावहारिक नहीं है। आपके पास लगभग ${Math.round(availableMins/60)} घंटे उपलब्ध हैं, लेकिन आपके लक्ष्यों के लिए गतिविधियों हेतु ही कम से कम ${Math.round((totalRequiredMins - PERSONAL_TIME_MINS)/60)} घंटे चाहिए। कृपया अपने अध्ययन लक्ष्य, गतिविधि की अवधि को समायोजित करें, या कम से कम 6 घंटे की नींद सुनिश्चित करें।`
-        ));
-        return false;
+    // --- EMERGENCY ADJUSTMENT: WAKE UP EARLIER (Only for School Phase) ---
+    // Aspirants might already be waking up early, keep their manual time unless extreme
+    if (USER_PHASE === 'Exam_School') {
+        wakeTimeMins -= 45; 
+        if (wakeTimeMins < 0) wakeTimeMins += 1440;
     }
-    
+
+    if (sleepTimeMins < wakeTimeMins) sleepTimeMins += 1440;
+
     let currentTime = wakeTimeMins;
     newSlots.push({ id: 'wake', label_en: 'Wake Up & Fresh Up', label_hi: 'उठो और फ्रेश हो जाओ', time: minutesToTime(currentTime), msg_en: `Good morning!`, msg_hi: `सुप्रभात!` });
-    currentTime += 30;
-
-    const studyPerSession = Math.floor(totalStudyMins / sessions);
-    let subjectIndex = 0;
-
-    for (let i = 1; i <= sessions; i++) {
-        const subject = subjects[subjectIndex % subjects.length] || `Study Session ${i}`;
-        const isFocus = subject.toLowerCase() === focusSubject.toLowerCase();
-        const sessionDuration = studyPerSession + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
+    
+    // ============================================
+    // === INJECT PERMANENT MEMORY SLOTS HERE ===
+    // ============================================
+    // Logic: WakeTime + 15 mins
+    const revisionStartTime = currentTime + 15;
+    const revisionTasks = getMemoryCycleTasks();
+    
+    revisionTasks.forEach((task, idx) => {
+        // ID format: memory_rev_{ledgerId}_{day} OR emergency_missed_{ledgerId}_{day}
+        const prefix = task.type === 'emergency' ? 'emergency_missed' : 'memory_rev';
+        const slotId = `${prefix}_${task.id}_${task.day}`;
+        const slotTime = minutesToTime(revisionStartTime + (idx * 20)); // Stagger by 20 mins if multiple
         
-        newSlots.push({ id: `study${i}`, label_en: `${subject}`, label_hi: `${subject}`, time: minutesToTime(currentTime), msg_en: `Time for ${subject}.`, msg_hi: `${subject} का समय।` });
-        currentTime += sessionDuration;
-        subjectIndex++;
+        newSlots.push({
+            id: slotId,
+            label_en: task.type === 'emergency' ? `MISSED REVISION: ${task.topic}` : `${task.day}-Day Revision: ${task.topic}`,
+            label_hi: task.type === 'emergency' ? `छूटा हुआ रिवीज़न: ${task.topic}` : `${task.day}-दिन का रिवीजन: ${task.topic}`,
+            time: slotTime,
+            msg_en: task.msgEn,
+            msg_hi: task.msgHi,
+            tip_en: "Recall without looking at book first.",
+            tip_hi: "पहले किताब देखे बिना याद करें।"
+        });
+    });
 
-        if (i === Math.floor(sessions / 2) && longBreaks > 0) {
-            newSlots.push({ id: `long_break`, label_en: `Lunch Break`, label_hi: `लंच ब्रेक`, time: minutesToTime(currentTime), msg_en: `Time for lunch.`, msg_hi: `लंच का समय।` });
-            currentTime += 60;
-        } else if (i < sessions) {
-            newSlots.push({ id: `break`, label_en: `Short Break`, label_hi: `छोटा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a short break.`, msg_hi: `एक छोटा ब्रेक लें।` });
+    // If revisions added, advance current time slightly to not overlap too badly with main routine start
+    if (revisionTasks.length > 0) {
+        // Just a visual buffer, main routine logic handles absolute time usually, 
+        // but let's push 'currentTime' so subsequent relative slots push down.
+        currentTime += 15 + (revisionTasks.length * 20); 
+    } else {
+        currentTime += 30; // Standard gap if no revision
+    }
+    // ============================================
+
+    // --- EMERGENCY SLOT 1: MORNING BOOST ---
+    if (USER_PHASE === 'Exam_School') {
+        newSlots.push({ id: 'morning_rev_emergency', label_en: 'Morning Boost Study (Exam Special)', label_hi: 'सुबह का एक्स्ट्रा रिवीज़न', time: minutesToTime(currentTime), msg_en: `Extra time for exams!`, msg_hi: `परीक्षा के लिए अतिरिक्त समय!` });
+        currentTime += 45;
+    }
+
+    // === SCHOOL LOGIC START ===
+    if (isSchoolStudent) {
+        const schoolStartMins = timeToMinutes(schoolStart);
+        let schoolEndMins = timeToMinutes(schoolEnd);
+        if (schoolEndMins < schoolStartMins) schoolEndMins += 1440;
+
+        const leaveForSchoolMins = schoolStartMins - 30; 
+        const reachHomeMins = schoolEndMins + 30; 
+
+        // 1. MORNING STUDY (Normal)
+        const availableMorningMins = leaveForSchoolMins - currentTime;
+        let morningStudyDone = 0;
+        
+        if (availableMorningMins >= 45) {
+             // Use new helper, assume Morning context logic applies vaguely or just slot 1
+             let subName = getNextExamSubject(subjects, focusSubject, USER_PHASE, 1, 'Morning');
+             newSlots.push({ id: `morning_study`, label_en: subName, label_hi: subName, time: minutesToTime(currentTime), msg_en: `Quick revision before school.`, msg_hi: `स्कूल से पहले रिवीजन।` });
+             morningStudyDone = availableMorningMins;
+             currentTime = leaveForSchoolMins;
+        }
+
+        // 2. SCHOOL BLOCK
+        newSlots.push({ id: `leave_school`, label_en: `Leave for School`, label_hi: `स्कूल के लिए निकलें`, time: minutesToTime(leaveForSchoolMins), msg_en: `Go to school.`, msg_hi: `स्कूल जाओ।` });
+        newSlots.push({ id: `school`, label_en: `School Time`, label_hi: `स्कूल का समय`, time: minutesToTime(schoolStartMins), msg_en: `Focus in class.`, msg_hi: `क्लास में ध्यान दें।` });
+        newSlots.push({ id: `home`, label_en: `Reach Home & Lunch`, label_hi: `घर वापसी और लंच`, time: minutesToTime(reachHomeMins), msg_en: `Relax and eat.`, msg_hi: `आराम करो और खाना खाओ।` });
+        
+        currentTime = reachHomeMins + 60; 
+
+        // 3. EVENING STUDY / SUNDAY LOCKDOWN
+        const isSunday = new Date().getDay() === 0;
+
+        if (USER_PHASE === 'Exam_School' && isSunday) {
+            // --- SCHOOL SUNDAY LOCKDOWN ---
+            // 2 Hour Mock Test
+            newSlots.push({ id: 'mock_test', label_en: '2-Hour Mock Test', label_hi: '2 घंटे का मॉक टेस्ट', time: minutesToTime(currentTime), msg_en: `Simulate exam environment.`, msg_hi: `परीक्षा जैसा माहौल बनाएं।` });
+            currentTime += 120;
+            
+            newSlots.push({ id: 'break', label_en: `Break`, label_hi: `ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a break.`, msg_hi: `ब्रेक लें।` });
             currentTime += 15;
+
+            // 2 Hour Homework/Analysis
+            newSlots.push({ id: 'test_analysis', label_en: 'Test Analysis & Homework', label_hi: 'टेस्ट विश्लेषण और होमवर्क', time: minutesToTime(currentTime), msg_en: `Analyze mistakes & do homework.`, msg_hi: `गलतियों का विश्लेषण और होमवर्क।` });
+            currentTime += 120;
+
+        } else {
+            // --- NORMAL EVENING ROUTINE ---
+            let remainingGoalMins = (studyHours * 60) - (morningStudyDone > 60 ? 60 : 0);
+            if (remainingGoalMins < 0) remainingGoalMins = 0;
+
+            if (addActivity && activityName && USER_PHASE !== 'Exam_School') { // Drop activity in exam mode preference? Prompt said drop ONLY on Sunday. Let's keep for weekdays but maybe shorten manually.
+                newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।` });
+                currentTime += (activityDuration * 60);
+            }
+
+            const sessions = Math.max(1, Math.ceil(remainingGoalMins / 90));
+            const minsPerSession = Math.floor(remainingGoalMins / sessions);
+            let subjectIndex = 0;
+
+            for (let i = 1; i <= sessions; i++) {
+                const isFocus = subjects[subjectIndex % subjects.length]?.toLowerCase() === focusSubject.toLowerCase();
+                const sessionDuration = minsPerSession + (isFocus ? FOCUS_EXTRA_MINUTES : 0);
+                
+                // Determine Time Context
+                let timeContext = 'Afternoon';
+                if(currentTime > timeToMinutes("17:00")) timeContext = 'Evening';
+
+                // GET SMART SUBJECT NAME
+                let subName = getNextExamSubject(subjects, focusSubject, USER_PHASE, i + 1, timeContext); // Offset index
+
+                // Adjust for emergency night revision space
+                let maxTime = sleepTimeMins;
+                if (USER_PHASE === 'Exam_School') maxTime -= 45; 
+
+                if (currentTime + sessionDuration > maxTime) break;
+
+                newSlots.push({ id: `study${i}`, label_en: subName, label_hi: subName, time: minutesToTime(currentTime), msg_en: `Study time.`, msg_hi: `पढ़ाई का समय।` });
+                currentTime += sessionDuration;
+                subjectIndex++;
+
+                if (i < sessions) {
+                     newSlots.push({ id: `break`, label_en: `Break`, label_hi: `ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a break.`, msg_hi: `ब्रेक लें।` });
+                     currentTime += 15;
+                }
+            }
+        }
+        
+        // Dinner
+        let dinnerTime = Math.max(currentTime, timeToMinutes("20:30"));
+        let buffer = (USER_PHASE === 'Exam_School') ? 105 : 60; 
+        if (dinnerTime > sleepTimeMins - buffer) dinnerTime = sleepTimeMins - buffer;
+        
+        newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(dinnerTime), msg_en: `Have dinner.`, msg_hi: `डिनर करें।` });
+        currentTime = dinnerTime + 45;
+
+        // --- EMERGENCY SLOT 2: NIGHT BOOST ---
+        if (USER_PHASE === 'Exam_School') {
+             newSlots.push({ id: 'night_rev_emergency', label_en: 'Final Rapid Revision', label_hi: 'अंतिम रिवीजन', time: minutesToTime(currentTime), msg_en: `Review today's topics.`, msg_hi: `आज के विषयों को दोहराएं।` });
+        }
+
+        // Sleep
+        newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(sleepTimeMins), msg_en: `Good night.`, msg_hi: `शुभ रात्रि।` });
+
+    } 
+    // === ASPIRANT / NON-SCHOOL LOGIC ===
+    else {
+        // --- ASPIRANT SUNDAY WAR MODE ---
+        const isSunday = new Date().getDay() === 0;
+        
+        if (USER_PHASE === 'Exam_Aspirant' && isSunday) {
+             // 6 Hour Test
+             newSlots.push({ id: 'war_mode_test', label_en: '⚡ 6-Hour Mock Test (WAR MODE)', label_hi: '⚡ 6 घंटे का महा-युद्ध (मॉक टेस्ट)', time: minutesToTime(currentTime), msg_en: `Full focus. No distractions.`, msg_hi: `पूरा ध्यान। कोई भटकाव नहीं।` });
+             currentTime += 360; // 6 Hours
+             
+             newSlots.push({ id: 'break', label_en: `Long Break`, label_hi: `लंबा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Rest your mind.`, msg_hi: `दिमाग को आराम दें।` });
+             currentTime += 60;
+
+             // Analysis till sleep (or reasonable time)
+             newSlots.push({ id: 'war_mode_analysis', label_en: 'Deep Analysis & Weak Areas', label_hi: 'गहरा विश्लेषण और कमजोरियां', time: minutesToTime(currentTime), msg_en: `Check every wrong answer.`, msg_hi: `हर गलत उत्तर की जांच करें।` });
+             
+             // Fill till dinner
+             newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(sleepTimeMins - 60), msg_en: `Have dinner.`, msg_hi: `डिनर करें।` });
+             newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(sleepTimeMins), msg_en: `Time to sleep.`, msg_hi: `सोने का समय।` });
+
+        } else {
+            // --- NORMAL / ASPIRANT WEEKDAY ROUTINE ---
+            const totalStudyMins = studyHours * 60;
+            const activityMins = addActivity ? activityDuration * 60 : 0;
+            
+            const sessions = Math.max(1, Math.ceil(studyHours / 1.5));
+            const shortBreaks = sessions > 1 ? sessions - 1 : 0;
+            const longBreaks = sessions > 2 ? 1 : 0;
+            const dinnerBreak = 1;
+            
+            const studyPerSession = Math.floor(totalStudyMins / sessions);
+            let subjectIndex = 0;
+
+            for (let i = 1; i <= sessions; i++) {
+                // Determine Time Context for Labeling
+                let timeContext = 'Morning';
+                if (currentTime > timeToMinutes("12:00")) timeContext = 'Afternoon';
+                if (currentTime > timeToMinutes("17:00")) timeContext = 'Evening';
+
+                // GET SMART SUBJECT NAME
+                let subName = getNextExamSubject(subjects, focusSubject, USER_PHASE, i, timeContext);
+
+                newSlots.push({ id: `study${i}`, label_en: subName, label_hi: subName, time: minutesToTime(currentTime), msg_en: `Time to focus.`, msg_hi: `ध्यान केंद्रित करने का समय।` });
+                currentTime += studyPerSession;
+                subjectIndex++;
+
+                if (i === Math.floor(sessions / 2) && longBreaks > 0) {
+                    newSlots.push({ id: `long_break`, label_en: `Lunch Break`, label_hi: `लंच ब्रेक`, time: minutesToTime(currentTime), msg_en: `Time for lunch.`, msg_hi: `लंच का समय।` });
+                    currentTime += 60;
+                } else if (i < sessions) {
+                    newSlots.push({ id: `break`, label_en: `Short Break`, label_hi: `छोटा ब्रेक`, time: minutesToTime(currentTime), msg_en: `Take a short break.`, msg_hi: `एक छोटा ब्रेक लें।` });
+                    currentTime += 15;
+                }
+            }
+
+            if (addActivity && activityName && USER_PHASE !== 'Exam_Aspirant') {
+                newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।` });
+                currentTime += activityMins;
+            }
+
+            newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(currentTime), msg_en: `Have your dinner.`, msg_hi: `अपना डिनर करें।` });
+            newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(sleepTimeMins), msg_en: `Time to sleep.`, msg_hi: `सोने का समय।` });
         }
     }
-
-    if (addActivity && activityName) {
-        newSlots.push({ id: 'other_activity', label_en: activityName, label_hi: activityName, time: minutesToTime(currentTime), msg_en: `Time for ${activityName}.`, msg_hi: `${activityName} का समय।` });
-        currentTime += activityMins;
-    }
-
-    newSlots.push({ id: 'dinner', label_en: 'Dinner', label_hi: 'डिनर', time: minutesToTime(currentTime), msg_en: `Have your dinner.`, msg_hi: `अपना डिनर करें।` });
-    currentTime += 45;
-
-    newSlots.push({ id: 'sleep', label_en: 'Sleep', label_hi: 'सोना', time: minutesToTime(sleepTimeMins), msg_en: `Time to sleep.`, msg_hi: `सोने का समय।` });
 
     slotsData = newSlots;
     return true;
 };
+
+// =========================================================
+// NEW FUNCTION: GENERATE GOOGLE CALENDAR LINK
+// =========================================================
+const generateGoogleCalendarLink = (title, timeStr) => {
+    const now = new Date();
+    const [h, m] = timeStr.split(':').map(Number);
+    
+    let startDate = new Date(now);
+    startDate.setHours(h, m, 0, 0);
+
+    // Logic 1: Smart Date (If passed, move to tomorrow)
+    if (startDate < now) {
+        startDate.setDate(startDate.getDate() + 1);
+    }
+
+    // Logic 3: Duration (End time = Start + 30 mins)
+    let endDate = new Date(startDate);
+    endDate.setMinutes(endDate.getMinutes() + 30);
+
+    // Logic 2: URL Cleaning (YYYYMMDDTHHMMSS) - Robust Local Time Formatting
+    const formatTime = (date) => {
+        const pad = (n) => (n < 10 ? '0' + n : n);
+        return (
+            date.getFullYear() +
+            pad(date.getMonth() + 1) +
+            pad(date.getDate()) +
+            'T' +
+            pad(date.getHours()) +
+            pad(date.getMinutes()) +
+            '00'
+        );
+    };
+
+    const startStr = formatTime(startDate);
+    const endStr = formatTime(endDate);
+    
+    // Construct URL with Encoded Title
+    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startStr}/${endStr}`;
+};
+// =========================================================
 
 
 const autoGenerate = () => {
@@ -1920,6 +2888,8 @@ const subjects = p.subjects || [];
 const subjectsInput = $('subjectsList').value.split('\n').map(s => s.trim()).filter(s => s);
 const allSubjects = subjects.length > 0 ? subjects : subjectsInput;
 const focusSubject = $('focusSubject').value.trim() || p.focusSubject || '';
+// Get Class Selection (Can be 'general' or '9', '10', etc)
+const studentClass = p.studentClass || $('classSelector').value;
 
 if (occupation === 'duty') {
     const useManualWake = $('dutySetWakeUpManual').checked;
@@ -1928,16 +2898,19 @@ if (occupation === 'duty') {
     const manualSleepStr = $('dutySleepTime').value;
     const ds = $('dutyStart').value, de = $('dutyEnd').value;
     const studyGoalHours = parseFloat($('dutyStudyGoal').value) || 0;
+    
+    // NEW: Get Job Intensity
+    const jobIntensity = document.querySelector('input[name="jobIntensity"]:checked').value;
 
     if (!ds || !de || !studyGoalHours) {
-        alert(getBilingualText('Please set duty start, end, and your study goal.', 'कृपया ड्यूटी शुरू, खत्म और अपना अध्ययन लक्ष्य निर्धारित करें।'));
+        showToast('Incomplete', getBilingualText('Please set duty start, end, and your study goal.', 'कृपया ड्यूटी शुरू, खत्म और अपना अध्ययन लक्ष्य निर्धारित करें।'));
         return;
     }
 
     const sM = timeToMinutes(ds), eM = timeToMinutes(de);
 
     if (useManualWake && timeToMinutes(manualWakeStr) >= sM) {
-        alert(getBilingualText('Invalid Time: Wake-up time must be before duty starts.', 'अमान्य समय: जागने का समय ड्यूटी शुरू होने से पहले होना चाहिए।'));
+        showToast('Invalid Time', getBilingualText('Invalid Time: Wake-up time must be before duty starts.', 'अमान्य समय: जागने का समय ड्यूटी शुरू होने से पहले होना चाहिए।'));
         return;
     }
     
@@ -1950,7 +2923,7 @@ if (occupation === 'duty') {
             if (sleepM > sM || sleepM < eM) isError = true;
         }
         if (isError) {
-             alert(getBilingualText('Invalid Time: Your sleep time cannot be during your duty hours.', 'अमान्य समय: आपके सोने का समय आपके ड्यूटी के घंटों के दौरान नहीं हो सकता।'));
+             showToast('Invalid Time', getBilingualText('Invalid Time: Your sleep time cannot be during your duty hours.', 'अमान्य समय: आपके सोने का समय आपके ड्यूटी के घंटों के दौरान नहीं हो सकता।'));
              return;
         }
     }
@@ -1965,9 +2938,9 @@ if (occupation === 'duty') {
 
     if (totalRequiredMins > 1440) {
         const availableForStudy = (1440 - dutyDurationMins - PERSONAL_TIME_MINS - requiredSleepMins) / 60;
-        alert(getBilingualText(
-            `Your schedule is too packed. With your duty of ${Math.round(dutyDurationMins/60)} hours and minimum personal/sleep time, you only have about ${Math.max(0, availableForStudy).toFixed(1)} hours available for study. Please reduce your study goal.`,
-            `आपकी दिनचर्या बहुत व्यस्त है। आपकी ${Math.round(dutyDurationMins/60)} घंटे की ड्यूटी और न्यूनतम व्यक्तिगत/नींद के समय के साथ, आपके पास पढ़ाई के लिए केवल ${Math.max(0, availableForStudy).toFixed(1)} घंटे उपलब्ध हैं। कृपया अपने अध्ययन लक्ष्य को कम करें।`
+        showToast('Schedule Too Packed', getBilingualText(
+            `Schedule too busy. Only ${Math.max(0, availableForStudy).toFixed(1)} hours left for study.`,
+            `दिनचर्या बहुत व्यस्त है। पढ़ाई के लिए केवल ${Math.max(0, availableForStudy).toFixed(1)} घंटे बचे हैं।`
         ));
         return;
     }
@@ -1990,6 +2963,30 @@ if (occupation === 'duty') {
         const studyBlockStart = wakeTimeMins + 30;
         let currentTime = studyBlockStart;
 
+        // INJECT MEMORY SLOTS FOR NIGHT SHIFT (After Wake)
+        const revisionStartTime = currentTime + 15;
+        const revisionTasks = getMemoryCycleTasks();
+        
+        revisionTasks.forEach((task, idx) => {
+            const slotTime = minutesToTime(revisionStartTime + (idx * 20));
+            // ID format: memory_rev_{ledgerId}_{day} OR emergency_missed_{ledgerId}_{day}
+            const prefix = task.type === 'emergency' ? 'emergency_missed' : 'memory_rev';
+            const slotId = `${prefix}_${task.id}_${task.day}`;
+            
+            // Manually inject into slotsData array
+            slotsData.push({
+                id: slotId,
+                label_en: task.type === 'emergency' ? `MISSED REVISION: ${task.topic}` : `${task.day}-Day Revision: ${task.topic}`,
+                label_hi: task.type === 'emergency' ? `छूटा हुआ रिवीज़न: ${task.topic}` : `${task.day}-दिन का रिवीजन: ${task.topic}`,
+                time: slotTime,
+                msg_en: task.msgEn,
+                msg_hi: task.msgHi
+            });
+        });
+        
+        if (revisionTasks.length > 0) currentTime += 15 + (revisionTasks.length * 20);
+        else currentTime += 30;
+
         if (studyGoalMins > 0) {
             findSlot('main_study').time = minutesToTime(currentTime);
             findSlot('main_study').label_en = allSubjects[0] || 'Main Study';
@@ -1997,15 +2994,57 @@ if (occupation === 'duty') {
             currentTime += studyGoalMins;
         }
 
-        slotsData = slotsData.filter(s => ['wake', 'duty_start', 'duty_end', 'home', 'dinner', 'sleep', 'main_study', 'leave'].includes(s.id) && (s.id !== 'main_study' || studyGoalMins > 0));
+        slotsData = slotsData.filter(s => ['wake', 'duty_start', 'duty_end', 'home', 'dinner', 'sleep', 'main_study', 'leave'].includes(s.id) || s.id.startsWith('memory_rev') || s.id.startsWith('emergency_missed'));
 
     } else { // Day shift
         findSlot('wake').time = minutesToTime(sM - 90);
+        
+        // INJECT MEMORY SLOTS FOR DAY SHIFT (After Wake)
+        const wakeMins = timeToMinutes(findSlot('wake').time);
+        const revisionStartTime = wakeMins + 15;
+        const revisionTasks = getMemoryCycleTasks();
+        
+        // Remove existing memory slots if any to prevent dups on re-gen
+        slotsData = slotsData.filter(s => !s.id.startsWith('memory_rev') && !s.id.startsWith('emergency_missed'));
+
+        revisionTasks.forEach((task, idx) => {
+            const slotTime = minutesToTime(revisionStartTime + (idx * 20));
+            const prefix = task.type === 'emergency' ? 'emergency_missed' : 'memory_rev';
+            const slotId = `${prefix}_${task.id}_${task.day}`;
+            
+            slotsData.push({
+                id: slotId,
+                label_en: task.type === 'emergency' ? `MISSED REVISION: ${task.topic}` : `${task.day}-Day Revision: ${task.topic}`,
+                label_hi: task.type === 'emergency' ? `छूटा हुआ रिवीज़न: ${task.topic}` : `${task.day}-दिन का रिवीजन: ${task.topic}`,
+                time: slotTime,
+                msg_en: task.msgEn,
+                msg_hi: task.msgHi
+            });
+        });
+
         findSlot('leave').time = minutesToTime(sM - 30);
         findSlot('duty_start').time = ds;
         findSlot('duty_end').time = de;
-        findSlot('home').time = minutesToTime(eM + 30);
-        findSlot('nap').time = minutesToTime(eM + 60);
+        
+        // --- SMART LOGIC: REST AFTER DUTY BASED ON INTENSITY ---
+        let restBuffer = 30; // Default (Medium)
+        let napMsgEn = "Short Nap";
+        let napMsgHi = "छोटी झपकी";
+
+        if (jobIntensity === 'hard') {
+            restBuffer = 60; // 1 Hour rest for Hard jobs
+            napMsgEn = "Deep Rest (Hard Work Recovery)";
+            napMsgHi = "गहरा आराम (कठिन परिश्रम के बाद)";
+        } else if (jobIntensity === 'normal') {
+            restBuffer = 20; // Less rest for desk jobs
+            napMsgEn = "Quick Refresh";
+            napMsgHi = "जल्दी तरोताज़ा हों";
+        }
+
+        findSlot('home').time = minutesToTime(eM + 30); // 30 mins travel
+        findSlot('nap').time = minutesToTime(eM + 30 + restBuffer);
+        findSlot('nap').label_en = napMsgEn;
+        findSlot('nap').label_hi = napMsgHi;
 
         const morningStudyDuration = Math.min(45, studyGoalMins);
         let eveningStudyMins = studyGoalMins - morningStudyDuration;
@@ -2019,7 +3058,8 @@ if (occupation === 'duty') {
             slotsData = slotsData.filter(s => s.id !== 'morning_study');
         }
 
-        let currentTime = timeToMinutes(findSlot('nap').time) + 30; 
+        // Start evening study AFTER nap
+        let currentTime = timeToMinutes(findSlot('nap').time) + 30; // 30 mins nap duration
         
         if(eveningStudyMins > 0) {
              findSlot('main_study').time = minutesToTime(currentTime);
@@ -2038,7 +3078,7 @@ if (occupation === 'duty') {
     if (useManualWake) { findSlot('wake').time = manualWakeStr; }
     if (useManualSleep) { findSlot('sleep').time = manualSleepStr; }
 
-} else { // Student
+} else { // Student (School or General)
     const studentParams = {
         studyHours: parseFloat($('studentStudyGoal').value) || 8,
         addActivity: $('studentAddActivityCheckbox').checked,
@@ -2047,15 +3087,18 @@ if (occupation === 'duty') {
         useWake: $('studentSetWakeUpManual').checked,
         wakeStr: $('wakeUpTime').value,
         useSleep: $('studentSetSleepManual').checked,
-        sleepStr: $('sleepTime').value
+        sleepStr: $('sleepTime').value,
+        schoolStart: $('schoolStartTime').value,
+        schoolEnd: $('schoolEndTime').value
     };
     
     if (!studentParams.studyHours) { 
-        alert(getBilingualText('Please set your daily study goal.', 'कृपया अपना दैनिक अध्ययन लक्ष्य निर्धारित करें।')); 
+        showToast('Missing Info', getBilingualText('Please set your daily study goal.', 'कृपया अपना दैनिक अध्ययन लक्ष्य निर्धारित करें।')); 
         return; 
     }
     
-    const success = generateStudentRoutine(studentParams, allSubjects, focusSubject);
+    // Updated to pass Class Info
+    const success = generateStudentRoutine(studentParams, allSubjects, focusSubject, studentClass);
     if (!success) return;
 }
 
@@ -2066,16 +3109,23 @@ const manualAlarmModal = $('manualAlarmModal');
 const manualAlarmList = $('manualAlarmList');
 manualAlarmList.textContent = ''; 
 
-const importantAlarmIds = ['wake', 'morning_study', 'leave', 'duty_start', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
+const importantAlarmIds = ['wake', 'morning_study', 'morning_rev_emergency', 'leave', 'leave_school', 'duty_start', 'school', 'mock_test', 'war_mode_test', 'main_study', 'practice', 'dinner', 'sleep', 'study1', 'study2', 'study3', 'study4', 'study5'];
 
 slotsData.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
 
 slotsData.forEach(slot => {
-    if (importantAlarmIds.includes(slot.id)) {
+    // Include Memory Revision Slots in Manual Alarms
+    if (importantAlarmIds.includes(slot.id) || slot.id.startsWith('memory_rev') || slot.id.startsWith('emergency_missed')) {
         const listItem = document.createElement('li');
         
         const labelSpan = document.createElement('span');
         labelSpan.textContent = getBilingualText(slot.label_en, slot.label_hi);
+
+        // Right side wrapper for Time + Google Button
+        const rightDiv = document.createElement('div');
+        rightDiv.style.display = 'flex';
+        rightDiv.style.alignItems = 'center';
+        rightDiv.style.gap = '10px';
         
         const timeSpan = document.createElement('span');
         timeSpan.className = 'time';
@@ -2097,9 +3147,20 @@ slotsData.forEach(slot => {
         } else {
             timeSpan.textContent = formatTime(slot.time);
         }
+
+        // --- NEW: Google Calendar Button Integration ---
+        const gCalBtn = document.createElement('a');
+        gCalBtn.href = generateGoogleCalendarLink(getBilingualText(slot.label_en, slot.label_hi), slot.time);
+        gCalBtn.target = "_blank";
+        gCalBtn.className = "btn-gcal";
+        gCalBtn.textContent = "🔔"; // Bell Icon
+        gCalBtn.title = getBilingualText("Set Google Alarm", "गूगल अलार्म सेट करें");
+        
+        rightDiv.appendChild(timeSpan);
+        rightDiv.appendChild(gCalBtn);
         
         listItem.appendChild(labelSpan);
-        listItem.appendChild(timeSpan);
+        listItem.appendChild(rightDiv);
         manualAlarmList.appendChild(listItem);
     }
 });
@@ -2131,25 +3192,140 @@ const alarmTones = [
 'https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.wav',
 'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.wav'
 ];
-const alarmLeadTimes = { 'wake': 10, 'morning_study': 5, 'leave': 5, 'main_study': 10, 'study1': 5, 'study2': 5, 'study3': 5, 'study4': 5, 'study5': 5, 'break': 2, 'practice': 10, 'current_affairs': 5, 'dinner': 10, 'sleep': 0, 'other_activity': 5, 'relax': 0 };
+const alarmLeadTimes = { 'wake': 10, 'morning_study': 5, 'leave': 5, 'leave_school': 5, 'main_study': 10, 'study1': 5, 'study2': 5, 'study3': 5, 'study4': 5, 'study5': 5, 'break': 2, 'practice': 10, 'current_affairs': 5, 'dinner': 10, 'sleep': 0, 'other_activity': 5, 'relax': 0 };
 const dismissCurrentAlarm = () => { alarmSound.pause(); alarmSound.currentTime = 0; $('alarmModal').style.display = 'none'; };
+
+// ==============================================
+// === PHASE 2 & 4: BEAST MODE OVERLAY LOGIC ===
+// ==============================================
+const showBeastModeOverlay = (slot) => {
+    // पवन भाई का नियम: रिवीज़न के लिए 'Z-Index 10000' वाला ओवरले और SOS वाइब्रेशन
+    
+    // 1. डेटा निकालना (Subject & Topic Logic)
+    // Label Format: "1-Day Revision: संधि" or "MISSED REVISION: अलंकार"
+    const label = slot.label_en || "";
+    let topicName = label.split(': ')[1] || "Revision Topic";
+    let type = label.split(': ')[0] || "Revision";
+
+    const profile = getProfile();
+    const userName = profile.name || "Student";
+    
+    // 2. UI पॉपुलेट करना
+    $('beastUserGreeting').textContent = `WAKE UP, ${userName.toUpperCase()}!`;
+    $('beastSubject').textContent = type;
+    $('beastTopic').textContent = topicName;
+
+    // Contextual Message Logic (Phase 2)
+    let msg = "";
+    if (type.includes("1-Day")) msg = "कल जो पढ़ा था, आज उसे पक्का कर लो। 15 मिनट वरना सब साफ़!";
+    else if (type.includes("3-Day")) msg = "3 दिन हो गए! दिमाग से उतरने से पहले जकड़ लो।";
+    else if (type.includes("7-Day")) msg = "एक हफ्ता! आज रिवीज़न नहीं किया तो मेहनत बेकार।";
+    else if (type.includes("30-Day")) msg = "अंतिम प्रहार! इसे अमर बना दो।";
+    else msg = "अगर आज छोड़ दिया, तो पिछली पूरी मेहनत बेकार हो जाएगी!";
+    
+    $('beastMsg').textContent = `"${msg}"`;
+
+    // 3. Beast Mode Modal खोलना
+    const beastModal = $('revisionBeastModal');
+    beastModal.style.display = 'block';
+
+    // 4. SOS वाइब्रेशन (Phase 4)
+    // ... --- ... (3 short, 3 long, 3 short)
+    if (navigator.vibrate) {
+        navigator.vibrate([100,50,100,50,100, 200, 500,200,500,200,500, 200, 100,50,100,50,100]);
+    }
+
+    // 5. 'Start Now' बटन लॉजिक सेट करना (Phase 3)
+    const startBtn = $('beastStartBtn');
+    // Remove old listeners to be safe
+    const newStartBtn = startBtn.cloneNode(true);
+    startBtn.parentNode.replaceChild(newStartBtn, startBtn);
+    
+    newStartBtn.onclick = () => {
+        handleRevisionStart(topicName, profile.studentClass);
+    };
+
+    // Snooze Logic
+    const snoozeBtn = $('beastSnoozeBtn');
+    snoozeBtn.onclick = () => {
+        beastModal.style.display = 'none';
+        showToast("Snoozed", "कमजोर मत पड़ो! 5 मिनट बाद फिर याद दिलाऊंगा।");
+        // Simple 5 min snooze via timeout (simulated)
+        setTimeout(() => showBeastModeOverlay(slot), 300000); 
+    };
+};
+
+// ==============================================
+// === PHASE 3: SMART NAVIGATION (GATEWAY) ===
+// ==============================================
+const handleRevisionStart = (topic, studentClass) => {
+    // 1. Close Modal
+    $('revisionBeastModal').style.display = 'none';
+
+    // 2. Scroll to Study Apps Section
+    const studyCard = $('studyCard');
+    studyCard.scrollIntoView({ behavior: 'smooth' });
+    
+    // Ensure Card is Open
+    if (!studyCard.classList.contains('open')) {
+        studyCard.querySelector('.card-header').click();
+    }
+
+    // 3. Highlight Apps Grid (Visual Attack)
+    const appGrid = $('studyAppGrid');
+    appGrid.classList.add('blinking-target');
+    
+    // Remove blink after 10 seconds
+    setTimeout(() => {
+        appGrid.classList.remove('blinking-target');
+    }, 10000);
+
+    // 4. Set Global Context for Auto-Search Injection
+    // (यह पवन भाई का नियम है: क्लिक करते ही टॉपिक खुले, सब्जेक्ट न पूछे)
+    globalRevisionContext = {
+        topic: topic,
+        studentClass: studentClass,
+        active: true
+    };
+
+    showToast("🎯 Target Locked", `App चुनें -> ${topic} का सर्च अपने आप खुलेगा।`);
+};
+
+// ==============================================
+// === PHASE 1: MODE DETECTOR (TRIGGER ALARM) ===
+// ==============================================
 const triggerAlarm = (slot, leadTime) => {
-let currentToneIndex = parseInt(localStorage.getItem('currentAlarmToneIndex') || '0');
-alarmSound.src = alarmTones[currentToneIndex];
-let nextToneIndex = (currentToneIndex + 1) % alarmTones.length;
-localStorage.setItem('currentAlarmToneIndex', nextToneIndex.toString());
-const messageEn = leadTime > 0 ? `Get ready for ${slot.label_en}!` : `It's time for ${slot.label_en}!`;
-const messageHi = leadTime > 0 ? `${slot.label_hi} के लिए तैयार हो जाओ!` : `${slot.label_hi} का समय हो गया है!`;
-$('alarmMessage').textContent = getBilingualText(messageEn, messageHi);
-$('alarmModal').style.display = 'block';
-alarmSound.play().catch(e => console.error("Alarm sound failed:", e));
+    let currentToneIndex = parseInt(localStorage.getItem('currentAlarmToneIndex') || '0');
+    alarmSound.src = alarmTones[currentToneIndex];
+    let nextToneIndex = (currentToneIndex + 1) % alarmTones.length;
+    localStorage.setItem('currentAlarmToneIndex', nextToneIndex.toString());
+    
+    // पवन भाई का नियम: रिवीज़न है तो BEAST MODE, वरना नार्मल
+    if (slot.id.startsWith('memory_rev') || slot.id.startsWith('emergency_missed')) {
+        // --- BEAST MODE TRIGGER ---
+        showBeastModeOverlay(slot);
+    } else {
+        // --- NORMAL ALARM LOGIC ---
+        let messageEn, messageHi;
+        messageEn = leadTime > 0 ? `Get ready for ${slot.label_en}!` : `It's time for ${slot.label_en}!`;
+        messageHi = leadTime > 0 ? `${slot.label_hi} के लिए तैयार हो जाओ!` : `${slot.label_hi} का समय हो गया है!`;
+
+        $('alarmMessage').textContent = getBilingualText(messageEn, messageHi);
+        $('alarmModal').style.display = 'block';
+    }
+    
+    // Attempt vibration for mobile (Standard)
+    if (navigator.vibrate) navigator.vibrate([500, 200, 500, 200, 500]);
+    
+    alarmSound.play().catch(e => console.error("Alarm sound failed:", e));
 };
 const checkAlarms = () => {
 const now = new Date();
 const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
 slotsData.forEach(slot => {
-if (Object.keys(alarmLeadTimes).includes(slot.id)) {
-const leadTime = alarmLeadTimes[slot.id];
+// Check standard alarms + memory revision alarms
+if (Object.keys(alarmLeadTimes).includes(slot.id) || slot.id.startsWith('memory_rev') || slot.id.startsWith('emergency_missed')) {
+const leadTime = alarmLeadTimes[slot.id] || 0; // Default 0 for revision unless specified
 const slotTimeInMinutes = timeToMinutes(slot.time);
 const alarmTimeInMinutes = (slotTimeInMinutes - leadTime + 1440) % 1440;
 if (currentTimeInMinutes === alarmTimeInMinutes) {
@@ -2167,6 +3343,23 @@ setInterval(checkAlarms, 30000);
 checkAlarms();
 // --- EVENT LISTENERS ---
 
+// --- NEW: LISTENERS FOR JOB INTENSITY AUTO-ADJUSTMENT ---
+const handleJobIntensityChange = () => {
+    $$('input[name="jobIntensity"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const val = e.target.value;
+            const goalInput = $('dutyStudyGoal');
+            // Smart Suggestion: Hard work needs more rest, so start with lower study time. 
+            // Normal work can handle more study.
+            if(val === 'hard') goalInput.value = 2; // Hard: 2 hours
+            else if(val === 'medium') goalInput.value = 3; // Medium: 3 hours
+            else if(val === 'normal') goalInput.value = 4; // Normal: 4 hours
+        });
+    });
+};
+handleJobIntensityChange(); // Initialize
+// --------------------------------------------------------
+
 $('closeManualAlarmModalBtn').addEventListener('click', () => {
     $('manualAlarmModal').style.display = 'none';
 });
@@ -2179,6 +3372,8 @@ const handleClassChange = (selectorId, roleDutyId, roleStudentId, dutyLabelId, s
     const dutyLabel = $(dutyLabelId);
     const subjectArea = $(subjectAreaId);
     const examWrapper = $(examWrapperId);
+    // Select the correct School Time Wrapper based on context
+    const schoolTimeWrapper = isProfileContext ? $('profileSchoolTimeWrapper') : $('schoolTimeWrapper');
 
     selector.addEventListener('change', (e) => {
         const val = e.target.value;
@@ -2192,6 +3387,9 @@ const handleClassChange = (selectorId, roleDutyId, roleStudentId, dutyLabelId, s
             // Auto select Student
             studentRadio.checked = true;
             toggleOccupationView('student', isProfileContext ? 'profile' : 'main');
+
+            // NEW: Show School Time Inputs
+            if (schoolTimeWrapper) schoolTimeWrapper.style.display = 'flex';
 
             // Hide Exam Name Field for school students
             if (examWrapper) examWrapper.style.display = 'none';
@@ -2216,6 +3414,9 @@ const handleClassChange = (selectorId, roleDutyId, roleStudentId, dutyLabelId, s
             // Show Professional option
             dutyRadio.style.display = 'inline-block';
             dutyLabel.style.display = 'inline-block';
+            
+            // NEW: Hide School Time Inputs
+            if (schoolTimeWrapper) schoolTimeWrapper.style.display = 'none';
 
             // Show Exam Name Field for General
             if (examWrapper) examWrapper.style.display = 'block'; 
@@ -2362,7 +3563,11 @@ const searchYouTube = (subject) => {
 $('langSel').addEventListener('change', handleLanguageChange);
 $('timeFormatSel').addEventListener('change', handleTimeFormatChange);
 $('autoBtn').addEventListener('click', autoGenerate);
-$('applyBtn').addEventListener('click', () => { saveSlotsData(); alert(getBilingualText('Routine Saved!', 'रूटीन सेव हो गया!')); });
+// REPLACED ALERT WITH TOAST NOTIFICATION
+$('applyBtn').addEventListener('click', () => { 
+    saveSlotsData(); 
+    showToast("📅 Saved!", "रूटीन सेव हो गया!");
+});
 $$('#examName, #targetDate, #dutyStart, #dutyEnd, #wakeUpTime, #studentStudyGoal, #dutyStudyGoal, #subjectsList, #focusSubject').forEach(el => el.addEventListener('input', displayStrategy));
 $('activityName').addEventListener('input', updateDynamicActivityLabels);
 $$('input[name="occupation"]').forEach(radio => { radio.addEventListener('change', (e) => toggleOccupationView(e.target.value, 'main')); });
@@ -2586,8 +3791,11 @@ $('closeInternalBrowser').addEventListener('click', () => {
 });
 
 // =========================================================
-// NEW: DYNAMIC BLOGGER FETCH LOGIC (JSONP)
+// NEW: DYNAMIC BLOGGER FETCH LOGIC (JSONP) + SEARCH LOGIC
 // =========================================================
+
+// --- SEARCH LOGIC (Global Scope) ---
+let allFetchedPosts = []; // Store posts globally for filtering
 
 // Global Callback for JSONP
 window.handleBloggerResponse = (data) => {
@@ -2595,9 +3803,23 @@ window.handleBloggerResponse = (data) => {
     listContainer.innerHTML = ''; // Clear loader
 
     const posts = data.feed.entry || [];
+    allFetchedPosts = posts; // Store globally
 
     if (posts.length === 0) {
         listContainer.innerHTML = '<div style="padding:20px; color:var(--muted); font-weight:500;">No content available in this section yet.</div>';
+        return;
+    }
+
+    renderPostList(posts); // Initial Render
+};
+
+// Helper function to render list (used by search also)
+const renderPostList = (posts) => {
+    const listContainer = document.getElementById('blogPostsList');
+    listContainer.innerHTML = ''; // Clear previous
+
+    if (posts.length === 0) {
+        listContainer.innerHTML = '<div style="padding:20px; color:var(--muted);">No matching results found.</div>';
         return;
     }
 
@@ -2618,12 +3840,31 @@ window.handleBloggerResponse = (data) => {
     });
 };
 
+// --- SEARCH EVENT LISTENER ---
+const searchInput = document.getElementById('dynamicSearchInput');
+if(searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        
+        if (!allFetchedPosts || allFetchedPosts.length === 0) return;
+
+        const filtered = allFetchedPosts.filter(post => 
+            post.title.$t.toLowerCase().includes(term)
+        );
+        renderPostList(filtered);
+    });
+}
+
 const fetchLabelData = (label, titleHi, titleEn) => {
     // 1. Setup Modal
     const modal = $('dynamicContentModal');
     const modalTitle = $('dynamicModalTitle');
     const listContainer = $('blogPostsList');
     const shareBtn = $('shareNoteBtn');
+    
+    // Clear search input on new fetch
+    const searchInp = $('dynamicSearchInput');
+    if(searchInp) searchInp.value = '';
 
     modalTitle.textContent = getBilingualText(titleEn, titleHi);
     
@@ -2692,7 +3933,7 @@ else audioPlayer.pause();
 });
 window.addEventListener('click', e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; });
 const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
-const funnyInsults = [ { en: "Wow, champ! At this pace, you'll finish the syllabus by the next election.", hi: "वाह राजा! इस रफ़्तार से तो अगला चुनाव आते-आते सिलेबस पूरा होगा।" }, { en: "Studied for 5 minutes? The country is proud of your sacrifice.", hi: "5 मिनट पढ़ाई कर ली? देश को तुम पर गर्व है।" }, { en: "Is this a study session or a commercial break?", hi: "यह पढ़ाई का सेशन था या कमर्शियल ब्रेक?" } ];
+const funnyInsults = [ { en: "Wow, champ! At this pace, you'll finish the syllabus by the next election.", hi: "वाह राजा! इस रफ़्तार से तो अगला चुनाव आते-आते सिलेबस पूरा होगा।" }, { en: "Studied for 5 minutes? The country is proud of your sacrifice.", hi: "5 मिनट पढ़ाई कर ली? देश को तुम्हारे इस बलिदान पर गर्व है।" }, { en: "Is this a study session or a commercial break?", hi: "यह पढ़ाई का सेशन था या कमर्शियल ब्रेक?" } ];
 const goodJobMessages = [ { en: "Great job! Keep up the momentum.", hi: "बहुत बढ़िया! इसी लगन से लगे रहो।" }, { en: "Excellent work! Every minute counts.", hi: "शानदार काम! हर मिनट मायने रखता है।" }, { en: "That's a solid session. You're on the right track!", hi: "यह एक ठोस सेशन था। तुम सही रास्ते पर हो!" } ];
 const formatStudyTime = (ms) => {
     if (isNaN(ms) || ms < 0) ms = 0;
@@ -2882,15 +4123,22 @@ const renderStudyApps = () => {
     });
 };
 
-const startStudyTimer = (subject) => {
+// --- UPDATED TIMER START LOGIC (Timestamp based) ---
+const startStudyTimer = (subject, revisionSlotId = null) => {
     if (localStorage.getItem('study_session_data')) return;
+    
+    // We don't fetch goal here anymore, goal is checked in Bucket logic upon stop
     const sessionData = {
         startTime: Date.now(),
-        subject: subject
+        subject: subject,
+        revisionSlotId: revisionSlotId // Store if this is a revision attempt
     };
     localStorage.setItem('study_session_data', JSON.stringify(sessionData));
 };
 
+// ====================================================================================
+// =================== 📥 THE SUPREME BUCKET ACCUMULATOR LOGIC 📥 ===================
+// ====================================================================================
 const stopStudyTimer = () => {
     const sessionDataString = localStorage.getItem('study_session_data');
     if (!sessionDataString) return;
@@ -2898,23 +4146,30 @@ const stopStudyTimer = () => {
     const sessionData = JSON.parse(sessionDataString);
     const startTime = sessionData.startTime;
     const subject = sessionData.subject;
-    
+    const revisionSlotId = sessionData.revisionSlotId;
+
     const sessionDuration = Date.now() - startTime;
     localStorage.removeItem('study_session_data');
 
-    if (sessionDuration < 1000) return;
+    if (sessionDuration < 1000) return; // Ignore accidental clicks (< 1 sec)
 
+    // --- STANDARD TRACKING UPDATE (Global) ---
     const totalMs = parseInt(localStorage.getItem('total_study_time') || '0') + sessionDuration;
     localStorage.setItem('total_study_time', totalMs.toString());
 
+    // --- MIDNIGHT RESET LOGIC (Technical Safeguard) ---
     const lastReset = parseInt(localStorage.getItem('study_time_last_reset') || '0');
     let todayMs = parseInt(localStorage.getItem('today_study_time') || '0');
     let subjectTimes = JSON.parse(localStorage.getItem('subject_study_time') || '{}');
 
     if (Date.now() - lastReset > twentyFourHoursInMillis) {
         todayMs = 0;
-        subjectTimes = {}; // Reset subject times daily
+        subjectTimes = {}; // Reset standard daily counters
         localStorage.setItem('study_time_last_reset', Date.now().toString());
+        
+        // --- BUCKET RESET (बाल्टी खाली करो) ---
+        // (रात 12 बजे 'Bucket Accumulator' को रीसेट करें ताकि अगले दिन नई शुरुआत हो)
+        localStorage.removeItem('today_cumulative_progress');
     }
     
     const newTodayMs = todayMs + sessionDuration;
@@ -2922,16 +4177,113 @@ const stopStudyTimer = () => {
 
     subjectTimes[subject] = (subjectTimes[subject] || 0) + sessionDuration;
     localStorage.setItem('subject_study_time', JSON.stringify(subjectTimes));
-
     updateStudyDisplay();
 
-    let message;
-    if (sessionDuration < 30 * 60 * 1000) {
-        message = funnyInsults[Math.floor(Math.random() * funnyInsults.length)];
-    } else {
-        message = goodJobMessages[Math.floor(Math.random() * goodJobMessages.length)];
+    // =========================================================
+    // 🪣 BUCKET ACCUMULATOR LOGIC (CUMULATIVE SESSION TRACKING)
+    // =========================================================
+
+    // 1. Fetch Accumulator (बाल्टी लाओ)
+    // (localStorage से आज का 'Progress Ledger' निकालें)
+    let progressLedger = JSON.parse(localStorage.getItem('today_cumulative_progress') || '{}');
+
+    // 2. Initialize Subject Bucket if missing (नई बाल्टी बनाओ)
+    // (अगर इस विषय की बाल्टी अभी नहीं बनी है, तो उसे बनाएं और लक्ष्य निर्धारित करें)
+    if (!progressLedger[subject]) {
+        // Calculate dynamic goal based on profile (Smart Goal Calculation)
+        const profile = getProfile();
+        const totalHours = profile.occupation === 'student' ? (profile.studentStudyGoal || 8) : (profile.dutyStudyGoal || 3);
+        // Default to at least 1 subject to avoid division by zero
+        const subjectCount = (profile.subjects && profile.subjects.length > 0) ? profile.subjects.length : 1;
+        
+        // Convert total hours to ms, divide by number of subjects. 
+        // Example: 8 hours / 4 subjects = 2 hours per subject bucket.
+        // Fallback: Default to 60 mins (3600000ms) if logic fails.
+        let calculatedGoal = (totalHours * 60 * 60 * 1000) / subjectCount;
+        if (!calculatedGoal || calculatedGoal < 0) calculatedGoal = 3600000; 
+
+        progressLedger[subject] = {
+            accumulated: 0,        // अब तक जमा किया गया समय (0 से शुरू)
+            goal: calculatedGoal,  // इस विषय का आज का लक्ष्य
+            isRecorded: false      // लॉक: क्या टॉपिक सेव हो चुका है?
+        };
     }
-    alert(`${getBilingualText(message.en, message.hi)} (Studied ${subject} for: ${formatStudyTime(sessionDuration)})`);
+
+    // 3. Update Accumulator (बून्द-बून्द से घड़ा भरो)
+    // (वर्तमान सेशन का समय बाल्टी में जोड़ें। यह "बिखरी हुई मेहनत" को जोड़ रहा है।)
+    progressLedger[subject].accumulated += sessionDuration;
+
+    // 4. Check 80% Logic (क्या बाल्टी 80% भर गई?)
+    // (स्मार्ट ट्रिगर: केवल तभी सक्रिय होगा जब कुल समय लक्ष्य के 80% से ज्यादा हो)
+    const currentStatus = progressLedger[subject];
+    const threshold = currentStatus.goal * 0.8;
+    const isCompletedNow = currentStatus.accumulated >= threshold;
+
+    // Save Updated Ledger back to Storage
+    localStorage.setItem('today_cumulative_progress', JSON.stringify(progressLedger));
+
+    // 5. Decision: Modal or Result? (फैसला)
+    // (अगर लक्ष्य पूरा हो गया है और पहले रिकॉर्ड नहीं किया गया है -> Topic Modal)
+    // (अन्यथा -> Standard Result Modal)
+
+    if (isCompletedNow && !currentStatus.isRecorded) {
+        
+        // --- SUCCESS CASE: Show Topic Entry Modal ---
+        const topicModal = $('topicEntryModal');
+        $('topicModalSubject').textContent = subject; // e.g., HINDI
+        $('topicModalDate').textContent = new Date().toLocaleDateString();
+        
+        // Display Cumulative Time (Not just session time)
+        const totalSeconds = Math.floor(currentStatus.accumulated / 1000);
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = Math.floor(totalSeconds % 60);
+        let timeString = `${m}m ${s}s`;
+        if (h > 0) timeString = `${h}h ${m}m ${s}s`;
+        
+        $('topicModalTime').textContent = `Total Time Today: ${timeString}`;
+        
+        topicModal.style.display = 'block';
+
+        // Update Save Button Logic to Lock the Bucket
+        const saveBtn = $('saveTopicBtn');
+        // Remove old listeners to prevent multiple fires
+        const newBtn = saveBtn.cloneNode(true);
+        saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+
+        newBtn.onclick = () => {
+            const topicName = $('studiedTopicInput').value.trim();
+            if(topicName) {
+                // 1. Save to Ledger (Permanent Memory Cycle)
+                saveTopicToLedger(subject, topicName);
+                
+                // 2. Lock the Bucket (Lock Mechanism)
+                // (रिकॉर्ड को 'true' करें ताकि आज दोबारा पॉप-अप न आए)
+                progressLedger[subject].isRecorded = true;
+                localStorage.setItem('today_cumulative_progress', JSON.stringify(progressLedger));
+
+                // 3. Sync Revision if applicable
+                if(revisionSlotId) {
+                    const parts = revisionSlotId.split('_');
+                    if(parts.length >= 4) {
+                        const ledgerId = parts[2];
+                        const day = parseInt(parts[3]);
+                        const history = JSON.parse(localStorage.getItem('Revision_History') || '[]');
+                        history.push({ ledgerId: ledgerId, cycleDay: day, completedDate: new Date().toISOString() });
+                        localStorage.setItem('Revision_History', JSON.stringify(history));
+                    }
+                }
+
+                showToast("Topic Saved", `Saved: ${topicName} for memory cycle.`);
+            }
+            topicModal.style.display = 'none';
+        };
+
+    } else {
+        // --- FAILURE/NORMAL CASE: Show Standard Insult/Result Modal ---
+        // (अगर अभी 80% नहीं हुआ, या पहले ही सेव कर चुके हैं)
+        showStudySessionResult(subject, sessionDuration);
+    }
 };
 
 $('studyAppGrid').addEventListener('click', (e) => {
@@ -2944,7 +4296,7 @@ $('studyAppGrid').addEventListener('click', (e) => {
     const subjects = profile.subjects || [];
 
     if (subjects.length === 0) {
-        alert(getBilingualText('Please set your subjects in the "Setup & Strategy" section first.', 'कृपया पहले "सेटअप और स्ट्रेटजी" सेक्शन में अपने विषय सेट करें।'));
+        showToast('No Subjects', getBilingualText('Please set your subjects in the "Setup & Strategy" section first.', 'कृपया पहले "सेटअप और स्ट्रेटजी" सेक्शन में अपने विषय सेट करें।'));
         return;
     }
     
@@ -2959,29 +4311,44 @@ $('studyAppGrid').addEventListener('click', (e) => {
             startStudyTimer(subject);
             $('subjectSelectorModal').style.display = 'none';
 
-            if (linkUrl.includes('youtube.com')) {
-                // --- SMART YOUTUBE SEARCH ---
-                const profile = getProfile();
-                const studentClass = profile.studentClass;
-                const currentYear = new Date().getFullYear(); 
-                let searchQuery = '';
+            // --- PHASE 3: AUTO-SEARCH INJECTION LOGIC ---
+            // (पवन भाई का नियम: अगर रिवीज़न मोड एक्टिव है, तो सीधे टॉपिक सर्च करो)
+            let searchQuery = '';
+            const currentYear = new Date().getFullYear();
+            
+            if (globalRevisionContext && globalRevisionContext.active && globalRevisionContext.topic) {
+                // BEAST MODE SEARCH QUERY
+                const cls = globalRevisionContext.studentClass;
+                const topic = globalRevisionContext.topic;
+                
+                if (cls && cls !== 'general') {
+                    searchQuery = `Class ${cls} ${subject} ${topic} explanation`;
+                } else {
+                    const exam = profile.exam || 'Competition';
+                    searchQuery = `${exam} ${subject} ${topic} concept`;
+                }
+                
+                // Reset Context after use
+                globalRevisionContext = null;
+                showToast("🚀 Launching", `Searching for: ${topic}`);
 
+            } else {
+                // NORMAL MODE SEARCH QUERY
+                const studentClass = profile.studentClass;
                 if (studentClass && studentClass !== 'general') {
-                    // School Student: "Class 9 Hindi 2026 Full Course"
                     searchQuery = `Class ${studentClass} ${subject} ${currentYear} Full Course latest`;
                 } else {
-                    // General/Competition: "UPSC History 2026 Full Course"
                     const exam = profile.exam || 'Competition';
                     searchQuery = `${exam} ${subject} ${currentYear} Full Course latest`;
                 }
+            }
+
+            if (linkUrl.includes('youtube.com')) {
                 const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
                 window.open(searchUrl, '_blank');
-
             } else if (linkUrl.includes('play.google.com')) {
-                // Corrected: Open link directly. Android handles the deep link automatically.
                 window.open(linkUrl, '_blank');
             } else {
-                // Normal Website
                 window.open(linkUrl, '_blank');
             }
         };
@@ -3112,9 +4479,44 @@ renderStudyApps();
 updateStudyDisplay();
 refreshUI();
 };
-init();
-});
+// --- प्रहरी कोच (SENTINEL) का लॉजिक ---
+    const initSentinel = () => {
+        setInterval(() => {
+            const now = new Date();
+            const currentTime = minutesToTime(now.getHours() * 60 + now.getMinutes());
+            const activeSlot = slotsData.find(s => s.time === currentTime);
+            if (activeSlot && !localStorage.getItem('study_session_data')) {
+                const alarmTriggeredKey = `sentinel_triggered_${activeSlot.id}_${new Date().toISOString().split('T')[0]}`;
+                if (!sessionStorage.getItem(alarmTriggeredKey)) {
+                    triggerAlarm(activeSlot, 0); 
+                    sessionStorage.setItem(alarmTriggeredKey, 'true');
+                }
+            }
+        }, 30000); 
+    };
+
+    // १. ऐप और प्रहरी को 'On' करना
+    init();           
+    initSentinel();    
+
+    // २. सर्विस वर्कर (बैकग्राउंड गार्ड) रजिस्ट्रेशन
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => {
+                console.log("प्रहरी तैनात है!");
+                const profileStr = localStorage.getItem('smart_profile');
+                if (profileStr) {
+                    const profile = JSON.parse(profileStr);
+                    if (reg.active && profile.name) {
+                        reg.active.postMessage({ type: 'SET_USER_NAME', userName: profile.name });
+                    }
+                }
+            })
+            .catch(err => console.log("SW Error:", err));
+    }
+
+}); // यह DOMContentLoaded को बंद करने वाला आखिरी ब्रैकेट है
 </script>
 </body>
 </html>
-```
+ 
